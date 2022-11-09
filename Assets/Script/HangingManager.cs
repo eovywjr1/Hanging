@@ -1,32 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class HangingManager : MonoBehaviour
 {
-    private bool isTimer = true;
-    private float workTime, workMaxTime = 10;
-
-    public Slider timerSlider;
+    public static bool isTodesstrafe;
+    public HangingMove hangingMove;
 
     private void Start()
     {
-        workTime = workMaxTime;
+        hangingMove = FindObjectOfType<HangingMove>();
     }
 
-    private void Update()
+    public void ConvertScene()
     {
-        if (isTimer)
-        {
-            workTime -= Time.deltaTime;
-            timerSlider.value = workTime / workMaxTime;
-            if(workTime <= 0)
-            {
-                isTimer = false;
-                workTime = workMaxTime;
-            }
-        }
+        SceneManager.LoadScene("SampleScene");
     }
 }
