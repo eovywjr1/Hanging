@@ -7,38 +7,69 @@ public class HangingMove : MonoBehaviour
     private Vector3 preMousePosition;
     [SerializeField] private GameObject criteria;
     [SerializeField] private bool isPossibleTodesstrafe; // 구현 완료 후 serial 삭제
+    private bool isDescend;
+    private float descendSpeed = 2f;
+    private float initialMouseX;
+    private float cutDistance = 100f;
     [SerializeField] private float minY; // 구현 완료 후 serial 삭제
+    private HangingManager hangingManager;
+
+    private void Start()
+    {
+        hangingManager = FindObjectOfType<HangingManager>();
+    }
+
+    private void Update()
+    {
+        if (isDescend)
+        {
+            transform.Translate(new Vector3(0, -1 * descendSpeed * Time.deltaTime));
+            if (transform.position.y <= minY)
+                isDescend = false;
+        }
+    }
 
     private void OnMouseDown()
     {
-        Vector3 mousePosition = new Vector3(0, Input.mousePosition.y, 0);
+        criteria.SetActive(true);
 
-        preMousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+        Vector3 mousePosition = new Vector3(0, Input.mousePosition.y, 0);
+        initialMouseX = Input.mousePosition.x;
+        preMousePosition = Camera.main.ScreenToWorldPoint(mousePosition);   //이상한 위치로 이동 방지하기 위해 preMousePosition 업데이트
     }
 
     private void OnMouseDrag()
     {
         if (isPossibleTodesstrafe)
         {
-            Vector3 mousePosition = new Vector3(0, Input.mousePosition.y, 0);
+            Vector3 mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0);
             Vector3 currentMousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
-            
-            transform.position = new Vector3(transform.position.x, transform.position.y + currentMousePosition.y - preMousePosition.y, 0);
-            preMousePosition = currentMousePosition;
+            float nextY = currentMousePosition.y - preMousePosition.y;
 
-            if (transform.position.y + transform.lossyScale.y / 2 > criteria.transform.position.y)
+            if (Mathf.Abs(mousePosition.x - initialMouseX) >= cutDistance)
+                hangingManager.Todesstrafe();
+
+            if (transform.position.y > minY || nextY > 0)
             {
-                isPossibleTodesstrafe = false;
-                HangingManager.isTodesstrafe = true;
-                Debug.Log("사형");
-                Debug.Log(HangingManager.isTodesstrafe);
+                transform.position = new Vector3(transform.position.x, transform.position.y + nextY, 0);
+                preMousePosition = currentMousePosition;
             }
-            else if (transform.position.y - transform.lossyScale.y / 2 < minY)
-            {
-                isPossibleTodesstrafe = false;
-                HangingManager.isTodesstrafe = false;
-                Debug.Log("생존");
-            }
+        }
+    }
+
+    private void OnMouseUp()
+    {
+        criteria.SetActive(false);
+
+        isDescend = true;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (isPossibleTodesstrafe)
+        {
+            if (collision.CompareTag("criteria"))
+                hangingManager.Todesstrafe();
         }
     }
 
