@@ -35,7 +35,7 @@ public class HangingMove : MonoBehaviour
 
         Vector3 mousePosition = new Vector3(0, Input.mousePosition.y, 0);
         initialMouseX = Input.mousePosition.x;
-        preMousePosition = Camera.main.ScreenToWorldPoint(mousePosition);   //이상한 위치로 이동 방지하기 위해 preMousePosition 업데이트
+        preMousePosition = Camera.main.ScreenToWorldPoint(mousePosition);   //이상한 위치로 이동 방지하기 위해 preMousePosition 초기화
     }
 
     private void OnMouseDrag()
