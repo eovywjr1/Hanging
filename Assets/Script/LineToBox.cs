@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class LineToBox : MonoBehaviour
@@ -13,7 +14,7 @@ public class LineToBox : MonoBehaviour
 
     private void Start()
     {
-        uiBox = Instantiate(uiBoxPrefab);
+        uiBox = Instantiate(uiBoxPrefab, this.gameObject.transform);
         uiBox.GetComponent<UIMouseMove>().SetpreLine(this);
         uiBox.SetActive(false);
 
@@ -28,7 +29,7 @@ public class LineToBox : MonoBehaviour
     {
         int i = 1;
         float d = i / devide;
-        parentYSum = (parentTransform.position.y + grandparentTransform.position.y) * -1;
+        parentYSum = (parentTransform.position.y * -1);
         while (d < 1)
         {
             lineRenderer.SetPosition(1, new Vector3(uiBoxTransform.position.x * d, (parentYSum + uiBoxTransform.position.y) * d, 0));

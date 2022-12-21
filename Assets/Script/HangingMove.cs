@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using UnityEngine;
 
 public class HangingMove : MonoBehaviour
@@ -17,11 +18,13 @@ public class HangingMove : MonoBehaviour
     private void Start()
     {
         hangingManager = FindObjectOfType<HangingManager>();
+
+        isPossibleTodesstrafe = true;
     }
 
     private void Update()
     {
-        if (isDescend)
+        if (isDescend || !isPossibleTodesstrafe)
         {
             transform.Translate(new Vector3(0, -1 * descendSpeed * Time.deltaTime));
             if (transform.position.y <= minY)
@@ -31,11 +34,15 @@ public class HangingMove : MonoBehaviour
 
     private void OnMouseDown()
     {
-        criteria.SetActive(true);
+        if (!isPossibleTodesstrafe)
+        {
+            isDescend = false;
+            criteria.SetActive(true);
 
-        Vector3 mousePosition = new Vector3(0, Input.mousePosition.y, 0);
-        initialMouseX = Input.mousePosition.x;
-        preMousePosition = Camera.main.ScreenToWorldPoint(mousePosition);   //이상한 위치로 이동 방지하기 위해 preMousePosition 초기화
+            Vector3 mousePosition = new Vector3(0, Input.mousePosition.y, 0);
+            initialMouseX = Input.mousePosition.x;
+            preMousePosition = Camera.main.ScreenToWorldPoint(mousePosition);   //이상한 위치로 이동 방지하기 위해 preMousePosition 초기화
+        }
     }
 
     private void OnMouseDrag()
@@ -52,6 +59,7 @@ public class HangingMove : MonoBehaviour
             if (transform.position.y > minY || nextY > 0)
             {
                 transform.position = new Vector3(transform.position.x, transform.position.y + nextY, 0);
+                
                 preMousePosition = currentMousePosition;
             }
         }
@@ -69,7 +77,10 @@ public class HangingMove : MonoBehaviour
         if (isPossibleTodesstrafe)
         {
             if (collision.CompareTag("criteria"))
+            {
                 hangingManager.Todesstrafe();
+                isPossibleTodesstrafe = false;
+            }
         }
     }
 

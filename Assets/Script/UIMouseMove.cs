@@ -17,10 +17,11 @@ public class UIMouseMove : MonoBehaviour
     {
         Vector3 mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0);
         Vector3 currentMousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
-        transform.position = new Vector3(currentMousePosition.x, currentMousePosition.y, 0);
+        Vector3 toPosition = currentMousePosition - preMousePosition;
+        transform.position = Vector3.MoveTowards(transform.position, transform.position + toPosition, Time.deltaTime * 10000f);
         preMousePosition = currentMousePosition;
 
-        preLine.MoveToBox(currentMousePosition.x, currentMousePosition.y);
+        preLine.MoveToBox(transform.position.x, transform.position.y);
     }
 
     public void SetpreLine(LineToBox _preLine)
