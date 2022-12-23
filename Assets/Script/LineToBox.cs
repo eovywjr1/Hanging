@@ -29,9 +29,9 @@ public class LineToBox : MonoBehaviour
     {
         int i = 1;
         float d = i / devide;
-        parentYSum = (parentTransform.position.y * -1);
         while (d < 1)
         {
+            parentYSum = (parentTransform.position.y * -1);
             lineRenderer.SetPosition(1, new Vector3(uiBoxTransform.position.x * d, (parentYSum + uiBoxTransform.position.y) * d, 0));
             yield return null;
             d = ++i / devide;
@@ -42,6 +42,7 @@ public class LineToBox : MonoBehaviour
 
     public void MoveToBox(float x, float y)
     {
+        parentYSum = (parentTransform.position.y * -1);
         lineRenderer.SetPosition(1, new Vector3(x, parentYSum + y, 0));
     }
 }

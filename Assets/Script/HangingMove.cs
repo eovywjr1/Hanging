@@ -24,7 +24,7 @@ public class HangingMove : MonoBehaviour
 
     private void Update()
     {
-        if (isDescend || !isPossibleTodesstrafe)
+        if (isDescend)
         {
             transform.Translate(new Vector3(0, -1 * descendSpeed * Time.deltaTime));
             if (transform.position.y <= minY)
@@ -34,7 +34,7 @@ public class HangingMove : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (!isPossibleTodesstrafe)
+        if (isPossibleTodesstrafe)
         {
             isDescend = false;
             criteria.SetActive(true);
