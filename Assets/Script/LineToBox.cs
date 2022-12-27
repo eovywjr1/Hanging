@@ -9,32 +9,38 @@ public class LineToBox : MonoBehaviour
     private GameObject uiBox;
     private Transform uiBoxTransform, parentTransform, grandparentTransform;
     private LineRenderer lineRenderer;
-    private float devide = 1000f; //분모여서 속도와 반비례관계
-    private float parentYSum;   //사형수, 교수대(부모들) y 추가
+    private Line line;
 
-    private void Start()
+    private void Awake()
     {
-        uiBox = Instantiate(uiBoxPrefab, this.gameObject.transform);
-        uiBox.GetComponent<UIMouseMove>().SetpreLine(this);
+        uiBox = Instantiate(uiBoxPrefab);
+        uiBox.GetComponent<WindowMouseMove>().SetpreLine(this);
         uiBox.SetActive(false);
+
+        line = new Line(this.gameObject, uiBox);
+        Line.lineList.Add(line);
 
         lineRenderer = GetComponent<LineRenderer>();
         uiBoxTransform = uiBox.transform;
         parentTransform = transform.parent.transform;
         grandparentTransform = parentTransform.parent.transform;
+    }
+
+    private void Start()
+    {
         StartCoroutine(ExpendLine());
     }
 
     IEnumerator ExpendLine()
     {
         int i = 1;
-        float d = i / devide;
+        float d = i / line.devide;
         while (d < 1)
         {
-            parentYSum = (parentTransform.position.y * -1);
-            lineRenderer.SetPosition(1, new Vector3(uiBoxTransform.position.x * d, (parentYSum + uiBoxTransform.position.y) * d, 0));
+            line.parentYSum = (parentTransform.position.y * -1);
+            lineRenderer.SetPosition(1, new Vector3(uiBoxTransform.position.x * d, (line.parentYSum + uiBoxTransform.position.y) * d, 0));
             yield return null;
-            d = ++i / devide;
+            d = ++i / line.devide;
         }
 
         uiBox.SetActive(true);
@@ -42,7 +48,7 @@ public class LineToBox : MonoBehaviour
 
     public void MoveToBox(float x, float y)
     {
-        parentYSum = (parentTransform.position.y * -1);
-        lineRenderer.SetPosition(1, new Vector3(x, parentYSum + y, 0));
+        line.parentYSum = (parentTransform.position.y * -1);
+        lineRenderer.SetPosition(1, new Vector3(x, line.parentYSum + y, 0));
     }
 }

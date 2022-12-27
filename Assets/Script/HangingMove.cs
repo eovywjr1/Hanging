@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Net;
+using UnityEditor.Tilemaps;
 using UnityEngine;
 
 public class HangingMove : MonoBehaviour
@@ -14,6 +15,8 @@ public class HangingMove : MonoBehaviour
     private float cutDistance = 100f;
     [SerializeField] private float minY; // 구현 완료 후 serial 삭제
     private HangingManager hangingManager;
+    private LineToBox line;
+    private GameObject window;
 
     private void Start()
     {
@@ -24,11 +27,19 @@ public class HangingMove : MonoBehaviour
 
     private void Update()
     {
+        if (Line.lineList.Count > 0 && line == null)
+        {
+            line = Line.lineList[0].lineObject.GetComponent<LineToBox>();
+            window = Line.lineList[0].windowObject;
+        }
+
         if (isDescend)
         {
             transform.Translate(new Vector3(0, -1 * descendSpeed * Time.deltaTime));
             if (transform.position.y <= minY)
                 isDescend = false;
+
+            line.MoveToBox(window.transform.position.x, window.transform.position.y);
         }
     }
 
@@ -62,6 +73,8 @@ public class HangingMove : MonoBehaviour
                 
                 preMousePosition = currentMousePosition;
             }
+
+            line.MoveToBox(window.transform.position.x, window.transform.position.y);
         }
     }
 

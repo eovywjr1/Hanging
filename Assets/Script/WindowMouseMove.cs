@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UIMouseMove : MonoBehaviour
+public class WindowMouseMove : MonoBehaviour
 {
     private Vector3 preMousePosition;
     private LineToBox preLine;
