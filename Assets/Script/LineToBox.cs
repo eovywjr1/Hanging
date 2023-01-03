@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.Tilemaps;
 using UnityEngine;
 
 public class LineToBox : MonoBehaviour
 {
     [SerializeField] private GameObject uiBoxPrefab;
     private GameObject uiBox;
-    private Transform uiBoxTransform, parentTransform, grandparentTransform;
+    private Transform uiBoxTransform, parentTransform;
     private LineRenderer lineRenderer;
     private Line line;
 
@@ -22,8 +23,8 @@ public class LineToBox : MonoBehaviour
 
         lineRenderer = GetComponent<LineRenderer>();
         uiBoxTransform = uiBox.transform;
+
         parentTransform = transform.parent.transform;
-        grandparentTransform = parentTransform.parent.transform;
     }
 
     private void Start()
@@ -37,8 +38,7 @@ public class LineToBox : MonoBehaviour
         float d = i / line.devide;
         while (d < 1)
         {
-            line.parentYSum = (parentTransform.position.y * -1);
-            lineRenderer.SetPosition(1, new Vector3(uiBoxTransform.position.x * d, (line.parentYSum + uiBoxTransform.position.y) * d, 0));
+            MoveToBox(uiBoxTransform.position.x * d, (line.parentYSum + uiBoxTransform.position.y) * d - line.parentYSum);
             yield return null;
             d = ++i / line.devide;
         }
@@ -48,7 +48,7 @@ public class LineToBox : MonoBehaviour
 
     public void MoveToBox(float x, float y)
     {
-        line.parentYSum = (parentTransform.position.y * -1);
+        line.parentYSum = (transform.parent.transform != null) ? (parentTransform.position.y * -1) : 0;
         lineRenderer.SetPosition(1, new Vector3(x, line.parentYSum + y, 0));
     }
 }

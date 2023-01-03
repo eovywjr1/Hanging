@@ -15,13 +15,18 @@ public class HangingMove : MonoBehaviour
     private float cutDistance = 100f;
     [SerializeField] private float minY; // 구현 완료 후 serial 삭제
     private HangingManager hangingManager;
+    private LineManager lineManager;
     private LineToBox line;
     private GameObject window;
 
-    private void Start()
+    private void Awake()
     {
         hangingManager = FindObjectOfType<HangingManager>();
+        lineManager = FindObjectOfType<LineManager>();
+    }
 
+    private void Start()
+    {
         isPossibleTodesstrafe = true;
     }
 
@@ -54,6 +59,8 @@ public class HangingMove : MonoBehaviour
             initialMouseX = Input.mousePosition.x;
             preMousePosition = Camera.main.ScreenToWorldPoint(mousePosition);   //이상한 위치로 이동 방지하기 위해 preMousePosition 초기화
         }
+
+        StartCoroutine(lineManager.ChangeTransparency(-1));
     }
 
     private void OnMouseDrag()
@@ -81,6 +88,7 @@ public class HangingMove : MonoBehaviour
     private void OnMouseUp()
     {
         criteria.SetActive(false);
+        StartCoroutine(lineManager.ChangeTransparency(1));
 
         isDescend = true;
     }
