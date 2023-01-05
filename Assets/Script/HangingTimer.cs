@@ -12,7 +12,7 @@ public class HangingTimer : MonoBehaviour
     [SerializeField] private Slider timerSlider;
     private HangingManager hangingManager;
 
-    private void Start()
+    private void Awake()
     {
         workTime = workMaxTime;
         hangingManager = FindObjectOfType<HangingManager>();
@@ -28,7 +28,7 @@ public class HangingTimer : MonoBehaviour
             {
                 isTimer = false;
                 workTime = workMaxTime;
-                hangingManager.hangingMove.SetisPossibleTodesstrafe(false);
+                hangingManager.offender.SetisPossibleTodesstrafe(false);
                 hangingManager.ConvertScene();
             }
         }

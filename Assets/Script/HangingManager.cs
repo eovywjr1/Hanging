@@ -7,11 +7,11 @@ using UnityEngine.SceneManagement;
 public class HangingManager : MonoBehaviour
 {
     public bool isTodesstrafe;
-    public HangingMove hangingMove;
+    public Offender offender;
 
-    private void Start()
+    private void Awake()
     {
-        hangingMove = FindObjectOfType<HangingMove>();
+        offender = FindObjectOfType<Offender>();
     }
 
     public void ConvertScene()
@@ -21,7 +21,7 @@ public class HangingManager : MonoBehaviour
 
     public void EndTodesstrafe()
     {
-        hangingMove.SetisPossibleTodesstrafe(false);
+        offender.SetisPossibleTodesstrafe(false);
     }
 
     public void Todesstrafe()
@@ -30,6 +30,8 @@ public class HangingManager : MonoBehaviour
         isTodesstrafe = true;
         Debug.Log("사형");
         Debug.Log(isTodesstrafe);
+
+        DestroyAllLineAndWindow();
     }
 
     public void UnTodesstrafe()
@@ -37,5 +39,16 @@ public class HangingManager : MonoBehaviour
         EndTodesstrafe();
         isTodesstrafe = false;
         Debug.Log("생존");
+    }
+
+    public void DestroyAllLineAndWindow()
+    {
+        StopAllCoroutines(); // 임시 추후 구현 추가될 경우 수정
+        foreach (Line line in Line.lineList)
+        {
+            Destroy(line.lineObject);
+            Destroy(line.windowObject);
+        }
+        Line.lineList.Clear();
     }
 }
