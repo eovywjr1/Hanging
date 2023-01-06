@@ -43,11 +43,19 @@ public class TableManager : MonoBehaviour
     private static string Getcrime(Dictionary<string, string> data, List<List<object>> list)
     {
         int headerid = Random.Range(0, list.Count);
-        int valueid = Random.Range(0, list[headerid].Count);
+        List<string> temp = new List<string>();
+        foreach(var item in list[headerid])
+        {
+            if (!item.ToString().Equals(""))
+                temp.Add(item.ToString());
+            else
+                break;
+        }
+        int valueid = Random.Range(0, temp.Count);
 
         data["crimeGrade"] = headerid.ToString();
 
-        return (string) list[headerid][valueid];
+        return temp[valueid];
     }
 
     private static string Getfname(Dictionary<string, string> data, List<List<object>> list)
