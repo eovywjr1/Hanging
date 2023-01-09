@@ -23,9 +23,9 @@ public class TableManager : MonoBehaviour
         Dictionary<string,string> data = new Dictionary<string,string>();
         
         data["name"] = GetString(nameT);
-        data["fname"] = Getfname(data, fnameT);
-        data["crime"] = Getcrime(data, crimeT);
-        data["detail"] = Getdetail(data, detailT, data["crime"]);
+        data["fname"] = Getfname(data);
+        data["crime"] = Getcrime(data);
+        data["detail"] = Getdetail(data, data["crime"]);
         data["vfname"] = GetString(fnameT);
         data["vname"] = GetString(nameT);
 
@@ -40,11 +40,11 @@ public class TableManager : MonoBehaviour
         return data;
     }
 
-    private static string Getcrime(Dictionary<string, string> data, List<List<object>> list)
+    private static string Getcrime(Dictionary<string, string> data)
     {
-        int headerid = Random.Range(0, list.Count);
+        int headerid = Random.Range(0, crimeT.Count);
         List<string> temp = new List<string>();
-        foreach(var item in list[headerid])
+        foreach(var item in crimeT[headerid])
         {
             if (!item.ToString().Equals(""))
                 temp.Add(item.ToString());
@@ -58,14 +58,14 @@ public class TableManager : MonoBehaviour
         return temp[valueid];
     }
 
-    private static string Getfname(Dictionary<string, string> data, List<List<object>> list)
+    private static string Getfname(Dictionary<string, string> data)
     {
-        int headerid = Random.Range(0, list.Count);
-        int valueid = Random.Range(0, list[headerid].Count);
+        int headerid = Random.Range(0, fnameT.Count);
+        int valueid = Random.Range(0, fnameT[headerid].Count);
 
         data["grade"] = GetGrade(headerid);
 
-        return (string)list[headerid][valueid];
+        return (string)fnameT[headerid][valueid];
     }
 
     private static string GetString(List<List<object>> list)
@@ -76,23 +76,23 @@ public class TableManager : MonoBehaviour
         return (string)list[headerid][valueid];
     }
 
-    private static string Getdetail(Dictionary<string, string> data, List<List<object>> list, string crime)
+    private static string Getdetail(Dictionary<string, string> data, string crime)
     {
         string grade = data["crimeGrade"];
 
         List<string> randomlist = new List<string>();
-        for(int i = 0; i < list[0].Count; i++)
+        for(int i = 0; i < detailT[0].Count; i++)
         {
-            if (list[1][i].Equals("ALL"))
-                randomlist.Add((string) list[0][i]);
+            if (detailT[1][i].Equals("ALL"))
+                randomlist.Add((string)detailT[0][i]);
             else
             {
-                string str = list[1][i].ToString();
+                string str = detailT[1][i].ToString();
                 foreach (var v in str)
                 {
                     if (grade.Equals(v))
                     {
-                        randomlist.Add((string) list[0][i]);
+                        randomlist.Add((string) detailT[0][i]);
                         break;
                     }
                 }
