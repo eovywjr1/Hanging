@@ -5,7 +5,12 @@ using UnityEngine;
 public class WindowMouseMove : MonoBehaviour
 {
     private Vector3 preMousePosition;
-    private LineToBox preLine;
+    private Line line;
+
+    private void Start()
+    {
+        line = Line.lineList[0];
+    }
 
     private void OnMouseDown()
     {
@@ -21,11 +26,6 @@ public class WindowMouseMove : MonoBehaviour
         transform.position = Vector3.MoveTowards(transform.position, transform.position + toPosition, Time.deltaTime * 10000f);
         preMousePosition = currentMousePosition;
 
-        preLine.MoveToBox(transform.position.x, transform.position.y);
-    }
-
-    public void SetpreLine(LineToBox _preLine)
-    {
-        preLine = _preLine;
+        line.MoveTo(transform.position.x, transform.position.y);
     }
 }

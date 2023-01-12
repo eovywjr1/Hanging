@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UIElements;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class Line
 {
@@ -11,7 +13,7 @@ public class Line
     private LineRenderer lineLR;
     public SpriteRenderer windowSR { get; private set; }
     private TextMeshProUGUI windowtmpu;
-    public float devide = 1000f; //분모여서 속도와 반비례관계
+    public float devide = 300f; //분모여서 속도와 반비례관계
     public float parentYSum;   //사형수, 교수대(부모들) y 추가
 
     public Line(GameObject _lineObject, GameObject _windowObject)
@@ -29,5 +31,55 @@ public class Line
         lineLR.endColor = new Color(1, 1, 1, alpha);
         windowSR.color = new Color(1, 1, 1, alpha);
         windowtmpu.color = new Color(0, 0, 0, alpha);
+    }
+
+    public IEnumerator ChangeTransparency(int mode)
+    {
+        float initAlpha = lineList[0].windowSR.color.a;
+        float speed = 0.02f;
+        float oper = (mode == 1) ? speed * 0.5f : -1 * speed;  //나타날 때 더 빠르게 보이는 경향 있음
+        float d = initAlpha;
+
+        while (d >= 0 && d <= 1)
+        {
+            foreach (Line line in lineList)
+            {
+                line.SetAlpha(d);
+                yield return new WaitForSeconds(0.01f);
+            }
+
+            d += oper;
+        }
+
+        if (d <= 0.1)
+        {
+            foreach (Line line in lineList)
+                line.SetAlpha(0);
+        }
+        else if (d >= 0.9)
+        {
+            foreach (Line line in lineList)
+                line.SetAlpha(1);
+        }
+    }
+
+    public void MoveTo(float x, float y)
+    {
+        lineLR.SetPosition(1, new Vector3(x, parentYSum + y, 0));
+    }
+
+    public IEnumerator ExpendLine(float _parentYSum)
+    {
+        int i = 1;
+        float d = i / devide;
+        while (d < 1)
+        {
+            parentYSum = _parentYSum;
+            MoveTo(windowObject.transform.position.x * d, (_parentYSum + windowObject.transform.position.y) * d - _parentYSum);
+            yield return null;
+            d = ++i / devide;
+        }
+
+        windowObject.SetActive(true);
     }
 }

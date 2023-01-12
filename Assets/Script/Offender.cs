@@ -10,13 +10,14 @@ public class Offender : MonoBehaviour
     [SerializeField] private bool isPossibleTodesstrafe; // 구현 완료 후 serial 삭제
     private bool isCreateLine;
     private bool isDescend;
+    private bool isTodesstrafe;
     private float descendSpeed = 2f;
     private float initialMouseX;
-    //private float cutDistance = 100f;
+    private float cutDistance = 100f;
     [SerializeField] private float minY; // 구현 완료 후 serial 삭제
     private HangingManager hangingManager;
     private LineManager lineManager;
-    private LineToBox line;
+    private Line line;
     private GameObject window;
     [SerializeField] private GameObject criteria;
     private Coroutine preChangeTransparency = null;
@@ -36,11 +37,11 @@ public class Offender : MonoBehaviour
 
     private void Update()
     {
-        if (isPossibleTodesstrafe)
+        if (isPossibleTodesstrafe || !isTodesstrafe)
         {
             if (Line.lineList.Count > 0 && line == null)
             {
-                line = Line.lineList[0].lineObject.GetComponent<LineToBox>();
+                line = Line.lineList[0];
                 window = Line.lineList[0].windowObject;
             }
 
@@ -50,23 +51,24 @@ public class Offender : MonoBehaviour
                 if (transform.position.y <= minY)
                     isDescend = false;
 
-                line.MoveToBox(window.transform.position.x, window.transform.position.y);
+                line.MoveTo(window.transform.position.x, window.transform.position.y);
             }
         }
     }
 
     private void OnMouseDown()
     {
-        if (!isCreateLine)
-        {
-            lineManager.CreateLine(transform);
-            isCreateLine = true;
-        }
-
         if (isPossibleTodesstrafe)
         {
+            if (!isCreateLine)
+            {
+                lineManager.CreateLine(transform);
+                isCreateLine = true;
+            }
+            else
+                criteria.SetActive(true);
+
             isDescend = false;
-            criteria.SetActive(true);
 
             Vector3 mousePosition = new Vector3(0, Input.mousePosition.y, 0);
             initialMouseX = Input.mousePosition.x;
@@ -74,7 +76,7 @@ public class Offender : MonoBehaviour
 
             if (preChangeTransparency != null)
                 StopCoroutine(preChangeTransparency);
-            preChangeTransparency = StartCoroutine(lineManager.ChangeTransparency(-1));
+            if(line != null) preChangeTransparency = StartCoroutine(line.ChangeTransparency(-1));
         }
     }
 
@@ -86,9 +88,6 @@ public class Offender : MonoBehaviour
             Vector3 currentMousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
             float nextY = currentMousePosition.y - preMousePosition.y;
 
-            /*if (Mathf.Abs(mousePosition.x - initialMouseX) >= cutDistance)    //로프 끊어서 사형하는 방식
-                hangingManager.Todesstrafe();*/
-
             if (transform.position.y > minY || nextY > 0)
             {
                 transform.position = new Vector3(transform.position.x, transform.position.y + nextY, 0);
@@ -96,7 +95,7 @@ public class Offender : MonoBehaviour
                 preMousePosition = currentMousePosition;
             }
 
-            line.MoveToBox(window.transform.position.x, window.transform.position.y);
+            line.MoveTo(window.transform.position.x, window.transform.position.y);
         }
     }
 
@@ -105,8 +104,12 @@ public class Offender : MonoBehaviour
         if (isPossibleTodesstrafe)
         {
             criteria.SetActive(false);
-            StopCoroutine(preChangeTransparency);
-            preChangeTransparency = StartCoroutine(lineManager.ChangeTransparency(1));
+
+            if (line != null)
+            {
+                if (preChangeTransparency != null) StopCoroutine(preChangeTransparency);
+                preChangeTransparency = StartCoroutine(line.ChangeTransparency(1));
+            }
 
             isDescend = true;
         }
@@ -120,6 +123,7 @@ public class Offender : MonoBehaviour
             {
                 hangingManager.Todesstrafe();
                 isPossibleTodesstrafe = false;
+                isTodesstrafe = true;
             }
         }
     }

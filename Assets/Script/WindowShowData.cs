@@ -6,7 +6,7 @@ using UnityEngine;
 public class WindowShowData : MonoBehaviour
 {
     private TextMeshProUGUI textMeshProUGUI;
-    [TextArea] public string text;
+    private string text;
 
     private void Awake()
     {
@@ -17,11 +17,11 @@ public class WindowShowData : MonoBehaviour
     {
         OffenderData offenderdata = Offender.offenderData;
 
-        text = "가해자: " + offenderdata.fname + " " + offenderdata.name + "\n"
-            + "죄목: " + offenderdata.crime + "\n"
-            + "발생 장소: " + offenderdata.grade + " 등급" + "\n"
-            + "피해자: " + offenderdata.vfname + " " + offenderdata.vname + "\n"
-            + "경위: " + offenderdata.detail;
+        text = "      가해자: " + offenderdata.fname + " " + offenderdata.name + "\n"
+            + "      죄목: " + offenderdata.crime + "\n"
+            + "      발생 장소: " + offenderdata.grade + " 등급" + "\n"
+            + "      피해자: " + offenderdata.vfname + " " + offenderdata.vname + "\n"
+            + "      경위: " + offenderdata.detail;
 
         textMeshProUGUI.text = text.Replace("\\n", "\n");
     }
