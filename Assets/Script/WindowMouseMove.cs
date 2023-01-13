@@ -6,6 +6,14 @@ public class WindowMouseMove : MonoBehaviour
 {
     private Vector3 preMousePosition;
     private Line line;
+    private RectTransform rectTransform;
+    private BoxCollider2D boxCollider2D;
+
+    private void Awake()
+    {
+        rectTransform = GetComponent<RectTransform>();
+        boxCollider2D = GetComponent<BoxCollider2D>();
+    }
 
     private void Start()
     {
@@ -26,6 +34,12 @@ public class WindowMouseMove : MonoBehaviour
         transform.position = Vector3.MoveTowards(transform.position, transform.position + toPosition, Time.deltaTime * 10000f);
         preMousePosition = currentMousePosition;
 
-        line.MoveTo(transform.position.x, transform.position.y);
+        line.MoveTo(transform.position.x, transform.position.y, transform.position.y);
+    }
+
+    public void SetSize(Vector2 vector2)
+    {
+        rectTransform.sizeDelta = vector2;
+        boxCollider2D.size = vector2;
     }
 }

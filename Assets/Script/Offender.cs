@@ -15,6 +15,7 @@ public class Offender : MonoBehaviour
     private float initialMouseX;
     private float cutDistance = 100f;
     [SerializeField] private float minY; // 구현 완료 후 serial 삭제
+    private RectTransform windowRectTransform;
     private HangingManager hangingManager;
     private LineManager lineManager;
     private Line line;
@@ -43,6 +44,7 @@ public class Offender : MonoBehaviour
             {
                 line = Line.lineList[0];
                 window = Line.lineList[0].windowObject;
+                windowRectTransform = window.GetComponent<RectTransform>();
             }
 
             if (isDescend)
@@ -51,7 +53,7 @@ public class Offender : MonoBehaviour
                 if (transform.position.y <= minY)
                     isDescend = false;
 
-                line.MoveTo(window.transform.position.x, window.transform.position.y);
+                line.MoveTo(windowRectTransform.position.x, windowRectTransform.position.y, transform.position.y);
             }
         }
     }
@@ -91,11 +93,10 @@ public class Offender : MonoBehaviour
             if (transform.position.y > minY || nextY > 0)
             {
                 transform.position = new Vector3(transform.position.x, transform.position.y + nextY, 0);
-
                 preMousePosition = currentMousePosition;
             }
 
-            line.MoveTo(window.transform.position.x, window.transform.position.y);
+            line.MoveTo(windowRectTransform.position.x, windowRectTransform.position.y, transform.position.y);
         }
     }
 
