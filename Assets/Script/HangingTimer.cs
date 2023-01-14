@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class HangingTimer : MonoBehaviour
 {
     private bool isTimer = true;
-    private float workTime, workMaxTime = 15;
+    private float workTime, workMaxTime = 10f;
 
     [SerializeField] private Slider timerSlider;
     private HangingManager hangingManager;

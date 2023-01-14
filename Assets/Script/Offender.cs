@@ -62,13 +62,8 @@ public class Offender : MonoBehaviour
     {
         if (isPossibleTodesstrafe)
         {
-            if (!isCreateLine)
-            {
-                lineManager.CreateLine(transform);
-                isCreateLine = true;
-            }
-            else
-                criteria.SetActive(true);
+            if (!isCreateLine) lineManager.CreateLine(transform);
+            else criteria.SetActive(true);
 
             isDescend = false;
 
@@ -76,15 +71,13 @@ public class Offender : MonoBehaviour
             initialMouseX = Input.mousePosition.x;
             preMousePosition = Camera.main.ScreenToWorldPoint(mousePosition);   //이상한 위치로 이동 방지하기 위해 preMousePosition 초기화
 
-            if (preChangeTransparency != null)
-                StopCoroutine(preChangeTransparency);
-            if(line != null) preChangeTransparency = StartCoroutine(line.ChangeTransparency(-1));
+            LineChangeTransparency(-1);
         }
     }
 
     private void OnMouseDrag()
     {
-        if (isPossibleTodesstrafe)
+        if (isPossibleTodesstrafe && isCreateLine)
         {
             Vector3 mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0);
             Vector3 currentMousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
@@ -106,13 +99,10 @@ public class Offender : MonoBehaviour
         {
             criteria.SetActive(false);
 
-            if (line != null)
-            {
-                if (preChangeTransparency != null) StopCoroutine(preChangeTransparency);
-                preChangeTransparency = StartCoroutine(line.ChangeTransparency(1));
-            }
+            LineChangeTransparency(1);
 
             isDescend = true;
+            isCreateLine = true;
         }
     }
 
@@ -129,8 +119,14 @@ public class Offender : MonoBehaviour
         }
     }
 
-public void SetisPossibleTodesstrafe(bool _isPossibleTodesstrafe)
+    public void SetisPossibleTodesstrafe(bool _isPossibleTodesstrafe)
     {
         isPossibleTodesstrafe = _isPossibleTodesstrafe;
+    }
+
+    public void LineChangeTransparency(int mode)
+    {
+        if (preChangeTransparency != null) StopCoroutine(preChangeTransparency);
+        if (line != null) preChangeTransparency = StartCoroutine(line.ChangeTransparency(mode));
     }
 }

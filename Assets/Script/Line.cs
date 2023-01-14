@@ -40,7 +40,7 @@ public class Line
         float oper = (mode == 1) ? speed * 0.5f : -1 * speed;  //나타날 때 더 빠르게 보이는 경향 있음
         float d = initAlpha;
 
-        while (d >= 0 && d <= 1)
+        while (d >= 0 && d <= 1 && lineList.Count > 0)
         {
             foreach (Line line in lineList)
             {

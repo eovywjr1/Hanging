@@ -22,6 +22,7 @@ public class HangingManager : MonoBehaviour
     public void EndTodesstrafe()
     {
         offender.SetisPossibleTodesstrafe(false);
+        DestroyAllLineAndWindow();
     }
 
     public void Todesstrafe()
@@ -29,9 +30,6 @@ public class HangingManager : MonoBehaviour
         EndTodesstrafe();
         isTodesstrafe = true;
         Debug.Log("사형");
-        Debug.Log(isTodesstrafe);
-
-        DestroyAllLineAndWindow();
     }
 
     public void UnTodesstrafe()
@@ -43,7 +41,7 @@ public class HangingManager : MonoBehaviour
 
     public void DestroyAllLineAndWindow()
     {
-        StopAllCoroutines(); // 임시 추후 구현 추가될 경우 수정
+        offender.StopAllCoroutines();
         foreach (Line line in Line.lineList)
         {
             Destroy(line.lineObject);

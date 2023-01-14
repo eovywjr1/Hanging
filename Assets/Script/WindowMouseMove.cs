@@ -1,4 +1,4 @@
-using System.Collections;
+ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -34,7 +34,7 @@ public class WindowMouseMove : MonoBehaviour
         transform.position = Vector3.MoveTowards(transform.position, transform.position + toPosition, Time.deltaTime * 10000f);
         preMousePosition = currentMousePosition;
 
-        line.MoveTo(transform.position.x, transform.position.y, transform.position.y);
+        line.MoveTo(transform.position.x, transform.position.y);
     }
 
     public void SetSize(Vector2 vector2)
