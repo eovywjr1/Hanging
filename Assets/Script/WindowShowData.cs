@@ -6,13 +6,13 @@ using UnityEngine;
 public class WindowShowData : MonoBehaviour
 {
     private TextMeshProUGUI textMeshProUGUI;
-    private WindowMouseMove windowMouseMove;
+    private WindowSetSize windowSetSize;
     private string text;
 
     private void Awake()
     {
         textMeshProUGUI = GetComponent<TextMeshProUGUI>();
-        windowMouseMove = transform.parent.GetComponent<WindowMouseMove>();
+        windowSetSize = transform.parent.GetComponent<WindowSetSize>();
     }
 
     private void Start()
@@ -29,6 +29,6 @@ public class WindowShowData : MonoBehaviour
 
         int maxlength = Mathf.Max((offenderdata.fname + offenderdata.name).Length, (offenderdata.vfname + offenderdata.vname).Length);
         float width = 2.3f + 0.3f * (maxlength - 4);
-        windowMouseMove.SetSize(new Vector2(width, 4f));
+        windowSetSize.SetSize(new Vector2(width, 4f));
     }
 }
