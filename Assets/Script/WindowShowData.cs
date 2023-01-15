@@ -29,6 +29,6 @@ public class WindowShowData : MonoBehaviour
 
         int maxlength = Mathf.Max((offenderdata.fname + offenderdata.name).Length, (offenderdata.vfname + offenderdata.vname).Length);
         float width = 2.3f + 0.3f * (maxlength - 4);
-        windowSetSize.SetSize(new Vector2(width, 4f));
+        windowSetSize.SetSize(width);
     }
 }

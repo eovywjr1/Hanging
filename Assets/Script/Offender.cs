@@ -101,7 +101,7 @@ public class Offender : MonoBehaviour
 
             LineChangeTransparency(1);
 
-            isDescend = true;
+            if (transform.position.y > minY) isDescend = true;
             isCreateLine = true;
         }
     }
