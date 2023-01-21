@@ -14,10 +14,10 @@ public class HangingManager : MonoBehaviour
         offender = FindObjectOfType<Offender>();
     }
 
-    public void ConvertScene()
-    {
-        SceneManager.LoadScene("SampleScene");
-    }
+    //public void ConvertScene()
+    //{
+    //    SceneManager.LoadScene("SampleScene");
+    //}
 
     public void EndTodesstrafe()
     {
