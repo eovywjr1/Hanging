@@ -16,6 +16,7 @@ public class WindowSetSize : MonoBehaviour
     public void SetSize(float x)
     {
         Vector2 vector2 = new Vector2(x, rectTransform.rect.height);
+
         rectTransform.sizeDelta = vector2;
         boxCollider2D.size = vector2;
     }

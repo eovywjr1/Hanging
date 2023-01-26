@@ -68,24 +68,24 @@ public class Line
         lineLR.SetPosition(1, new Vector3(x, parentYSum + y, 0));
     }
 
-    public void MoveTo(float x, float y, float parentY)
+    public void MoveTo(float x, float y, float parentX, float parentY)
     {
-        parentYSum = parentY * -1;
-        lineLR.SetPosition(1, new Vector3(x, parentYSum + y, 0));
+        lineLR.SetPosition(1, new Vector3(x - parentX, y - parentY, 0));
     }
 
-    public IEnumerator ExpendLine(float _parentYSum)
+    public IEnumerator ExpendLine(float _parentX, float _parentYSum)
     {
         int i = 1;
         float d = i / devide;
         while (d < 1)
         {
             parentYSum = _parentYSum;
-            MoveTo(windowObject.transform.position.x * d, (_parentYSum + windowObject.transform.position.y) * d - _parentYSum);
+            MoveTo((windowObject.transform.position.x - _parentX) * d, (_parentYSum + windowObject.transform.position.y) * d - _parentYSum);
             yield return null;
             d = ++i / devide;
         }
 
         windowObject.SetActive(true);
+        windowObject.GetComponent<WindowShowData>().ShowData();
     }
 }

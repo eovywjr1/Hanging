@@ -53,7 +53,7 @@ public class Offender : MonoBehaviour
                 if (transform.position.y <= minY)
                     isDescend = false;
 
-                line.MoveTo(windowRectTransform.position.x, windowRectTransform.position.y, transform.position.y);
+                line.MoveTo(windowRectTransform.position.x, windowRectTransform.position.y, transform.position.x, transform.position.y);
             }
         }
     }
@@ -62,7 +62,7 @@ public class Offender : MonoBehaviour
     {
         if (isPossibleTodesstrafe)
         {
-            if (!isCreateLine) lineManager.CreateLine(transform);
+            if (!isCreateLine) lineManager.CreateLine();
             else criteria.SetActive(true);
 
             isDescend = false;
@@ -89,7 +89,7 @@ public class Offender : MonoBehaviour
                 preMousePosition = currentMousePosition;
             }
 
-            line.MoveTo(windowRectTransform.position.x, windowRectTransform.position.y, transform.position.y);
+            line.MoveTo(windowRectTransform.position.x, windowRectTransform.position.y, transform.position.x, transform.position.y);
         }
     }
 
