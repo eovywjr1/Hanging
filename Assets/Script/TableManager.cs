@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 public class TableManager : MonoBehaviour
 {
     private static List<List<object>> nameT, fnameT, crimeT, detailT;
+    private List<List<object>> judgeT;
+    private static int[,,] judgeArray = new int[7, 5, 5];
 
     void Awake()
     {
@@ -15,6 +18,7 @@ public class TableManager : MonoBehaviour
             fnameT = CSVReader.Read("사건기록서 성");
             crimeT = CSVReader.Read("사건기록서 죄명");
             detailT = CSVReader.Read("사건기록서 경위");
+            judgeT = CSVReader.Read("사건기록서 판단"); GetJudgeTable();
         }
     }
 
@@ -123,6 +127,28 @@ public class TableManager : MonoBehaviour
                 return "G";
             default:
                 return null;
+        }
+    }
+
+    private void GetJudgeTable()
+    {
+        for(int i = 0; i < judgeT[0].Count; i++)
+        {
+            List<string> fgrade = (judgeT[0][i] as string).Split(',').ToList();
+            List<string> sgrade = (judgeT[1][i] as string).Split(',').ToList();
+            List<string> cgrade = cgrade = (judgeT[2][i] as string).Split(',').ToList();
+
+            foreach(string q in fgrade)
+            {
+                foreach(string w in sgrade)
+                {
+                    foreach (string e in cgrade)
+                    {
+                        judgeArray[int.Parse(q), int.Parse(w), int.Parse(e)] = int.Parse(judgeT[3][i] as string);
+                        Debug.Log(int.Parse(q) + ' ' + int.Parse(w) + ' ' + int.Parse(e) + ' ' + int.Parse(judgeT[3][i] as string));
+                    }
+                }
+            }
         }
     }
 }
