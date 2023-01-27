@@ -8,7 +8,7 @@ public class TableManager : MonoBehaviour
 {
     private static List<List<object>> nameT, fnameT, crimeT, detailT;
     private List<List<object>> judgeT;
-    private static int[,,] judgeArray = new int[7, 5, 5];
+    public static List<int[,,]> judgeList = new List<int[, , ]>();
 
     void Awake()
     {
@@ -58,6 +58,7 @@ public class TableManager : MonoBehaviour
         int valueid = Random.Range(0, temp.Count);
 
         data["crimeGrade"] = headerid.ToString();
+        data["cgrade"] = data["crimeGrade"];
 
         return temp[valueid];
     }
@@ -68,6 +69,8 @@ public class TableManager : MonoBehaviour
         int valueid = Random.Range(0, fnameT[headerid].Count);
 
         data["grade"] = GetGrade(headerid);
+        data["fgrade"] = (6 - headerid).ToString();
+        data["sgrade"] = GetCGrade(headerid);
 
         return (string)fnameT[headerid][valueid];
     }
@@ -130,25 +133,47 @@ public class TableManager : MonoBehaviour
         }
     }
 
+    //신분 등급//
+    private static string GetCGrade(int grade)
+    {
+        switch (grade)
+        {
+            case 0:
+                return "4";
+            case 1:
+                return "3";
+            case 2:
+            case 3:
+                return "2";
+            case 4:
+            case 5:
+                return "1";
+            case 6:
+                return "0";
+            default:
+                return null;
+        }
+    }
+
     private void GetJudgeTable()
     {
-        for(int i = 0; i < judgeT[0].Count; i++)
+        judgeList.Add(new int[judgeT[0].Count, judgeT[0].Count, judgeT[0].Count]);
+
+        for (int i = 0; i < judgeT[0].Count; i++)
         {
             List<string> fgrade = (judgeT[0][i] as string).Split(',').ToList();
             List<string> sgrade = (judgeT[1][i] as string).Split(',').ToList();
-            List<string> cgrade = cgrade = (judgeT[2][i] as string).Split(',').ToList();
+            List<string> cgrade = (judgeT[2][i] as string).Split(',').ToList();
 
-            foreach(string q in fgrade)
+            for (int q = 0; q < fgrade.Count; q++)
             {
-                foreach(string w in sgrade)
+                for (int w = 0; w < sgrade.Count; w++)
                 {
-                    foreach (string e in cgrade)
-                    {
-                        judgeArray[int.Parse(q), int.Parse(w), int.Parse(e)] = int.Parse(judgeT[3][i] as string);
-                        Debug.Log(int.Parse(q) + ' ' + int.Parse(w) + ' ' + int.Parse(e) + ' ' + int.Parse(judgeT[3][i] as string));
-                    }
+                    for (int e = 0; e < cgrade.Count; e++) judgeList[0][int.Parse(fgrade[q]), int.Parse(sgrade[w]), int.Parse(cgrade[e])] = int.Parse(judgeT[3][i] as string);
                 }
             }
         }
+
+        Debug.Log(judgeList[0][2,1,3]);
     }
 }

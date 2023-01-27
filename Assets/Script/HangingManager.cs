@@ -8,6 +8,7 @@ public class HangingManager : MonoBehaviour
 {
     public bool isTodesstrafe;
     public Offender offender;
+    public static int day = 0;
 
     private void Awake()
     {
@@ -29,6 +30,10 @@ public class HangingManager : MonoBehaviour
     {
         EndTodesstrafe();
         isTodesstrafe = true;
+
+        //사형 판별//
+        if (offender.offenderData.isHanging == 0) Debug.Log("True");
+        else Debug.Log("False");
         Debug.Log("사형");
     }
 
@@ -36,6 +41,10 @@ public class HangingManager : MonoBehaviour
     {
         EndTodesstrafe();
         isTodesstrafe = false;
+
+        //사형 판별//
+        if (offender.offenderData.isHanging == 1) Debug.Log("True");
+        else Debug.Log("False");
         Debug.Log("생존");
     }
 

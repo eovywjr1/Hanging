@@ -11,7 +11,7 @@ public class OffenderData
     public string crime { get; private set; }
     public string detail { get; private set; }
     public string grade { get; private set; }
-
+    public int isHanging { get; private set; }
 
     public OffenderData()
     {
@@ -24,5 +24,15 @@ public class OffenderData
         crime = data["crime"];
         detail = data["detail"];
         grade = data["grade"];
+
+        //사형 판별//
+        List<int[,,]> tempJudgeList = TableManager.judgeList;
+        int day = HangingManager.day;
+
+        Debug.Log(int.Parse(data["fgrade"]));
+        Debug.Log(int.Parse(data["sgrade"]));
+        Debug.Log(int.Parse(data["cgrade"]));
+        isHanging = tempJudgeList[day][int.Parse(data["fgrade"]), int.Parse(data["sgrade"]), int.Parse(data["cgrade"])];
+
     }
 }

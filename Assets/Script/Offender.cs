@@ -22,7 +22,7 @@ public class Offender : MonoBehaviour
     private GameObject window;
     [SerializeField] private GameObject criteria;
     private Coroutine preChangeTransparency = null;
-    public static OffenderData offenderData;
+    public OffenderData offenderData;
     
     private void Awake()
     {
