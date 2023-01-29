@@ -8,25 +8,14 @@
   <br>
 </p>
 
-목차
+## 목차
+  1. 기술 스택
+  2. 구현 기능
 
-## 프로젝트 소개
-
-<p align="justify">
-프로젝트 개요/동기
-</p>
-
-<p align="center">
-GIF Images
-</p>
-
-<br>
 
 ## 기술 스택
-
-| Unity Engine |
-| :----------: |
-| ![image](https://user-images.githubusercontent.com/40791869/215348449-62c4e9d1-2171-490c-a8f8-209a2b0e1585.png) |
+  - 게임 엔진 : Unity (2021.3.12f1 LTS)
+  - 프로그래밍 언어 : C#
 
 <br>
 
