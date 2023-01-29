@@ -1,4 +1,4 @@
-## Hanging
+### Hanging
   프로젝트의 이름은 Hanging으로, 교수형을 의미합니다.
 
 ## 목차
