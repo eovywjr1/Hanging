@@ -26,13 +26,46 @@ public class OffenderData
         grade = data["grade"];
 
         //사형 판별//
-        List<int[,,]> tempJudgeList = TableManager.judgeList;
+        List<List<Dictionary<string, List<string>>>> judgeList = TableManager.judgeT;
         int day = HangingManager.day;
+        bool f = false;
 
-        Debug.Log(int.Parse(data["fgrade"]));
-        Debug.Log(int.Parse(data["sgrade"]));
-        Debug.Log(int.Parse(data["cgrade"]));
-        isHanging = tempJudgeList[day][int.Parse(data["fgrade"]), int.Parse(data["sgrade"]), int.Parse(data["cgrade"])];
+        Debug.Log(data["familyGrade"]);
+        Debug.Log(data["positionGrade"]);
+        Debug.Log(data["crimeGrade"]);
 
+        for (int i = day - 1; i >= 0; i--)
+        {
+            if (f) break;
+            for (int j = 0; j < judgeList[i].Count; j++)
+            {
+                List<string> headerList = judgeList[i][0]["header"];
+                bool isMatch = true;
+                for (int k = 0; k < headerList.Count - 1; k++)
+                {
+                    string header = headerList[k];
+                    bool subMatch = false;
+                    foreach (string str in judgeList[i][j][header])
+                    {
+                        if (str.Equals(data[header]))
+                        {
+                            subMatch = true;
+                            break;
+                        }
+                    }
+
+                    if (!subMatch) isMatch = false;
+                }
+
+                if (isMatch)
+                {
+                    f = true;
+                    isHanging = int.Parse(judgeList[i][j]["judgement"][0]);
+                    Debug.Log(j);
+                    Debug.Log(isHanging);
+                    break;
+                }
+            }
+        }
     }
 }

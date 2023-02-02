@@ -6,19 +6,22 @@ using UnityEngine;
 
 public class TableManager : MonoBehaviour
 {
-    private static List<List<object>> nameT, fnameT, crimeT, detailT;
-    private List<List<object>> judgeT;
-    public static List<int[,,]> judgeList = new List<int[, , ]>();
+    private static List<Dictionary<string, List<string>>> nameT, fnameT, crimeT, detailT;
+    public static List<List<Dictionary<string, List<string>>>> judgeT = new List<List<Dictionary<string, List<string>>>>();
 
     void Awake()
     {
         if (nameT == null)
         {
             nameT = CSVReader.Read("사건기록서 이름");
+            Debug.Log("1");
             fnameT = CSVReader.Read("사건기록서 성");
             crimeT = CSVReader.Read("사건기록서 죄명");
             detailT = CSVReader.Read("사건기록서 경위");
-            judgeT = CSVReader.Read("사건기록서 판단"); GetJudgeTable();
+
+            string fileName = "사건기록서 판단";
+            fileName += "1"; // day 더할 예정
+            judgeT.Add(CSVReader.Read(fileName));
         }
     }
 
@@ -27,12 +30,12 @@ public class TableManager : MonoBehaviour
         Dictionary<string,string> data = new Dictionary<string,string>();
         
         data["name"] = GetString(nameT);
-        data["fname"] = Getfname(data);
-        data["crime"] = Getcrime(data);
-        data["detail"] = Getdetail(data, data["crime"]);
+        Getfname(data);
+        Getcrime(data);
+        Getdetail(data, data["crime"]);
+
         data["vfname"] = GetString(fnameT);
         data["vname"] = GetString(nameT);
-
         if (data["vfname"].Equals(data["fname"]))
         {
             while (!data["vname"].Equals(data["name"]))
@@ -44,70 +47,68 @@ public class TableManager : MonoBehaviour
         return data;
     }
 
-    private static string Getcrime(Dictionary<string, string> data)
+    private static void Getcrime(Dictionary<string, string> data)
     {
-        int headerid = Random.Range(0, crimeT.Count);
-        List<string> temp = new List<string>();
-        foreach(var item in crimeT[headerid])
+        while (true)
         {
-            if (!item.ToString().Equals(""))
-                temp.Add(item.ToString());
-            else
-                break;
+            int valueid = Random.Range(0, crimeT.Count);
+            int headerid = Random.Range(0, crimeT[0]["header"].Count);
+
+            string str = crimeT[valueid][crimeT[0]["header"][headerid]][0];
+            if (!str.Equals("")){
+                data["crime"] = str;
+                data["crimeGrade"] = crimeT[0]["header"][headerid][0].ToString();
+
+                return;
+            }
         }
-        int valueid = Random.Range(0, temp.Count);
-
-        data["crimeGrade"] = headerid.ToString();
-        data["cgrade"] = data["crimeGrade"];
-
-        return temp[valueid];
     }
 
-    private static string Getfname(Dictionary<string, string> data)
+    private static void Getfname(Dictionary<string, string> data)
     {
-        int headerid = Random.Range(0, fnameT.Count);
-        int valueid = Random.Range(0, fnameT[headerid].Count);
+        int valueid = Random.Range(0, fnameT.Count);
+        int headerid = Random.Range(0, fnameT[0]["header"].Count);
 
         data["grade"] = GetGrade(headerid);
-        data["fgrade"] = (6 - headerid).ToString();
-        data["sgrade"] = GetCGrade(headerid);
-
-        return (string)fnameT[headerid][valueid];
+        data["familyGrade"] = (6 - headerid).ToString();
+        data["positionGrade"] = GetPositionGrade(headerid);
+        data["fname"] = fnameT[valueid][fnameT[0]["header"][headerid]][0];
     }
 
-    private static string GetString(List<List<object>> list)
+    private static string GetString(List<Dictionary<string, List<string>>> list)
     {
-        int headerid = Random.Range(0, list.Count);
-        int valueid = Random.Range(0, list[headerid].Count);
+        int valueid = Random.Range(0, list.Count);
+        int headerid = Random.Range(0, list[0]["header"].Count);
 
-        return (string)list[headerid][valueid];
+        return list[valueid][list[0]["header"][headerid]][0];
     }
 
-    private static string Getdetail(Dictionary<string, string> data, string crime)
+    private static void Getdetail(Dictionary<string, string> data, string crime)
     {
         string grade = data["crimeGrade"];
 
         List<string> randomlist = new List<string>();
-        for(int i = 0; i < detailT[0].Count; i++)
+        for (int i = 0; i < detailT.Count; i++)
         {
-            if (detailT[1][i].Equals("ALL"))
-                randomlist.Add((string)detailT[0][i]);
+            string applyGrade = detailT[i][detailT[0]["header"][1]][0];
+            string detail = detailT[i][detailT[0]["header"][0]][0];
+
+            if (applyGrade.Equals("ALL")) randomlist.Add(detail);
             else
             {
-                string str = detailT[1][i].ToString();
-                foreach (var v in str)
+                foreach (var v in detailT[i][detailT[0]["header"][1]])
                 {
                     if (grade.Equals(v))
                     {
-                        randomlist.Add((string) detailT[0][i]);
+                        randomlist.Add(detail);
                         break;
                     }
                 }
             }
         }
-        int valueid = Random.Range(0,randomlist.Count);
 
-        return randomlist[valueid];
+        int valueid = Random.Range(0,randomlist.Count);
+        data["detail"] = randomlist[valueid];
     }
 
     private static string GetGrade(int grade)
@@ -134,7 +135,7 @@ public class TableManager : MonoBehaviour
     }
 
     //신분 등급//
-    private static string GetCGrade(int grade)
+    private static string GetPositionGrade(int grade)
     {
         switch (grade)
         {
@@ -153,27 +154,5 @@ public class TableManager : MonoBehaviour
             default:
                 return null;
         }
-    }
-
-    private void GetJudgeTable()
-    {
-        judgeList.Add(new int[judgeT[0].Count, judgeT[0].Count, judgeT[0].Count]);
-
-        for (int i = 0; i < judgeT[0].Count; i++)
-        {
-            List<string> fgrade = (judgeT[0][i] as string).Split(',').ToList();
-            List<string> sgrade = (judgeT[1][i] as string).Split(',').ToList();
-            List<string> cgrade = (judgeT[2][i] as string).Split(',').ToList();
-
-            for (int q = 0; q < fgrade.Count; q++)
-            {
-                for (int w = 0; w < sgrade.Count; w++)
-                {
-                    for (int e = 0; e < cgrade.Count; e++) judgeList[0][int.Parse(fgrade[q]), int.Parse(sgrade[w]), int.Parse(cgrade[e])] = int.Parse(judgeT[3][i] as string);
-                }
-            }
-        }
-
-        Debug.Log(judgeList[0][2,1,3]);
     }
 }

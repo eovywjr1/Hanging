@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Linq;
 
 public class CSVReader
 {
@@ -10,9 +11,9 @@ public class CSVReader
     static string LINE_SPLIT_RE = @"\r\n|\n\r|\n|\r";
     static char[] TRIM_CHARS = { '\"' };
 
-    public static List<List<object>> Read(string file)
+    public static List<Dictionary<string, List<string>>> Read(string file)
     {
-        var list = new List<List<object>>();
+        var list = new List<Dictionary<string, List<string>>>();
         TextAsset data = Resources.Load(file) as TextAsset;
         var lines = Regex.Split(data.text, LINE_SPLIT_RE);
         
@@ -20,22 +21,26 @@ public class CSVReader
 
         var header = Regex.Split(lines[0], SPLIT_RE);
 
-        for (int i = 0; i < header.Length; i++)
-            list.Add(new List<object>());
-
         for (var i = 1; i < lines.Length; i++)
         {
             var values = Regex.Split(lines[i], SPLIT_RE);
             if (values.Length == 0 || values[0] == "") continue;
 
-            for (var j = 0; j < header.Length && j < values.Length; j++)
+            list.Add(new Dictionary<string, List<string>>());
+
+            for (var j = 0; j < header.Length; j++)
             {
                 string value = values[j];
                 value = value.TrimStart(TRIM_CHARS).TrimEnd(TRIM_CHARS).Replace("\\", "");
-                object finalvalue = value;
-                list[j].Add(finalvalue);
+
+                List<string> valueList = value.Split(',').ToList();
+                list[i - 1].Add(header[j], valueList);
             }
         }
+
+        List<string> headerList = new List<string>();
+        for (int j = 0; j < header.Length; j++) headerList.Add(header[j]);
+        list[0].Add("header", headerList);
 
         return list;
     }
