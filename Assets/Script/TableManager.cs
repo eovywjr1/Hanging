@@ -19,10 +19,13 @@ public class TableManager : MonoBehaviour
             crimeT = CSVReader.Read("사건기록서 죄명");
             detailT = CSVReader.Read("사건기록서 경위");
 
-            string fileName = "사건기록서 판단";
-            fileName += "1"; // day 더할 예정
-            judgeT.Add(CSVReader.Read(fileName));
         }
+    }
+
+    private void Start()
+    {
+        string fileName = "사건기록서 판단";
+        judgeT.Add(CSVReader.Read(fileName + HangingManager.day.ToString()));
     }
 
     public static Dictionary<string,string> GetData()
@@ -32,7 +35,7 @@ public class TableManager : MonoBehaviour
         data["name"] = GetString(nameT);
         Getfname(data);
         Getcrime(data);
-        Getdetail(data, data["crime"]);
+        GetCrimeReason(data, data["crime"]);
 
         data["vfname"] = GetString(fnameT);
         data["vname"] = GetString(nameT);
@@ -83,7 +86,7 @@ public class TableManager : MonoBehaviour
         return list[valueid][list[0]["header"][headerid]][0];
     }
 
-    private static void Getdetail(Dictionary<string, string> data, string crime)
+    private static void GetCrimeReason(Dictionary<string, string> data, string crime)
     {
         string grade = data["crimeGrade"];
 
@@ -108,7 +111,7 @@ public class TableManager : MonoBehaviour
         }
 
         int valueid = Random.Range(0,randomlist.Count);
-        data["detail"] = randomlist[valueid];
+        data["crimeReason"] = randomlist[valueid];
     }
 
     private static string GetGrade(int grade)

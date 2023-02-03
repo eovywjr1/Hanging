@@ -22,7 +22,7 @@ public class OffenderData
         vname = data["vname"];
         vfname = data["vfname"];
         crime = data["crime"];
-        detail = data["detail"];
+        detail = data["crimeReason"];
         grade = data["grade"];
 
         //사형 판별//
