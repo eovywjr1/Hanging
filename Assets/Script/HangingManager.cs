@@ -8,7 +8,7 @@ public class HangingManager : MonoBehaviour
 {
     public bool isTodesstrafe;
     public Offender offender;
-    public static int day = 1;
+    public static int day = 2;
 
     private void Awake()
     {

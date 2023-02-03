@@ -6,11 +6,11 @@ public class OffenderData
 {
     public string name { get; private set; }
     public string fname { get; private set; }
-    public string vname { get; private set; }
-    public string vfname { get; private set; }
+    public string victimName { get; private set; }
+    public string victimFamilyName { get; private set; }
     public string crime { get; private set; }
-    public string detail { get; private set; }
-    public string grade { get; private set; }
+    public string crimeReasonText { get; private set; }
+    public string crimePlaceText { get; private set; }
     public int isHanging { get; private set; }
 
     public OffenderData()
@@ -18,21 +18,23 @@ public class OffenderData
         Dictionary<string, string> data = TableManager.GetData();
 
         name = data["name"];
-        fname = data["fname"]; 
-        vname = data["vname"];
-        vfname = data["vfname"];
+        fname = data["fname"];
+        victimName = data["victimName"];
+        victimFamilyName = data["victimFamilyName"];
         crime = data["crime"];
-        detail = data["crimeReason"];
-        grade = data["grade"];
+        crimeReasonText = data["crimeReasonText"];
+        crimePlaceText = data["crimePlaceText"];
 
         //사형 판별//
         List<List<Dictionary<string, List<string>>>> judgeList = TableManager.judgeT;
         int day = HangingManager.day;
         bool f = false;
 
-        Debug.Log(data["familyGrade"]);
-        Debug.Log(data["positionGrade"]);
-        Debug.Log(data["crimeGrade"]);
+        Debug.Log("Grade : " + data["positionGrade"]);
+        Debug.Log("CrimeGrade : " + data["crimeGrade"]);
+        Debug.Log("CrimeReason : " + data["crimeReason"]);
+        Debug.Log("AttackerMove : " + data["attackerMove"]);
+        Debug.Log("VictimMove : " + data["victimMove"]);
 
         for (int i = day - 1; i >= 0; i--)
         {
