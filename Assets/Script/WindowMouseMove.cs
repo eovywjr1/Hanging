@@ -20,6 +20,10 @@ public class WindowMouseMove : MonoBehaviour
                 break;
             }
         }
+
+        //int x = Random.Range(0.25f, 0.75f);
+        //viewPos.x = Mathf.Clamp(viewPos.x, 0.25f, 0.75f);
+        //viewPos.y = Mathf.Clamp(viewPos.y, 0.25f, 0.75f);
     }
 
     private void OnMouseDown()
@@ -34,8 +38,16 @@ public class WindowMouseMove : MonoBehaviour
         Vector3 mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0);   
         Vector3 currentMousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
         Vector3 toPosition = currentMousePosition - preMousePosition;
+
         transform.position = Vector3.MoveTowards(transform.position, transform.position + toPosition, Time.deltaTime * 10000f);
         preMousePosition = currentMousePosition;
+
+        //CCTV 레이어 범위 제한//
+        Vector3 viewPos = Camera.main.WorldToViewportPoint(transform.position);
+        viewPos.x = Mathf.Clamp(viewPos.x, 0.25f, 0.75f);
+        viewPos.y = Mathf.Clamp(viewPos.y, 0.25f, 0.75f);
+        Vector3 worldPos = Camera.main.ViewportToWorldPoint(viewPos);
+        transform.position = worldPos;
 
         //1개 혹은 2개 선 업데이트//
         if (lineIdx == 0)

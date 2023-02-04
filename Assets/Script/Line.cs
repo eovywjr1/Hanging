@@ -85,7 +85,7 @@ public class Line
             d = ++i / devide;
         }
 
-        windowObject.SetActive(true);
+        windowObject.GetComponent<Image>().enabled = true;
         windowObject.GetComponent<WindowShowData>().ShowData();
     }
 }
