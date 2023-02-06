@@ -51,7 +51,6 @@
 <br/>
 
 #### 카메라 이동
-
 ![행잉CCTV넘기기](https://user-images.githubusercontent.com/40791869/217000561-8d6de74b-c535-4e29-8139-e051d70dc827.gif)
 
     스페이스 바를 누르면 카메라 이동
