@@ -18,11 +18,9 @@ public class WindowShowData : MonoBehaviour
     public void ShowData()
     {
         textMeshProUGUI = transform.GetChild(0).GetComponent<TextMeshProUGUI>();
-        buttonTextMeshProUGUI = transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>();
         
-
-        buttonTextMeshProUGUI.text = "가해자: " + offenderdata.fname + " " + offenderdata.name;
-        text = "죄목: " + offenderdata.crime + "\n"
+        text = "가해자: " + offenderdata.fname + " " + offenderdata.name + "\n"
+            + "죄목: " + offenderdata.crime + "\n"
             + "발생 장소: " + offenderdata.crimePlaceText + " 등급" + "\n"
             + "피해자: " + offenderdata.victimFamilyName + " " + offenderdata.victimName + "\n"
             + "경위: " + offenderdata.crimeReasonText;
