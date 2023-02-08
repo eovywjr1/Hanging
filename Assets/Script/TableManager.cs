@@ -46,7 +46,7 @@ public class TableManager : MonoBehaviour
         data["victimName"] = GetString(nameT);
         if (data["victimFamilyName"].Equals(data["fname"]))
         {
-            while (!data["vname"].Equals(data["name"])) data["vname"] = GetString(nameT);
+            while (!data["victimName"].Equals(data["name"])) data["victimName"] = GetString(nameT);
         }
         data["victimFamilyGrade"] = Random.Range(0, 6).ToString();
         if (data["crimePlace"].Equals(data["victimFamilyGrade"])) data["victimMove"] = "1";

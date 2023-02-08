@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using System;
+using System.Globalization;
 
 public class CCTVTextShow : MonoBehaviour
 {
-    private TextMeshProUGUI textMeshProUGUI;
+    private TextMeshPro textMeshProUGUI;
 
     private void Awake()
     {
-        textMeshProUGUI = GetComponent<TextMeshProUGUI>();
+        textMeshProUGUI = GetComponent<TextMeshPro>();
     }
 
     private void Start()
@@ -25,7 +26,7 @@ public class CCTVTextShow : MonoBehaviour
 
         string text = "CAMERA" + 1 + "\n" // 1 대신 사형수 idx
             + "PLAY ▶" + "\n"
-            + date.ToString("yy/MM/dd ") + " " + date.ToString("ddd");
+            + date.ToString("yy/MM/dd ") + " " + date.ToString("ddd", new CultureInfo("en-US"));
 
         textMeshProUGUI.text = text.Replace("\\n", "\n");
     }
