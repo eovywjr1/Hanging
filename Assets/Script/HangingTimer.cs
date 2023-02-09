@@ -6,14 +6,15 @@ using UnityEngine.UI;
 
 public class HangingTimer : MonoBehaviour
 {
-    private bool isTimer = true;
-    [SerializeField] private float workTime, workMaxTime = 10f;
-    [SerializeField] private Slider timerSlider;
-    private HangingManager hangingManager;
+    bool isTimer = true;
+    [SerializeField] private float workTime = 0f, workMaxTime = 10f;
+    Slider timerSlider;
+    HangingManager hangingManager;
 
     private void Awake()
     {
         workTime = workMaxTime;
+        timerSlider = GetComponent<Slider>(); 
         hangingManager = FindObjectOfType<HangingManager>();
     }
 
@@ -27,7 +28,7 @@ public class HangingTimer : MonoBehaviour
             {
                 isTimer = false;
                 workTime = workMaxTime;
-                hangingManager.offender.SetisPossibleTodesstrafe(false);
+                hangingManager.attackerMouseMove.SetisPossibleTodesstrafe(false);
                 //hangingManager.ConvertScene();
                 Debug.Log("Game Over");
             }

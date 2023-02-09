@@ -68,6 +68,5 @@ public class WindowMouseMove : MonoBehaviour
 
             line.MoveTo(transform.position.x, transform.position.y, preWindowTransform.position.x, preWindowTransform.position.y);
         }
-
     }
 }

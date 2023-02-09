@@ -86,6 +86,6 @@ public class Line
         }
 
         windowObject.GetComponent<Image>().enabled = true;
-        windowObject.GetComponent<WindowShowData>().ShowData();
+        windowObject.transform.GetChild(0).GetComponent<WindowShowData>().SetText();
     }
 }

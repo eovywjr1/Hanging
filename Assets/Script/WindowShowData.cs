@@ -5,31 +5,29 @@ using UnityEngine;
 
 public class WindowShowData : MonoBehaviour
 {
-    private TextMeshProUGUI textMeshProUGUI, buttonTextMeshProUGUI;
-    private WindowSetSize windowSetSize;
-    private string text;
-    private OffenderData offenderdata;
+    WindowSetSize windowSetSize;
+    RecordData recordData;
 
-    private void Awake()
+    void Awake()
     {
-        offenderdata = FindObjectOfType<Offender>().offenderData;
+        windowSetSize = FindObjectOfType<WindowSetSize>();
     }
 
-    public void ShowData()
+    public void SetText()
     {
-        textMeshProUGUI = transform.GetChild(0).GetComponent<TextMeshProUGUI>();
-        
-        text = "가해자: " + offenderdata.fname + " " + offenderdata.name + "\n"
-            + "죄목: " + offenderdata.crime + "\n"
-            + "발생 장소: " + offenderdata.crimePlaceText + " 등급" + "\n"
-            + "피해자: " + offenderdata.victimFamilyName + " " + offenderdata.victimName + "\n"
-            + "경위: " + offenderdata.crimeReasonText;
+        recordData = FindObjectOfType<AttackerInfo>().recordData;
 
-        textMeshProUGUI.text = text.Replace("\\n", "\n");
+        //텍스트 설정//
+        string text = "가해자: " + recordData.fname + " " + recordData.name + "\n"
+            + "죄목: " + recordData.crime + "\n"
+            + "발생 장소: " + recordData.crimePlaceText + " 등급" + "\n"
+            + "피해자: " + recordData.victimFamilyName + " " + recordData.victimName + "\n"
+            + "경위: " + recordData.crimeReasonText;
+
+        GetComponent<TextMeshProUGUI>().text = text.Replace("\\n", "\n");
 
         //창 크기 조절//
-        windowSetSize = GetComponent<WindowSetSize>();
-        int maxlength = Mathf.Max((offenderdata.fname + offenderdata.name).Length, (offenderdata.victimFamilyName + offenderdata.victimName).Length);
+        int maxlength = Mathf.Max((recordData.fname + recordData.name).Length, (recordData.victimFamilyName + recordData.victimName).Length);
         float width = 2.3f + 0.3f * (maxlength - 4);
         windowSetSize.SetSize(width);
     }

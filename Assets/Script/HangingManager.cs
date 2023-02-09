@@ -8,13 +8,15 @@ using UnityEngine.SceneManagement;
 public class HangingManager : MonoBehaviour
 {
     public bool isTodesstrafe;
-    public Offender offender;
+    public AttackerMouseMove attackerMouseMove;
+    public AttackerInfo attackerInfo;
     public static int day = 2;
     private AnalogGlitch analogGlitch;
 
     private void Awake()
     {
-        offender = FindObjectOfType<Offender>();
+        attackerMouseMove = FindObjectOfType<AttackerMouseMove>();
+        attackerInfo = FindObjectOfType<AttackerInfo>();
         analogGlitch = FindObjectOfType<AnalogGlitch>();
     }
 
@@ -25,7 +27,7 @@ public class HangingManager : MonoBehaviour
 
     public void EndTodesstrafe()
     {
-        offender.SetisPossibleTodesstrafe(false);
+        attackerMouseMove.SetisPossibleTodesstrafe(false);
         DestroyAllLineAndWindow();
     }
 
@@ -53,7 +55,7 @@ public class HangingManager : MonoBehaviour
 
     private bool DistinguishTodesstrafe(int mode)
     {
-        if (mode == offender.offenderData.isHanging) return true;
+        if (mode == attackerInfo.recordData.isHanging) return true;
         else
         {
             analogGlitch._isGlitch = true;
@@ -64,7 +66,7 @@ public class HangingManager : MonoBehaviour
 
     private void DestroyAllLineAndWindow()
     {
-        offender.StopAllCoroutines();
+        attackerMouseMove.StopAllCoroutines();
         foreach (Line line in Line.lineList)
         {
             Destroy(line.lineObject);

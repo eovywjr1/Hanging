@@ -17,16 +17,13 @@ public class TableManager : MonoBehaviour
             fnameT = CSVReader.Read("사건기록서 성");
             crimeT = CSVReader.Read("사건기록서 죄명");
             detailT = CSVReader.Read("사건기록서 경위");
+
+            string fileName = "사건기록서 판단";
+            //judgeT.Add(CSVReader.Read(fileName + HangingManager.day.ToString()));
+
+            judgeT.Add(CSVReader.Read(fileName + "1"));
+            judgeT.Add(CSVReader.Read(fileName + "2"));
         }
-    }
-
-    private void Start()
-    {
-        string fileName = "사건기록서 판단";
-        //judgeT.Add(CSVReader.Read(fileName + HangingManager.day.ToString()));
-
-        judgeT.Add(CSVReader.Read(fileName + "1"));
-        judgeT.Add(CSVReader.Read(fileName + "2"));
     }
 
     public static Dictionary<string,string> GetData()
