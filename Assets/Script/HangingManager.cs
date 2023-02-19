@@ -10,14 +10,27 @@ public class HangingManager : MonoBehaviour
     public bool isTodesstrafe;
     public AttackerMouseMove attackerMouseMove;
     public AttackerInfo attackerInfo;
-    public static int day = 2, attackerCount = 1;
+    public static int day = 1, attackerCount = 1;
+    static bool isCorrect = true;
     private AnalogGlitch analogGlitch;
+    [SerializeField] BossHand bossHand;
+    [SerializeField] GameObject convertEffect;
 
     private void Awake()
     {
         attackerMouseMove = FindObjectOfType<AttackerMouseMove>();
         attackerInfo = FindObjectOfType<AttackerInfo>();
         analogGlitch = FindObjectOfType<AnalogGlitch>();
+    }
+
+    private void Start()
+    {
+        Debug.Log(attackerCount);
+        if (!isCorrect)
+        {
+            StartCoroutine(StartHoldOutHands());
+            isCorrect = true;
+        }
     }
 
     public void EndTodesstrafe()
@@ -52,13 +65,14 @@ public class HangingManager : MonoBehaviour
     {
         if (mode == attackerInfo.recordData.isHanging)
         {
-            NextAttacker();
+            isCorrect = false;
+            StartCoroutine(StartGlitch()); //NextAttacker();
             return true;
         }
         else
         {
+            isCorrect = false;
             StartCoroutine(StartGlitch());
-
             return false;
         }
     }
@@ -78,8 +92,19 @@ public class HangingManager : MonoBehaviour
     {
         attackerCount++;
 
+        StartCoroutine(ConvertSceneEffect());
+    }
+
+    IEnumerator ConvertSceneEffect()
+    {
+        convertEffect.SetActive(true);
+
+        yield return new WaitForSecondsRealtime(1.5f);
+
+        convertEffect.SetActive(false);
         SceneManager.LoadScene("Merge");
     }
+
     IEnumerator StartGlitch()
     {
         analogGlitch._isGlitch = true;
@@ -88,5 +113,12 @@ public class HangingManager : MonoBehaviour
 
         analogGlitch._isGlitch = false;
         NextAttacker();
+    }
+
+    IEnumerator StartHoldOutHands()
+    {
+        yield return new WaitForSecondsRealtime(1.25f);
+
+        bossHand.holdOutHand();
     }
 }

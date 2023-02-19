@@ -24,7 +24,7 @@ public class CCTVTextShow : MonoBehaviour
         DateTime date = System.Convert.ToDateTime("2132/2/3");
         date.AddDays(HangingManager.day);
 
-        string text = "CAMERA" + HangingManager.attackerCount + "\n" // 1 대신 사형수 idx
+        string text = "CAMERA" + HangingManager.attackerCount.ToString() + "\n"
             + "PLAY ▶" + "\n"
             + date.ToString("yy/MM/dd ") + " " + date.ToString("ddd", new CultureInfo("en-US"));
 
