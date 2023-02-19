@@ -4,6 +4,7 @@
 TagManager:
   serializedVersion: 2
   tags:
+  - criteria
   - floor
   - badge
   layers:
@@ -17,7 +18,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - Attacker
   - 
   - 
   - 
