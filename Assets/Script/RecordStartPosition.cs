@@ -6,6 +6,8 @@ public class RecordStartPosition : MonoBehaviour
 {
     private bool isAttackOverlap = false;
     public bool isPrepare = false;
+    [SerializeField] float limitX = 3.2f, limitY = 1.5f;
+    
 
     void Start()
     {
@@ -22,7 +24,7 @@ public class RecordStartPosition : MonoBehaviour
         bool isRecordOverlap = false;
         while (true)
         {
-            float x = Random.Range(-0.8f, 0.8f), y = Random.Range(-0.425f, 0.425f);
+            float x = Random.Range(limitX * -1, limitX), y = Random.Range(limitX * -1, limitX);
             Vector3 viewPos = Camera.main.WorldToViewportPoint(new Vector3(x, y, 0));
             Vector3 worldPos = Camera.main.ViewportToWorldPoint(viewPos);
             transform.position = worldPos;

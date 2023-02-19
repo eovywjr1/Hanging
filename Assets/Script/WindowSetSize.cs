@@ -19,7 +19,7 @@ public class WindowSetSize : MonoBehaviour
         Vector2 vector2 = new Vector2(x, rectTransform.rect.height);
 
         rectTransform.sizeDelta = vector2;
-        buttonRectTransform.sizeDelta = vector2;
+        buttonRectTransform.sizeDelta = new Vector2(vector2.x, buttonRectTransform.sizeDelta.y);
         boxCollider2D.size = vector2;
     }
 }
