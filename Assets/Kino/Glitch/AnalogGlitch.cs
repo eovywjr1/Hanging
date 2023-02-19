@@ -103,18 +103,21 @@ namespace Kino
                 var sl_thresh = Mathf.Clamp01(1.0f - _scanLineJitter * 1.2f);
                 var sl_disp = 0.002f + Mathf.Pow(_scanLineJitter, 3) * 0.05f;
                 _material.SetVector("_ScanLineJitter", new Vector2(sl_disp, sl_thresh));
+
+                _material.SetFloat("_HorizontalShake", _horizontalShake * 0.2f);
             }
             else
             {
                 var sl_thresh = 1f;
                 var sl_disp = 0.002f;
                 _material.SetVector("_ScanLineJitter", new Vector2(sl_disp, sl_thresh));
+
+                _material.SetFloat("_HorizontalShake", 0);
             }
 
             var vj = new Vector2(_verticalJump, _verticalJumpTime);
             _material.SetVector("_VerticalJump", vj);
 
-            _material.SetFloat("_HorizontalShake", _horizontalShake * 0.2f);
 
             var cd = new Vector2(_colorDrift * 0.04f, Time.time * 606.11f);
             _material.SetVector("_ColorDrift", cd);

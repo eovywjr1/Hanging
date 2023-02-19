@@ -10,7 +10,7 @@ public class HangingManager : MonoBehaviour
     public bool isTodesstrafe;
     public AttackerMouseMove attackerMouseMove;
     public AttackerInfo attackerInfo;
-    public static int day = 2;
+    public static int day = 2, attackerCount = 1;
     private AnalogGlitch analogGlitch;
 
     private void Awake()
@@ -20,21 +20,17 @@ public class HangingManager : MonoBehaviour
         analogGlitch = FindObjectOfType<AnalogGlitch>();
     }
 
-    //public void ConvertScene()
-    //{
-    //    SceneManager.LoadScene("SampleScene");
-    //}
-
     public void EndTodesstrafe()
     {
         attackerMouseMove.SetisPossibleTodesstrafe(false);
         DestroyAllLineAndWindow();
+
+        isTodesstrafe = true;
     }
 
     public void Todesstrafe()
     {
         EndTodesstrafe();
-        isTodesstrafe = true;
 
         //사형 판별//
         if (DistinguishTodesstrafe(0)) Debug.Log("True");
@@ -45,7 +41,6 @@ public class HangingManager : MonoBehaviour
     public void UnTodesstrafe()
     {
         EndTodesstrafe();
-        isTodesstrafe = false;
 
         //사형 판별//
         if (DistinguishTodesstrafe(1)) Debug.Log("True");
@@ -55,10 +50,14 @@ public class HangingManager : MonoBehaviour
 
     private bool DistinguishTodesstrafe(int mode)
     {
-        if (mode == attackerInfo.recordData.isHanging) return true;
+        if (mode == attackerInfo.recordData.isHanging)
+        {
+            NextAttacker();
+            return true;
+        }
         else
         {
-            analogGlitch._isGlitch = true;
+            StartCoroutine(StartGlitch());
 
             return false;
         }
@@ -73,5 +72,21 @@ public class HangingManager : MonoBehaviour
             Destroy(line.windowObject);
         }
         Line.lineList.Clear();
+    }
+
+    void NextAttacker()
+    {
+        attackerCount++;
+
+        SceneManager.LoadScene("Merge");
+    }
+    IEnumerator StartGlitch()
+    {
+        analogGlitch._isGlitch = true;
+
+        yield return new WaitForSecondsRealtime(0.75f);
+
+        analogGlitch._isGlitch = false;
+        NextAttacker();
     }
 }
