@@ -22,7 +22,7 @@ public class RecordStartPosition : MonoBehaviour
         bool isRecordOverlap = false;
         while (true)
         {
-            float x = Random.Range(-3.2f, 3.2f), y = Random.Range(-1.8f, 1.8f);
+            float x = Random.Range(-0.8f, 0.8f), y = Random.Range(-0.425f, 0.425f);
             Vector3 viewPos = Camera.main.WorldToViewportPoint(new Vector3(x, y, 0));
             Vector3 worldPos = Camera.main.ViewportToWorldPoint(viewPos);
             transform.position = worldPos;
