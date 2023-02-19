@@ -10,12 +10,10 @@ public class Swing : MonoBehaviour
     public GameObject point;
     public float runningTime;
 
-
-
     private void Start()
     {
         circleR= Random.Range(0.1f, 0.3f);
-        objSpeed = Random.Range(0.8f, 3.0f);
+        objSpeed = Random.Range(1.0f, 3.3f);
         var x= Random.Range(0.01f, 0.05f);
         var y= Random.Range(0.01f, 0.05f);
 
