@@ -28,7 +28,7 @@ public class WindowShowData : MonoBehaviour
 
         //창 크기 조절//
         int maxlength = Mathf.Max((recordData.fname + recordData.name).Length, (recordData.victimFamilyName + recordData.victimName).Length);
-        float width = 2.3f + 0.1f * (maxlength - 3);
+        float width = 2.3f + 0.15f * (maxlength - 3);
         windowSetSize.SetSize(width);
     }
 }
