@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class TableManager : MonoBehaviour
 {
-    private static List<Dictionary<string, List<string>>> nameT, fnameT, crimeT, detailT;
+    private static List<Dictionary<string, List<string>>> nameT, fnameT, crimeT, detailT, jobT;
     public static List<List<Dictionary<string, List<string>>>> judgeT = new List<List<Dictionary<string, List<string>>>>();
 
     void Awake()
@@ -17,6 +17,7 @@ public class TableManager : MonoBehaviour
             fnameT = CSVReader.Read("사건기록서 성");
             crimeT = CSVReader.Read("사건기록서 죄명");
             detailT = CSVReader.Read("사건기록서 경위");
+            jobT = CSVReader.Read("사건기록서 직업");
 
             string fileName = "사건기록서 판단";
             //judgeT.Add(CSVReader.Read(fileName + HangingManager.day.ToString()));
@@ -26,28 +27,23 @@ public class TableManager : MonoBehaviour
         }
     }
 
-    public static Dictionary<string,string> GetData()
+    public static Dictionary<string,string> GetData(string familyName, string name)
     {
         Dictionary<string,string> data = new Dictionary<string,string>();
-        
+
         //가해자//
+        GetFamilyName(data);
         data["name"] = GetString(nameT);
-        Getfname(data);
+        if (data["familyName"].Equals(familyName))
+        {
+            while (!data["name"].Equals(name)) data["name"] = GetString(nameT);
+        }
         Getcrime(data);
         GetCrimeReason(data, data["crime"]);
-        if (data["crimePlace"].Equals(data["familyGrade"])) data["attackerMove"] = "1";
-        else data["attackerMove"] = "0";
+        data["move"] = data["crimePlace"].Equals(data["familyGrade"]) ? "1" :"0";
+        data["job"] = GetJob(data["positionGrade"]);
+        Debug.Log("Job : " + data["job"]);
 
-        //피해자//
-        data["victimFamilyName"] = GetString(fnameT);
-        data["victimName"] = GetString(nameT);
-        if (data["victimFamilyName"].Equals(data["fname"]))
-        {
-            while (!data["victimName"].Equals(data["name"])) data["victimName"] = GetString(nameT);
-        }
-        data["victimFamilyGrade"] = Random.Range(0, 6).ToString();
-        if (data["crimePlace"].Equals(data["victimFamilyGrade"])) data["victimMove"] = "1";
-        else data["victimMove"] = "0";
         return data;
     }
 
@@ -68,7 +64,7 @@ public class TableManager : MonoBehaviour
         }
     }
 
-    private static void Getfname(Dictionary<string, string> data)
+    private static void GetFamilyName(Dictionary<string, string> data)
     {
         int valueid = Random.Range(0, fnameT.Count);
         int headerid = Random.Range(0, fnameT[0]["header"].Count);
@@ -86,7 +82,7 @@ public class TableManager : MonoBehaviour
             data["crimePlaceText"] = GetCrimePlace(data["crimePlace"]);
         }
         data["positionGrade"] = GetPositionGrade(data["familyGrade"]);
-        data["fname"] = fnameT[valueid][fnameT[0]["header"][headerid]][0];
+        data["familyName"] = fnameT[valueid][fnameT[0]["header"][headerid]][0];
     }
 
     private static string GetString(List<Dictionary<string, List<string>>> list)
@@ -169,5 +165,26 @@ public class TableManager : MonoBehaviour
             default:
                 return null;
         }
+    }
+
+    //직업//
+    static string GetJob(string positionGrade)
+    {
+        // List<Dictionary<string, List<string>>>
+        List<string> jobPossibleList = new List<string>();
+
+        foreach(var i in jobT)
+        {
+            foreach(var j in i["성 등급"])
+            {
+                if (j.Equals(positionGrade))
+                {
+                    jobPossibleList.Add(i["직업"][0]);
+                    break;
+                }
+            }
+        }
+
+        return jobPossibleList[Random.Range(0, jobPossibleList.Count)];
     }
 }

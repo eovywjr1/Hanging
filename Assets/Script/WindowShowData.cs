@@ -18,16 +18,17 @@ public class WindowShowData : MonoBehaviour
         recordData = FindObjectOfType<AttackerInfo>().recordData;
 
         //텍스트 설정//
-        string text = "가해자: " + recordData.fname + " " + recordData.name + "\n"
-            + "죄목: " + recordData.crime + "\n"
-            + "발생 장소: " + recordData.crimePlaceText + " 등급" + "\n"
-            + "피해자: " + recordData.victimFamilyName + " " + recordData.victimName + "\n"
-            + "경위: " + recordData.crimeReasonText;
+        string text = "가해자: " + recordData.attackerData["familyName"] + " " + recordData.attackerData["name"] + "\n"
+            + "죄목: " + recordData.attackerData["crime"] + "\n"
+            + "발생 장소: " + recordData.attackerData["crimePlaceText"] + " 등급" + "\n"
+            + "피해자: " + recordData.victimData["familyName"] + " " + recordData.victimData["name"] + "\n"
+            + "경위: " + recordData.attackerData["crimeReasonText"];
 
         GetComponent<TextMeshProUGUI>().text = text.Replace("\\n", "\n");
 
         //창 크기 조절//
-        int maxlength = Mathf.Max((recordData.fname + recordData.name).Length, (recordData.victimFamilyName + recordData.victimName).Length);
+        int maxlength = Mathf.Max((recordData.attackerData["familyName"] + recordData.attackerData["name"]).Length, 
+            (recordData.victimData["familyName"] + recordData.victimData["name"]).Length);
         float width = 2.3f + 0.15f * (maxlength - 3);
         windowSetSize.SetSize(width);
     }

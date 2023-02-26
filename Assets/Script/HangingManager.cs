@@ -25,7 +25,6 @@ public class HangingManager : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log(attackerCount);
         if (!isCorrect)
         {
             StartCoroutine(StartHoldOutHands());

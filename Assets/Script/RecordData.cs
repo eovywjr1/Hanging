@@ -4,41 +4,31 @@ using UnityEngine;
 
 public class RecordData
 {
-    public string name { get; private set; }
-    public string fname { get; private set; }
-    public string victimName { get; private set; }
-    public string victimFamilyName { get; private set; }
-    public string crime { get; private set; }
-    public string crimeReasonText { get; private set; }
-    public string crimePlaceText { get; private set; }
+    public Dictionary<string, string> attackerData { get; private set; }
+    public Dictionary<string, string> victimData { get; private set; }
     public int isHanging { get; private set; }
 
     public RecordData()
     {
-        Dictionary<string, string> data = TableManager.GetData();
+        attackerData = TableManager.GetData(null, null);
+        victimData = TableManager.GetData(attackerData["familyName"], attackerData["name"]);
 
-        name = data["name"];
-        fname = data["fname"];
-        victimName = data["victimName"];
-        victimFamilyName = data["victimFamilyName"];
-        crime = data["crime"];
-        crimeReasonText = data["crimeReasonText"];
-        crimePlaceText = data["crimePlaceText"];
 
         //사형 판별//
         List<List<Dictionary<string, List<string>>>> judgeList = TableManager.judgeT;
         int day = HangingManager.day;
         bool f = false;
 
-        Debug.Log("Grade : " + data["positionGrade"]);
-        Debug.Log("CrimeGrade : " + data["crimeGrade"]);
-        Debug.Log("CrimeReason : " + data["crimeReason"]);
-        Debug.Log("AttackerMove : " + data["attackerMove"]);
-        Debug.Log("VictimMove : " + data["victimMove"]);
+        Debug.Log("Grade : " + attackerData["positionGrade"]);
+        Debug.Log("CrimeGrade : " + attackerData["crimeGrade"]);
+        Debug.Log("CrimeReason : " + attackerData["crimeReason"]);
+        Debug.Log("AttackerMove : " + attackerData["move"]);
+        Debug.Log("VictimMove : " + victimData["move"]);
 
         for (int i = day - 1; i >= 0; i--)
         {
             if (f) break;
+
             for (int j = 0; j < judgeList[i].Count; j++)
             {
                 List<string> headerList = judgeList[i][0]["header"];
@@ -47,9 +37,13 @@ public class RecordData
                 {
                     string header = headerList[k];
                     bool subMatch = false;
+                    Dictionary<string, string> compareList;
+
+                    compareList = header.Length > 6 && header.Substring(0, 6).Equals("victim") ? victimData : attackerData;
+
                     foreach (string str in judgeList[i][j][header])
                     {
-                        if (str.Equals(data[header]))
+                        if (str.Equals(compareList[header]))
                         {
                             subMatch = true;
                             break;
