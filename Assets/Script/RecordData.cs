@@ -13,11 +13,11 @@ public class RecordData
         attackerData = TableManager.GetData(null, null);
         victimData = TableManager.GetData(attackerData["familyName"], attackerData["name"]);
 
-
         //사형 판별//
         List<List<Dictionary<string, List<string>>>> judgeList = TableManager.judgeT;
         int day = HangingManager.day;
         bool f = false;
+        isHanging = 1;
 
         Debug.Log("Grade : " + attackerData["positionGrade"]);
         Debug.Log("CrimeGrade : " + attackerData["crimeGrade"]);
@@ -35,15 +35,30 @@ public class RecordData
                 bool isMatch = true;
                 for (int k = 0; k < headerList.Count - 1; k++)
                 {
-                    string header = headerList[k];
+                    string header = headerList[k], subHeader;
                     bool subMatch = false;
                     Dictionary<string, string> compareList;
 
-                    compareList = header.Length > 6 && header.Substring(0, 6).Equals("victim") ? victimData : attackerData;
+                    //attacker, victim 명시된 헤더 분리
+                    if (header.Length > 6 && header.Substring(0, 6).Equals("victim"))
+                    {
+                        compareList = victimData;
+                        subHeader = header.Substring(6);
+                    }
+                    else if (header.Length > 8 && header.Substring(0, 8).Equals("attacker"))
+                    {
+                        compareList = attackerData;
+                        subHeader = header.Substring(8);
+                    }
+                    else
+                    {
+                        compareList = attackerData;
+                        subHeader = header;
+                    }
 
                     foreach (string str in judgeList[i][j][header])
                     {
-                        if (str.Equals(compareList[header]))
+                        if (str.Equals(compareList[subHeader]))
                         {
                             subMatch = true;
                             break;

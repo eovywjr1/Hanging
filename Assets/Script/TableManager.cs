@@ -24,6 +24,7 @@ public class TableManager : MonoBehaviour
 
             judgeT.Add(CSVReader.Read(fileName + "1"));
             judgeT.Add(CSVReader.Read(fileName + "2"));
+            judgeT.Add(CSVReader.Read(fileName + "3"));
         }
     }
 
@@ -31,7 +32,6 @@ public class TableManager : MonoBehaviour
     {
         Dictionary<string,string> data = new Dictionary<string,string>();
 
-        //가해자//
         GetFamilyName(data);
         data["name"] = GetString(nameT);
         if (data["familyName"].Equals(familyName))
@@ -42,6 +42,7 @@ public class TableManager : MonoBehaviour
         GetCrimeReason(data, data["crime"]);
         data["move"] = data["crimePlace"].Equals(data["familyGrade"]) ? "1" :"0";
         data["job"] = GetJob(data["positionGrade"]);
+        data["ask"] = "0";  // 임시
         Debug.Log("Job : " + data["job"]);
 
         return data;
@@ -77,7 +78,6 @@ public class TableManager : MonoBehaviour
         }
         else {
             data["familyGrade"] = grade.ToString();
-            Debug.Log("day2");
             data["crimePlace"] = Random.Range(0, 6).ToString();
             data["crimePlaceText"] = GetCrimePlace(data["crimePlace"]);
         }
@@ -185,6 +185,8 @@ public class TableManager : MonoBehaviour
             }
         }
 
-        return jobPossibleList[Random.Range(0, jobPossibleList.Count)];
+        string job = jobPossibleList[Random.Range(0, jobPossibleList.Count)];
+        if (job.Equals("의사") || job.Equals("연구원") || job.Equals("기술자")) return "1";
+        else return "0";
     }
 }
