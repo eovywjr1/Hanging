@@ -13,7 +13,7 @@ public class Swing : MonoBehaviour
     private void Start()
     {
         circleR= Random.Range(0.1f, 0.3f);
-        objSpeed = Random.Range(1.0f, 3.3f);
+        objSpeed = Random.Range(1.5f, 3.3f);
         var x= Random.Range(0.01f, 0.05f);
         var y= Random.Range(0.01f, 0.05f);
 
