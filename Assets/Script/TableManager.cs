@@ -25,12 +25,14 @@ public class TableManager : MonoBehaviour
             judgeT.Add(CSVReader.Read(fileName + "1"));
             judgeT.Add(CSVReader.Read(fileName + "2"));
             judgeT.Add(CSVReader.Read(fileName + "3"));
+            judgeT.Add(CSVReader.Read(fileName + "4"));
         }
     }
 
     public Dictionary<string,string> GetData(string familyName, string name)
     {
         Dictionary<string,string> data = new Dictionary<string,string>();
+        Debug.Log("day : " + HangingManager.day);
         
         GetFamilyName(data);
         data["name"] = GetString(nameT);
@@ -40,9 +42,9 @@ public class TableManager : MonoBehaviour
         }
         Getcrime(data);
         GetCrimeReason(data, data["crime"]);
-        data["move"] = "1";//data["crimePlace"].Equals(data["familyGrade"]) ? "1" :"0";
-        data["job"] = GetJob(data, data["positionGrade"]);
-        Debug.Log("Job : " + data["job"]);
+        data["move"] = data["crimePlace"].Equals(data["familyGrade"]) ? "1" :"0";
+        data["job"] = GetJob(data, data["positionGrade"]); Debug.Log("Job : " + data["job"]);
+        data["crimeRecord"] = GetCrimeRecord();
 
         return data;
     }
@@ -169,7 +171,6 @@ public class TableManager : MonoBehaviour
     //직업//
     string GetJob(Dictionary<string, string> data, string positionGrade)
     {
-        // List<Dictionary<string, List<string>>>
         List<string> jobPossibleList = new List<string>();
 
         foreach(var i in jobT)
@@ -185,10 +186,12 @@ public class TableManager : MonoBehaviour
         }
 
         string job = jobPossibleList[Random.Range(0, jobPossibleList.Count)];
+        if (job.Equals("의사") || job.Equals("연구원") || job.Equals("기술자")) return "1";
+        else return "0";
+    }
 
-
-        //if (job.Equals("의사") || job.Equals("연구원") || job.Equals("기술자")) return "1";
-        //else return "0";
-        return "1";
+    string GetCrimeRecord()
+    {
+        return Random.Range(0, 6).ToString();
     }
 }

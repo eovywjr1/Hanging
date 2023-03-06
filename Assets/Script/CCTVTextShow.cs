@@ -21,8 +21,8 @@ public class CCTVTextShow : MonoBehaviour
 
     public void UpdateText()
     {
-        DateTime date = System.Convert.ToDateTime("2132/2/3");
-        date.AddDays(HangingManager.day);
+        DateTime date = System.Convert.ToDateTime("2132/2/1");
+        date = date.AddDays(HangingManager.day);
 
         string text = "CAMERA" + HangingManager.attackerCount.ToString() + "\n"
             + "PLAY ¢º" + "\n"

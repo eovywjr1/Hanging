@@ -19,6 +19,7 @@ public class RecordData
         Debug.Log("CrimeReason : " + attackerData["crimeReason"]);
         Debug.Log("AttackerMove : " + attackerData["move"]);
         Debug.Log("VictimMove : " + victimData["move"]);
+        Debug.Log("crimeRecord : " + attackerData["crimeRecord"]);
 
         Judgement();
     }
