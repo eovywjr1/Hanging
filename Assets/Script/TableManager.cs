@@ -28,10 +28,10 @@ public class TableManager : MonoBehaviour
         }
     }
 
-    public static Dictionary<string,string> GetData(string familyName, string name)
+    public Dictionary<string,string> GetData(string familyName, string name)
     {
         Dictionary<string,string> data = new Dictionary<string,string>();
-
+        
         GetFamilyName(data);
         data["name"] = GetString(nameT);
         if (data["familyName"].Equals(familyName))
@@ -40,15 +40,14 @@ public class TableManager : MonoBehaviour
         }
         Getcrime(data);
         GetCrimeReason(data, data["crime"]);
-        data["move"] = data["crimePlace"].Equals(data["familyGrade"]) ? "1" :"0";
-        data["job"] = GetJob(data["positionGrade"]);
-        data["ask"] = "0";  // 임시
+        data["move"] = "1";//data["crimePlace"].Equals(data["familyGrade"]) ? "1" :"0";
+        data["job"] = GetJob(data, data["positionGrade"]);
         Debug.Log("Job : " + data["job"]);
 
         return data;
     }
 
-    private static void Getcrime(Dictionary<string, string> data)
+    private void Getcrime(Dictionary<string, string> data)
     {
         while (true)
         {
@@ -65,11 +64,11 @@ public class TableManager : MonoBehaviour
         }
     }
 
-    private static void GetFamilyName(Dictionary<string, string> data)
+    private void GetFamilyName(Dictionary<string, string> data)
     {
         int valueid = Random.Range(0, fnameT.Count);
         int headerid = Random.Range(0, fnameT[0]["header"].Count);
-        int grade = Random.Range(0, 6);
+        int grade = Random.Range(0, 7);
 
         if (HangingManager.day == 1) {
             data["familyGrade"] = headerid.ToString();
@@ -78,14 +77,14 @@ public class TableManager : MonoBehaviour
         }
         else {
             data["familyGrade"] = grade.ToString();
-            data["crimePlace"] = Random.Range(0, 6).ToString();
+            data["crimePlace"] = Random.Range(0, 7).ToString();
             data["crimePlaceText"] = GetCrimePlace(data["crimePlace"]);
         }
         data["positionGrade"] = GetPositionGrade(data["familyGrade"]);
         data["familyName"] = fnameT[valueid][fnameT[0]["header"][headerid]][0];
     }
 
-    private static string GetString(List<Dictionary<string, List<string>>> list)
+    private string GetString(List<Dictionary<string, List<string>>> list)
     {
         int valueid = Random.Range(0, list.Count);
         int headerid = Random.Range(0, list[0]["header"].Count);
@@ -93,7 +92,7 @@ public class TableManager : MonoBehaviour
         return list[valueid][list[0]["header"][headerid]][0];
     }
 
-    private static void GetCrimeReason(Dictionary<string, string> data, string crime)
+    private void GetCrimeReason(Dictionary<string, string> data, string crime)
     {
         string grade = data["crimeGrade"];
 
@@ -122,7 +121,7 @@ public class TableManager : MonoBehaviour
         data["crimeReason"] = randomlist[valueid].ToString();
     }
 
-    private static string GetCrimePlace(string grade)
+    private string GetCrimePlace(string grade)
     {
         switch (grade)
         {
@@ -146,7 +145,7 @@ public class TableManager : MonoBehaviour
     }
 
     //신분 등급//
-    private static string GetPositionGrade(string grade)
+    private string GetPositionGrade(string grade)
     {
         switch (grade)
         {
@@ -168,7 +167,7 @@ public class TableManager : MonoBehaviour
     }
 
     //직업//
-    static string GetJob(string positionGrade)
+    string GetJob(Dictionary<string, string> data, string positionGrade)
     {
         // List<Dictionary<string, List<string>>>
         List<string> jobPossibleList = new List<string>();
@@ -186,7 +185,10 @@ public class TableManager : MonoBehaviour
         }
 
         string job = jobPossibleList[Random.Range(0, jobPossibleList.Count)];
-        if (job.Equals("의사") || job.Equals("연구원") || job.Equals("기술자")) return "1";
-        else return "0";
+
+
+        //if (job.Equals("의사") || job.Equals("연구원") || job.Equals("기술자")) return "1";
+        //else return "0";
+        return "1";
     }
 }

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 161126516914584285}
   - component: {fileID: 161126516914584284}
   m_Layer: 10
-  m_Name: "\uC0AC\uD615\uC218"
+  m_Name: Prisoner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -95,6 +95,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9cc1be5df1adf14fb81205e36fddc40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tableManager: {fileID: 0}
+  ask: {fileID: 0}
 --- !u!1 &161126516951867916
 GameObject:
   m_ObjectHideFlags: 0
@@ -107,7 +109,7 @@ GameObject:
   - component: {fileID: 161126516951867918}
   - component: {fileID: 161126516951867952}
   m_Layer: 0
-  m_Name: "\uB85C\uD504\uB04A\uAE30\uD310\uBCC4"
+  m_Name: RopeCut
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -200,6 +202,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5031439076972401847}
     m_Modifications:
+    - target: {fileID: 18677628352309493, guid: 000ec34e8a1795c4fbfca9dc77423065, type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2837657525907746472, guid: 000ec34e8a1795c4fbfca9dc77423065, type: 3}
       propertyPath: m_Bounds.m_Center.y
       value: -0.27611446
@@ -296,6 +302,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: prisoner_man_normal
       objectReference: {fileID: 0}
+    - target: {fileID: 6165899504384675585, guid: 000ec34e8a1795c4fbfca9dc77423065, type: 3}
+      propertyPath: m_SortingOrder
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 6667718685994182226, guid: 000ec34e8a1795c4fbfca9dc77423065, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -374,11 +384,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 000ec34e8a1795c4fbfca9dc77423065, type: 3}
---- !u!4 &4313629752618276799 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3829228677070174832, guid: 000ec34e8a1795c4fbfca9dc77423065, type: 3}
-  m_PrefabInstance: {fileID: 1078946733232221647}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4998600364651154654 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5451511528630280465, guid: 000ec34e8a1795c4fbfca9dc77423065, type: 3}
@@ -407,7 +412,7 @@ PrefabInstance:
     - target: {fileID: 2076108095126952184, guid: ee39c750dbaadb947af1d1b5a95a9e91, type: 3}
       propertyPath: startTransform
       value: 
-      objectReference: {fileID: 4313629752618276799}
+      objectReference: {fileID: 0}
     - target: {fileID: 2076108095126952186, guid: ee39c750dbaadb947af1d1b5a95a9e91, type: 3}
       propertyPath: m_RootOrder
       value: 0

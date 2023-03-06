@@ -13,7 +13,6 @@ public class AttackerMouseMove : MonoBehaviour
     bool isTodesstrafe;
     float descendSpeed = 2f;
     float initialMouseX;
-    float cutDistance = 100f;
     [SerializeField] float minY; // 구현 완료 후 serial 삭제
     RectTransform windowRectTransform;
     HangingManager hangingManager;

@@ -65,7 +65,7 @@ public class HangingManager : MonoBehaviour
         if (mode == attackerInfo.recordData.isHanging)
         {
             isCorrect = false;
-            StartCoroutine(StartGlitch()); //NextAttacker();
+            NextAttacker();
             return true;
         }
         else

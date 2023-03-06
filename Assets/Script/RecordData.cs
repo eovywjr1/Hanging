@@ -6,32 +6,36 @@ public class RecordData
 {
     public Dictionary<string, string> attackerData { get; private set; }
     public Dictionary<string, string> victimData { get; private set; }
-    public int isHanging { get; private set; }
+    public int isHanging;
 
-    public RecordData()
+    public RecordData(TableManager tableManager)
     {
-        attackerData = TableManager.GetData(null, null);
-        victimData = TableManager.GetData(attackerData["familyName"], attackerData["name"]);
+        attackerData = tableManager.GetData(null, null);
+        victimData = tableManager.GetData(attackerData["familyName"], attackerData["name"]);
 
-        //사형 판별//
-        List<List<Dictionary<string, List<string>>>> judgeList = TableManager.judgeT;
-        int day = HangingManager.day;
-        bool f = false;
-        isHanging = 1;
-
-        Debug.Log("Grade : " + attackerData["positionGrade"]);
+        Debug.Log("PositionGrade : " + attackerData["positionGrade"]);
+        Debug.Log("FamilyGrade : " + attackerData["familyGrade"]);
         Debug.Log("CrimeGrade : " + attackerData["crimeGrade"]);
         Debug.Log("CrimeReason : " + attackerData["crimeReason"]);
         Debug.Log("AttackerMove : " + attackerData["move"]);
         Debug.Log("VictimMove : " + victimData["move"]);
 
-        for (int i = day - 1; i >= 0; i--)
-        {
-            if (f) break;
+        Judgement();
+    }
 
-            for (int j = 0; j < judgeList[i].Count; j++)
+    //사형 판별//
+    void Judgement()
+    {
+        List<List<Dictionary<string, List<string>>>> judgeList = TableManager.judgeT;
+        List<int> dayList = GetJudgementDay(HangingManager.day);
+        isHanging = 1;
+
+        for (int i= 0; i < dayList.Count; i++)
+        {
+            int day = dayList[i];
+            for (int j = 0; j < judgeList[day].Count; j++)
             {
-                List<string> headerList = judgeList[i][0]["header"];
+                List<string> headerList = judgeList[day][0]["header"];
                 bool isMatch = true;
                 for (int k = 0; k < headerList.Count - 1; k++)
                 {
@@ -39,7 +43,9 @@ public class RecordData
                     bool subMatch = false;
                     Dictionary<string, string> compareList;
 
-                    //attacker, victim 명시된 헤더 분리
+                    if (header.Equals("ask")) continue;
+
+                    //attacker, victim 명시된 헤더 분리//
                     if (header.Length > 6 && header.Substring(0, 6).Equals("victim"))
                     {
                         compareList = victimData;
@@ -56,7 +62,8 @@ public class RecordData
                         subHeader = header;
                     }
 
-                    foreach (string str in judgeList[i][j][header])
+                    //하나의 셀의 여러 개의 값 확인//
+                    foreach (string str in judgeList[day][j][header])
                     {
                         if (str.Equals(compareList[subHeader]))
                         {
@@ -64,19 +71,56 @@ public class RecordData
                             break;
                         }
                     }
-
-                    if (!subMatch) isMatch = false;
+                    if (!subMatch)
+                    {
+                        isMatch = false;
+                        break;
+                    }
                 }
 
+                //검색 완료//
                 if (isMatch)
                 {
-                    f = true;
-                    isHanging = int.Parse(judgeList[i][j]["judgement"][0]);
-                    Debug.Log(j);
+                    isHanging = int.Parse(judgeList[day][j]["judgement"][0]);
+                    if (judgeList[day][j].ContainsKey("ask"))
+                    {
+                        attackerData["ask"] = judgeList[day][j]["ask"][0];
+                        Debug.Log(attackerData["ask"]);
+                    }
+                    Debug.Log(day + ",," + j);
                     Debug.Log(isHanging);
-                    break;
+
+                    if(isHanging == 2)
+                    {
+                        i--;
+                        attackerData["crimeGrade"] = (int.Parse(attackerData["crimeGrade"]) - 1).ToString();
+                        break;
+                    }
+                    else return;
                 }
             }
         }
+    }
+
+    List<int> GetJudgementDay(int day)
+    {
+        List<int> list = new List<int>();
+
+        switch (day)
+        {
+            case 1:
+            case 4:
+                list.Add(day - 1);
+                break;
+            case 2:
+            case 3:
+                list.Add(day - 1);
+                list.Add(0);
+                break;
+            default:
+                break;
+        }
+
+        return list;
     }
 }
