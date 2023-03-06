@@ -26,6 +26,7 @@ public class TableManager : MonoBehaviour
             judgeT.Add(CSVReader.Read(fileName + "2"));
             judgeT.Add(CSVReader.Read(fileName + "3"));
             judgeT.Add(CSVReader.Read(fileName + "4"));
+            judgeT.Add(CSVReader.Read(fileName + "5"));
         }
     }
 
@@ -40,11 +41,22 @@ public class TableManager : MonoBehaviour
         {
             while (!data["name"].Equals(name)) data["name"] = GetString(nameT);
         }
-        Getcrime(data);
-        GetCrimeReason(data, data["crime"]);
+        
         data["move"] = data["crimePlace"].Equals(data["familyGrade"]) ? "1" :"0";
-        data["job"] = GetJob(data, data["positionGrade"]); Debug.Log("Job : " + data["job"]);
-        data["crimeRecord"] = GetCrimeRecord();
+
+
+        //통합 기록일 경우 가해자 data에만 넣음//
+        if (familyName == null)
+        {
+            data["crimeRecord"] = GetCrimeRecord();
+            Getcrime(data);
+            GetCrimeReason(data, data["crime"]);
+            data["job"] = GetJob(data, data["positionGrade"], "attacker"); Debug.Log("Job : " + data["job"]);
+        }
+        else
+        {
+            data["job"] = GetJob(data, data["positionGrade"], "victim"); Debug.Log("Job : " + data["job"]);
+        }
 
         return data;
     }
@@ -169,7 +181,8 @@ public class TableManager : MonoBehaviour
     }
 
     //직업//
-    string GetJob(Dictionary<string, string> data, string positionGrade)
+    //person은 가해자, 피해자 구분
+    string GetJob(Dictionary<string, string> data, string positionGrade, string person)
     {
         List<string> jobPossibleList = new List<string>();
 
@@ -186,9 +199,35 @@ public class TableManager : MonoBehaviour
         }
 
         string job = jobPossibleList[Random.Range(0, jobPossibleList.Count)];
-        if (job.Equals("의사") || job.Equals("연구원") || job.Equals("기술자")) return "1";
-        else return "0";
+        switch (HangingManager.day)
+        {
+            case 3:
+                if (job.Equals("의사") || job.Equals("연구원") || job.Equals("기술자")) return "1";
+                else return "0";
+            case 4:
+                if (person.Equals("attacker"))
+                {
+                    if ((job.Equals("개발자") && data["positionGrade"].Equals("2")) || (job.Equals("교사") && int.Parse(data["positionGrade"]) >= 3)) return "2";
+                    else if (job.Equals("의사") || job.Equals("연구원") || job.Equals("기술자") || job.Equals("개발자") || job.Equals("교사")) return "1";
+                    else return "0";
+                }
+                else
+                {
+                    if (job.Equals("의사") || job.Equals("연구원") || job.Equals("기술자") || job.Equals("개발자") || job.Equals("교사")) return "1";
+                    else return "0";
+                }
+            case 5:
+                if (job.Equals("상담가")) return "5";
+                else if (job.Equals("교사")) return "4";
+                else if (job.Equals("개발자") && data["positionGrade"].Equals("2")) return "3";
+                else if (job.Equals("연구원")) return "2";
+                else if (job.Equals("의사")) return "1";
+                else return "0";
+            default:
+                return null;
+        }
     }
+
 
     string GetCrimeRecord()
     {

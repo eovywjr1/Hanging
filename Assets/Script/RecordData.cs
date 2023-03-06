@@ -20,7 +20,7 @@ public class RecordData
         Debug.Log("AttackerMove : " + attackerData["move"]);
         Debug.Log("VictimMove : " + victimData["move"]);
         Debug.Log("crimeRecord : " + attackerData["crimeRecord"]);
-
+        Debug.Log("crimeRecord : " + attackerData["crimeRecord"]);
         Judgement();
     }
 
@@ -111,6 +111,7 @@ public class RecordData
         {
             case 1:
             case 4:
+            case 5:
                 list.Add(day - 1);
                 break;
             case 2:
