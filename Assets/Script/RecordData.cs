@@ -4,70 +4,127 @@ using UnityEngine;
 
 public class RecordData
 {
-    public string name { get; private set; }
-    public string fname { get; private set; }
-    public string victimName { get; private set; }
-    public string victimFamilyName { get; private set; }
-    public string crime { get; private set; }
-    public string crimeReasonText { get; private set; }
-    public string crimePlaceText { get; private set; }
-    public int isHanging { get; private set; }
+    public Dictionary<string, string> attackerData { get; private set; }
+    public Dictionary<string, string> victimData { get; private set; }
+    public int isHanging;
 
-    public RecordData()
+    public RecordData(TableManager tableManager)
     {
-        Dictionary<string, string> data = TableManager.GetData();
+        attackerData = tableManager.GetData(null, null);
+        victimData = tableManager.GetData(attackerData["familyName"], attackerData["name"]);
 
-        name = data["name"];
-        fname = data["fname"];
-        victimName = data["victimName"];
-        victimFamilyName = data["victimFamilyName"];
-        crime = data["crime"];
-        crimeReasonText = data["crimeReasonText"];
-        crimePlaceText = data["crimePlaceText"];
+        Debug.Log("PositionGrade : " + attackerData["positionGrade"]);
+        Debug.Log("FamilyGrade : " + attackerData["familyGrade"]);
+        Debug.Log("CrimeGrade : " + attackerData["crimeGrade"]);
+        Debug.Log("CrimeReason : " + attackerData["crimeReason"]);
+        Debug.Log("AttackerMove : " + attackerData["move"]);
+        Debug.Log("VictimMove : " + victimData["move"]);
+        Debug.Log("crimeRecord : " + attackerData["crimeRecord"]);
+        Debug.Log("crimeRecord : " + attackerData["crimeRecord"]);
+        Judgement();
+    }
 
-        //사형 판별//
+    //사형 판별//
+    void Judgement()
+    {
         List<List<Dictionary<string, List<string>>>> judgeList = TableManager.judgeT;
-        int day = HangingManager.day;
-        bool f = false;
+        List<int> dayList = GetJudgementDay(HangingManager.day);
+        isHanging = 1;
 
-        Debug.Log("Grade : " + data["positionGrade"]);
-        Debug.Log("CrimeGrade : " + data["crimeGrade"]);
-        Debug.Log("CrimeReason : " + data["crimeReason"]);
-        Debug.Log("AttackerMove : " + data["attackerMove"]);
-        Debug.Log("VictimMove : " + data["victimMove"]);
-
-        for (int i = day - 1; i >= 0; i--)
+        for (int i= 0; i < dayList.Count; i++)
         {
-            if (f) break;
-            for (int j = 0; j < judgeList[i].Count; j++)
+            int day = dayList[i];
+            for (int j = 0; j < judgeList[day].Count; j++)
             {
-                List<string> headerList = judgeList[i][0]["header"];
+                List<string> headerList = judgeList[day][0]["header"];
                 bool isMatch = true;
                 for (int k = 0; k < headerList.Count - 1; k++)
                 {
-                    string header = headerList[k];
+                    string header = headerList[k], subHeader;
                     bool subMatch = false;
-                    foreach (string str in judgeList[i][j][header])
+                    Dictionary<string, string> compareList;
+
+                    //ask는 이 함수에서 판단에 직접적인 영향 x//
+                    if (header.Equals("ask")) continue;
+
+                    //attacker, victim 명시된 헤더 분리해서 각 data에 접근//
+                    if (header.Length > 6 && header.Substring(0, 6).Equals("victim"))
                     {
-                        if (str.Equals(data[header]))
+                        compareList = victimData;
+                        subHeader = header.Substring(6);
+                    }
+                    else if (header.Length > 8 && header.Substring(0, 8).Equals("attacker"))
+                    {
+                        compareList = attackerData;
+                        subHeader = header.Substring(8);
+                    }
+                    else
+                    {
+                        compareList = attackerData;
+                        subHeader = header;
+                    }
+
+                    //하나의 셀의 여러 개의 값 확인//
+                    foreach (string str in judgeList[day][j][header])
+                    {
+                        if (str.Equals(compareList[subHeader]))
                         {
                             subMatch = true;
                             break;
                         }
                     }
-
-                    if (!subMatch) isMatch = false;
+                    if (!subMatch)
+                    {
+                        isMatch = false;
+                        break;
+                    }
                 }
 
+                //검색 완료//
                 if (isMatch)
                 {
-                    f = true;
-                    isHanging = int.Parse(judgeList[i][j]["judgement"][0]);
-                    Debug.Log(j);
+                    isHanging = int.Parse(judgeList[day][j]["judgement"][0]);
+                    if (judgeList[day][j].ContainsKey("ask"))
+                    {
+                        attackerData["ask"] = judgeList[day][j]["ask"][0];
+                        Debug.Log(attackerData["ask"]);
+                    }
+                    Debug.Log(day + ",," + j);
                     Debug.Log(isHanging);
-                    break;
+
+                    //범죄등급 +1 증가 후 다시 판단//
+                    if(isHanging == 2)
+                    {
+                        i--;
+                        attackerData["crimeGrade"] = (int.Parse(attackerData["crimeGrade"]) - 1).ToString();
+                        break;
+                    }
+                    else return;
                 }
             }
         }
+    }
+
+    List<int> GetJudgementDay(int day)
+    {
+        List<int> list = new List<int>();
+
+        switch (day)
+        {
+            case 1:
+            case 4:
+            case 5:
+                list.Add(day - 1);
+                break;
+            case 2:
+            case 3:
+                list.Add(day - 1);
+                list.Add(0);
+                break;
+            default:
+                break;
+        }
+
+        return list;
     }
 }

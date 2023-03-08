@@ -10,7 +10,7 @@ public class HangingManager : MonoBehaviour
     public bool isTodesstrafe;
     public AttackerMouseMove attackerMouseMove;
     public AttackerInfo attackerInfo;
-    public static int day = 1, attackerCount = 1;
+    public static int day = 4, attackerCount = 1;
     static bool isCorrect = true;
     private AnalogGlitch analogGlitch;
     [SerializeField] BossHand bossHand;
@@ -25,7 +25,6 @@ public class HangingManager : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log(attackerCount);
         if (!isCorrect)
         {
             StartCoroutine(StartHoldOutHands());
@@ -66,7 +65,7 @@ public class HangingManager : MonoBehaviour
         if (mode == attackerInfo.recordData.isHanging)
         {
             isCorrect = false;
-            StartCoroutine(StartGlitch()); //NextAttacker();
+            NextAttacker();
             return true;
         }
         else
