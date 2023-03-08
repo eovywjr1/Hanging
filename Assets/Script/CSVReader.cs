@@ -11,7 +11,7 @@ public class CSVReader
     static string LINE_SPLIT_RE = @"\r\n|\n\r|\n|\r";
     static char[] TRIM_CHARS = { '\"' };
 
-    public static List<Dictionary<string, List<string>>> Read(string file)
+    public List<Dictionary<string, List<string>>> Read(string file)
     {
         var list = new List<Dictionary<string, List<string>>>();
         TextAsset data = Resources.Load(file) as TextAsset;
@@ -38,6 +38,7 @@ public class CSVReader
             }
         }
 
+        //헤더(조건)를 0번째 Dictionary에 모두 저장//
         List<string> headerList = new List<string>();
         for (int j = 0; j < header.Length; j++) headerList.Add(header[j]);
         list[0].Add("header", headerList);

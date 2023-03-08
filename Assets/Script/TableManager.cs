@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class TableManager : MonoBehaviour
 {
+    CSVReader csvReader = new CSVReader();
     private static List<Dictionary<string, List<string>>> nameT, fnameT, crimeT, detailT, jobT;
     public static List<List<Dictionary<string, List<string>>>> judgeT = new List<List<Dictionary<string, List<string>>>>();
 
@@ -13,20 +14,20 @@ public class TableManager : MonoBehaviour
     {
         if (nameT == null)
         {
-            nameT = CSVReader.Read("사건기록서 이름");
-            fnameT = CSVReader.Read("사건기록서 성");
-            crimeT = CSVReader.Read("사건기록서 죄명");
-            detailT = CSVReader.Read("사건기록서 경위");
-            jobT = CSVReader.Read("사건기록서 직업");
+            nameT = csvReader.Read("사건기록서 이름");
+            fnameT = csvReader.Read("사건기록서 성");
+            crimeT = csvReader.Read("사건기록서 죄명");
+            detailT = csvReader.Read("사건기록서 경위");
+            jobT = csvReader.Read("사건기록서 직업");
 
             string fileName = "사건기록서 판단";
             //judgeT.Add(CSVReader.Read(fileName + HangingManager.day.ToString()));
 
-            judgeT.Add(CSVReader.Read(fileName + "1"));
-            judgeT.Add(CSVReader.Read(fileName + "2"));
-            judgeT.Add(CSVReader.Read(fileName + "3"));
-            judgeT.Add(CSVReader.Read(fileName + "4"));
-            judgeT.Add(CSVReader.Read(fileName + "5"));
+            judgeT.Add(csvReader.Read(fileName + "1"));
+            judgeT.Add(csvReader.Read(fileName + "2"));
+            judgeT.Add(csvReader.Read(fileName + "3"));
+            judgeT.Add(csvReader.Read(fileName + "4"));
+            judgeT.Add(csvReader.Read(fileName + "5"));
         }
     }
 

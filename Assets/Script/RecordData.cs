@@ -44,9 +44,10 @@ public class RecordData
                     bool subMatch = false;
                     Dictionary<string, string> compareList;
 
+                    //ask는 이 함수에서 판단에 직접적인 영향 x//
                     if (header.Equals("ask")) continue;
 
-                    //attacker, victim 명시된 헤더 분리//
+                    //attacker, victim 명시된 헤더 분리해서 각 data에 접근//
                     if (header.Length > 6 && header.Substring(0, 6).Equals("victim"))
                     {
                         compareList = victimData;
@@ -91,6 +92,7 @@ public class RecordData
                     Debug.Log(day + ",," + j);
                     Debug.Log(isHanging);
 
+                    //범죄등급 +1 증가 후 다시 판단//
                     if(isHanging == 2)
                     {
                         i--;
