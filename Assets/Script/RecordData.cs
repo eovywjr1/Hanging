@@ -12,15 +12,17 @@ public class RecordData
     {
         attackerData = tableManager.GetData(null, null);
         victimData = tableManager.GetData(attackerData["familyName"], attackerData["name"]);
-
+        
         Debug.Log("PositionGrade : " + attackerData["positionGrade"]);
         Debug.Log("FamilyGrade : " + attackerData["familyGrade"]);
         Debug.Log("CrimeGrade : " + attackerData["crimeGrade"]);
         Debug.Log("CrimeReason : " + attackerData["crimeReason"]);
+        Debug.Log("AttackerJob : " + attackerData["job"]);
         Debug.Log("AttackerMove : " + attackerData["move"]);
         Debug.Log("VictimMove : " + victimData["move"]);
-        Debug.Log("crimeRecord : " + attackerData["crimeRecord"]);
-        Debug.Log("crimeRecord : " + attackerData["crimeRecord"]);
+        Debug.Log("CrimeRecord : " + attackerData["crimeRecord"]);
+        Debug.Log("Lie : " + attackerData["lie"]);
+
         Judgement();
     }
 
@@ -51,12 +53,12 @@ public class RecordData
                     if (header.Length > 6 && header.Substring(0, 6).Equals("victim"))
                     {
                         compareList = victimData;
-                        subHeader = header.Substring(6);
+                        subHeader = header.Substring(6); //subHeader는 이제 "positionGrade"
                     }
                     else if (header.Length > 8 && header.Substring(0, 8).Equals("attacker"))
                     {
                         compareList = attackerData;
-                        subHeader = header.Substring(8);
+                        subHeader = header.Substring(8);//subHeader는 이제 "job ..."
                     }
                     else
                     {
@@ -92,9 +94,12 @@ public class RecordData
                     Debug.Log(day + ",," + j);
                     Debug.Log(isHanging);
 
+
                     //범죄등급 +1 증가 후 다시 판단//
-                    if(isHanging == 2)
+                    if (isHanging == 2)
                     {
+                        //isHanging 값이 계속 2면 범죄등급이 계속 +1 될듯
+                        //한번만 +1 된 범죄등급이 된 범죄자의 judgement를 0 또는 1으로 바꿔주는 구현 필요
                         i--;
                         attackerData["crimeGrade"] = (int.Parse(attackerData["crimeGrade"]) - 1).ToString();
                         break;
@@ -114,6 +119,7 @@ public class RecordData
             case 1:
             case 4:
             case 5:
+            case 6:
                 list.Add(day - 1);
                 break;
             case 2:

@@ -28,6 +28,7 @@ public class TableManager : MonoBehaviour
             judgeT.Add(csvReader.Read(fileName + "3"));
             judgeT.Add(csvReader.Read(fileName + "4"));
             judgeT.Add(csvReader.Read(fileName + "5"));
+            judgeT.Add(csvReader.Read(fileName + "6"));
         }
     }
 
@@ -53,6 +54,9 @@ public class TableManager : MonoBehaviour
             Getcrime(data);
             GetCrimeReason(data, data["crime"]);
             data["job"] = GetJob(data, data["positionGrade"], "attacker"); Debug.Log("Job : " + data["job"]);
+
+            //위증여부
+            data["lie"] = GetLie();
         }
         else
         {
@@ -82,7 +86,7 @@ public class TableManager : MonoBehaviour
     private void GetFamilyName(Dictionary<string, string> data)
     {
         int valueid = Random.Range(0, fnameT.Count);
-        int headerid = Random.Range(0, fnameT[0]["header"].Count);
+        int headerid = Random.Range(0, fnameT[0]["header"].Count);  //5
         int grade = Random.Range(0, 7);
 
         if (HangingManager.day == 1) {
@@ -200,6 +204,7 @@ public class TableManager : MonoBehaviour
         }
 
         string job = jobPossibleList[Random.Range(0, jobPossibleList.Count)];
+        Debug.Log("직업 : " + job);
         switch (HangingManager.day)
         {
             case 3:
@@ -218,12 +223,14 @@ public class TableManager : MonoBehaviour
                     else return "0";
                 }
             case 5:
+            case 6:
                 if (job.Equals("상담가")) return "5";
                 else if (job.Equals("교사")) return "4";
                 else if (job.Equals("개발자") && data["positionGrade"].Equals("2")) return "3";
                 else if (job.Equals("연구원")) return "2";
                 else if (job.Equals("의사")) return "1";
                 else return "0";
+                
             default:
                 return null;
         }
@@ -233,5 +240,10 @@ public class TableManager : MonoBehaviour
     string GetCrimeRecord()
     {
         return Random.Range(0, 6).ToString();
+    }
+
+    string GetLie()
+    {
+        return Random.Range(0, 2).ToString();
     }
 }
