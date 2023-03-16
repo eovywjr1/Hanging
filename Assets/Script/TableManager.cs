@@ -29,6 +29,7 @@ public class TableManager : MonoBehaviour
             judgeT.Add(csvReader.Read(fileName + "4"));
             judgeT.Add(csvReader.Read(fileName + "5"));
             judgeT.Add(csvReader.Read(fileName + "6"));
+            judgeT.Add(csvReader.Read(fileName + "7"));
         }
     }
 
@@ -56,7 +57,7 @@ public class TableManager : MonoBehaviour
             data["job"] = GetJob(data, data["positionGrade"], "attacker"); Debug.Log("Job : " + data["job"]);
 
             //위증여부
-            data["lie"] = GetLie();
+            GetLieORInfoError(data);
         }
         else
         {
@@ -224,13 +225,32 @@ public class TableManager : MonoBehaviour
                 }
             case 5:
             case 6:
-                if (job.Equals("상담가")) return "5";
-                else if (job.Equals("교사")) return "4";
-                else if (job.Equals("개발자") && data["positionGrade"].Equals("2")) return "3";
-                else if (job.Equals("연구원")) return "2";
-                else if (job.Equals("의사")) return "1";
-                else return "0";
-                
+                switch (job)
+                {
+                    case "상담가": return "5";
+                    case "교사": return "4";
+                    case "개발자":
+                        if(data["positionGrade"].Equals("2")) return "3";
+                        break;
+                    case "연구원": return "2";
+                    case "의사": return "1";
+                    default: return "0";
+                }
+                return null;
+            case 7:
+                switch (job)
+                {
+                    case "농업기술자": return "6";
+                    case "연구원":
+                        if (int.Parse(data["positionGrade"]) >= 3) return "5";
+                        break;
+                    case "기술자": return "4";
+                    case "교도관": return "3";
+                    case "의사": return "2";
+                    case "교사": return "1";
+                    default: return "0";
+                }
+                return null;
             default:
                 return null;
         }
@@ -242,8 +262,14 @@ public class TableManager : MonoBehaviour
         return Random.Range(0, 6).ToString();
     }
 
-    string GetLie()
+    void GetLieORInfoError(Dictionary<string, string> data)
     {
-        return Random.Range(0, 2).ToString();
+        data["lie"] = Random.Range(0, 2).ToString();
+        if (data["lie"].Equals("0")) data["infoError"] = "1";
+        else
+        {
+            data["infoError"] = Random.Range(0, 2).ToString();
+            if (data["infoError"].Equals("1")) data["infoError"] = "2";
+        }
     }
 }
