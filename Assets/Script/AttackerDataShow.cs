@@ -14,13 +14,13 @@ public class AttackerDataShow : WindowShowData
         recordData = FindObjectOfType<AttackerInfo>().recordData;
 
         string str = recordData.attackerData["familyName"] + " " + recordData.attackerData["name"] + "\n"
-            + "시민 등급: " + recordData.attackerData["positionGrade"] + "등급\n"
             + "성별: " + recordData.attackerData["gender"] + "\n"
+            + "나이: " + recordData.attackerData["age"] + "세\n"
             + "직업: " + recordData.attackerData["jobText"] + "\n"
             + "전과: 확인";
 
         int maxLength = (recordData.attackerData["familyName"] + recordData.attackerData["name"]).Length;
-        float width = 1.7f + 0.15f * (maxLength - 7);
+        float width = 1.8f + 0.2f * (maxLength - 7);
 
         SetText(str);
         if (maxLength > 7) SetTextSize(width);

@@ -248,6 +248,10 @@ PrefabInstance:
       propertyPath: startTransform
       value: 
       objectReference: {fileID: 823901009}
+    - target: {fileID: 1319632212594718674, guid: 6beec38e063e9b14eb2c6bf09c909fca, type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5031439076972401847, guid: 6beec38e063e9b14eb2c6bf09c909fca, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

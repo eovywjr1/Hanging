@@ -40,6 +40,7 @@ public class TableManager : MonoBehaviour
         
         GetFamilyName(data);
         GetName(nameT, data);
+        data["age"] = GetAge();
         if (data["familyName"].Equals(familyName))
         {
             while (!data["name"].Equals(name)) GetName(nameT, data);
@@ -51,7 +52,7 @@ public class TableManager : MonoBehaviour
         //통합 기록일 경우 가해자 data에만 넣음//
         if (familyName == null)
         {
-            data["crimeRecord"] = GetCrimeRecord();
+            GetcrimeRecord(data);
             GetCrime(data);
             GetCrimeReason(data, data["crime"]);
             data["job"] = GetJob(data, data["positionGrade"], "attacker"); Debug.Log("Job : " + data["job"]);
@@ -257,11 +258,15 @@ public class TableManager : MonoBehaviour
                 return null;
         }
     }
-
-
-    string GetCrimeRecord()
+    
+    string GetAge()
     {
-        return Random.Range(0, 6).ToString();
+        return Random.Range(20, 61).ToString();
+    }
+
+    void GetcrimeRecord(Dictionary<string, string> data)
+    {
+        data["crimeRecord"] =  Random.Range(0, 6).ToString();
     }
 
     void GetLieORInfoError(Dictionary<string, string> data)

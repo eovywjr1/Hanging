@@ -11,6 +11,6 @@ public class VictimButtonSetPoistion : MonoBehaviour
         recordData = FindObjectOfType<AttackerInfo>().recordData;
 
         int length = recordData.victimData["familyName"].Length + recordData.victimData["name"].Length - 3;
-        transform.position = new Vector2(transform.position.x + 0.125f * length, transform.position.y);
+        transform.position = new Vector2(transform.position.x + 0.12f * length, transform.position.y);
     }
 }

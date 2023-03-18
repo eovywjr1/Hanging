@@ -146,5 +146,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiBoxPrefab:
   - {fileID: 4841914209743029697, guid: 40219aa9254c7a841b379e6224424171, type: 3}
-  - {fileID: 4841914209743029697, guid: 67331935346e2db4a936fd436d926b32, type: 3}
+  - {fileID: 4841914209743029697, guid: 82eed0b1452df0847aa767c290b89d67, type: 3}
   - {fileID: 0}
