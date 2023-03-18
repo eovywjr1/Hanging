@@ -21,7 +21,7 @@ public class RecordDataShow : WindowShowData
 
         int maxLength = Mathf.Max((recordData.attackerData["familyName"] + recordData.attackerData["name"]).Length,
                         (recordData.victimData["familyName"] + recordData.victimData["name"]).Length);
-        float width = 2.3f + 0.15f * (maxLength - 3);
+        float width = 2.3f + 0.22f * (maxLength - 3);
 
         SetText(str);
         SetTextSize(width);

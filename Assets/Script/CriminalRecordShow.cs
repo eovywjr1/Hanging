@@ -6,7 +6,7 @@ public class CriminalRecordShow : WindowShowData
 {
     private void Start()
     {
-        Line.lineList[Line.lineList.Count - 1].GetShowData(ShowData);
+        ShowData();
     }
 
     void ShowData()
@@ -14,12 +14,12 @@ public class CriminalRecordShow : WindowShowData
         recordData = FindObjectOfType<AttackerInfo>().recordData;
 
         string str = recordData.attackerData["familyName"] + " " + recordData.attackerData["name"] + "\n"
-            + "전과: 확인";
+            + "전과: " + recordData.attackerData["crimeRecordText"];
 
-        int maxLength = (recordData.attackerData["familyName"] + recordData.attackerData["name"]).Length;
-        float width = 1.7f + 0.15f * (maxLength - 7);
-
+        int maxLength = recordData.attackerData["familyName"].Length + recordData.attackerData["name"].Length;
+        float width = 1.55f + 0.22f * (maxLength - 4);
+        
         SetText(str);
-        if (maxLength > 7) SetTextSize(width);
+        if (maxLength > 4) SetTextSize(width);
     }
 }

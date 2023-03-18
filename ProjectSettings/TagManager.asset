@@ -51,3 +51,6 @@ TagManager:
   - name: Button
     uniqueID: 540242389
     locked: 0
+  - name: Attacker
+    uniqueID: 2790971519
+    locked: 0

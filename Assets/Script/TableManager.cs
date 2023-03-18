@@ -266,7 +266,27 @@ public class TableManager : MonoBehaviour
 
     void GetcrimeRecord(Dictionary<string, string> data)
     {
-        data["crimeRecord"] =  Random.Range(0, 6).ToString();
+        if (HangingManager.day >= 4)
+        {
+            data["crimeRecord"] = Random.Range(0, 6).ToString();
+            if (int.Parse(data["crimeRecord"]) == 0)
+            {
+                data["crimeRecordText"] = "¾øÀ½";
+                return;
+            }
+            while (true)
+            {
+                int valueid = Random.Range(0, crimeT.Count);
+                int headerId = int.Parse(data["crimeRecord"]) - 1;
+
+                string str = crimeT[valueid][crimeT[0]["header"][headerId]][0];
+                if (!str.Equals(""))
+                {
+                    data["crimeRecordText"] = str;
+                    return;
+                }
+            }
+        }
     }
 
     void GetLieORInfoError(Dictionary<string, string> data)

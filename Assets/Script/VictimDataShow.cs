@@ -18,10 +18,11 @@ public class VictimDataShow : WindowShowData
             + "나이: " + recordData.victimData["age"] + "세\n"
             + "직업: " + recordData.victimData["jobText"];
 
-        int maxLength = (recordData.victimData["familyName"] + recordData.victimData["name"]).Length;
-        float width = 1.8f + 0.2f * (maxLength - 7);
+        int maxLength = Mathf.Max(recordData.victimData["familyName"].Length + recordData.victimData["name"].Length,
+                        2 + recordData.victimData["jobText"].Length);
+        float width = 1.55f + 0.22f * (maxLength - 4);
 
         SetText(str);
-        if (maxLength > 7) SetTextSize(width);
+        if (maxLength > 4) SetTextSize(width);
     }
 }
