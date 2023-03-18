@@ -15,9 +15,10 @@ public class LineToBox : MonoBehaviour
 
     private void Awake()
     {
+        //기록서 생성 및 초기화//
         uiBox = Instantiate(uiBoxPrefab[Line.lineList.Count]);
-        uiBox.GetComponent<Image>().enabled = false;
         line = new Line(this.gameObject, uiBox);
+        line.SetAlpha(-1);
         Line.lineList.Add(line);
         parentTransform = transform.parent.transform;
         uiBox.transform.position = new Vector3(parentTransform.position.x + 4, parentTransform.position.y, 0);

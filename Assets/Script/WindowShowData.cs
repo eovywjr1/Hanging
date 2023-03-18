@@ -20,11 +20,8 @@ public class WindowShowData : MonoBehaviour
     }
 
     ////창 크기 조절//
-    protected void SetTextSize(int maxLength)
+    protected void SetTextSize(float width)
     {
-        float width = 2.3f + 0.15f * (maxLength - 3);
         windowSetSize.SetSize(width);
     }
-
-    virtual protected void Showdata() { }
 }

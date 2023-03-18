@@ -17,12 +17,12 @@ public class AttackerDataShow : WindowShowData
             + "시민 등급: " + recordData.attackerData["positionGrade"] + "등급\n"
             + "성별: " + recordData.attackerData["gender"] + "\n"
             + "직업: " + recordData.attackerData["jobText"] + "\n"
-            + "전과: 확인"; 
+            + "전과: 확인";
 
-        int maxlength = Mathf.Max((recordData.attackerData["familyName"] + recordData.attackerData["name"]).Length,
-                        (recordData.victimData["familyName"] + recordData.victimData["name"]).Length);
+        int maxLength = (recordData.attackerData["familyName"] + recordData.attackerData["name"]).Length;
+        float width = 1.7f + 0.15f * (maxLength - 7);
 
         SetText(str);
-        SetTextSize(maxlength);
+        if (maxLength > 7) SetTextSize(width);
     }
 }

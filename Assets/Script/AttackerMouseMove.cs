@@ -92,7 +92,7 @@ public class AttackerMouseMove : MonoBehaviour
         {
             criteria.SetActive(false);
 
-            LineChangeTransparency(1);
+            if(isCreateLine) LineChangeTransparency(1);
 
             if (transform.position.y > minY) isDescend = true;
             isCreateLine = true;

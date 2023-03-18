@@ -19,10 +19,11 @@ public class RecordDataShow : WindowShowData
             + "피해자: " + recordData.victimData["familyName"] + " " + recordData.victimData["name"] + "\n"
             + "경위: " + recordData.attackerData["crimeReasonText"];
 
-        int maxlength = Mathf.Max((recordData.attackerData["familyName"] + recordData.attackerData["name"]).Length,
+        int maxLength = Mathf.Max((recordData.attackerData["familyName"] + recordData.attackerData["name"]).Length,
                         (recordData.victimData["familyName"] + recordData.victimData["name"]).Length);
+        float width = 2.3f + 0.15f * (maxLength - 3);
 
         SetText(str);
-        SetTextSize(maxlength);
+        SetTextSize(width);
     }
 }
