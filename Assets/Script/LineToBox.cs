@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class LineToBox : MonoBehaviour
 {
-    [SerializeField] private GameObject uiBoxPrefab;
+    [SerializeField] private GameObject[] uiBoxPrefab;
     private GameObject uiBox;
     private Transform parentTransform;
     private Line line;
@@ -15,7 +15,7 @@ public class LineToBox : MonoBehaviour
 
     private void Awake()
     {
-        uiBox = Instantiate(uiBoxPrefab);
+        uiBox = Instantiate(uiBoxPrefab[Line.lineList.Count]);
         uiBox.GetComponent<Image>().enabled = false;
         line = new Line(this.gameObject, uiBox);
         Line.lineList.Add(line);

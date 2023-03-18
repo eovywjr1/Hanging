@@ -39,10 +39,10 @@ public class TableManager : MonoBehaviour
         Debug.Log("day : " + HangingManager.day);
         
         GetFamilyName(data);
-        data["name"] = GetString(nameT);
+        GetName(nameT, data);
         if (data["familyName"].Equals(familyName))
         {
-            while (!data["name"].Equals(name)) data["name"] = GetString(nameT);
+            while (!data["name"].Equals(name)) GetName(nameT, data);
         }
         
         data["move"] = data["crimePlace"].Equals(data["familyGrade"]) ? "1" :"0";
@@ -52,7 +52,7 @@ public class TableManager : MonoBehaviour
         if (familyName == null)
         {
             data["crimeRecord"] = GetCrimeRecord();
-            Getcrime(data);
+            GetCrime(data);
             GetCrimeReason(data, data["crime"]);
             data["job"] = GetJob(data, data["positionGrade"], "attacker"); Debug.Log("Job : " + data["job"]);
 
@@ -67,7 +67,7 @@ public class TableManager : MonoBehaviour
         return data;
     }
 
-    private void Getcrime(Dictionary<string, string> data)
+    private void GetCrime(Dictionary<string, string> data)
     {
         while (true)
         {
@@ -104,12 +104,13 @@ public class TableManager : MonoBehaviour
         data["familyName"] = fnameT[valueid][fnameT[0]["header"][headerid]][0];
     }
 
-    private string GetString(List<Dictionary<string, List<string>>> list)
+    private void GetName(List<Dictionary<string, List<string>>> list, Dictionary<string, string> data)
     {
         int valueid = Random.Range(0, list.Count);
         int headerid = Random.Range(0, list[0]["header"].Count);
 
-        return list[valueid][list[0]["header"][headerid]][0];
+        data["gender"] = list[0]["header"][headerid];
+        data["name"] = list[valueid][list[0]["header"][headerid]][0];
     }
 
     private void GetCrimeReason(Dictionary<string, string> data, string crime)
@@ -205,6 +206,7 @@ public class TableManager : MonoBehaviour
         }
 
         string job = jobPossibleList[Random.Range(0, jobPossibleList.Count)];
+        data["jobText"] = job;
         Debug.Log("Á÷¾÷ : " + job);
         switch (HangingManager.day)
         {
@@ -265,11 +267,14 @@ public class TableManager : MonoBehaviour
     void GetLieORInfoError(Dictionary<string, string> data)
     {
         data["lie"] = Random.Range(0, 2).ToString();
-        if (data["lie"].Equals("0")) data["infoError"] = "1";
-        else
+        if (HangingManager.day == 7)
         {
-            data["infoError"] = Random.Range(0, 2).ToString();
-            if (data["infoError"].Equals("1")) data["infoError"] = "2";
+            if (data["lie"].Equals("0")) data["infoError"] = "1";
+            else
+            {
+                data["infoError"] = Random.Range(0, 2).ToString();
+                if (data["infoError"].Equals("1")) data["infoError"] = "2";
+            }
         }
     }
 }

@@ -22,5 +22,5 @@ public class AttackerInfo : MonoBehaviour
         ask.ActiveAsk();
     }
 
-    void 
+    
 }

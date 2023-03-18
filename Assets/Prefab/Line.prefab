@@ -144,4 +144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c7b0dc6b99897d4a955516242a2fe82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiBoxPrefab: {fileID: 4841914209743029697, guid: 40219aa9254c7a841b379e6224424171, type: 3}
+  uiBoxPrefab:
+  - {fileID: 4841914209743029697, guid: 40219aa9254c7a841b379e6224424171, type: 3}
+  - {fileID: 4841914209743029697, guid: 4f5c689e02676914cbe195663ce2451e, type: 3}
+  - {fileID: 0}

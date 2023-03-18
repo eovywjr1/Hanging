@@ -15,6 +15,8 @@ public class Line
     private TextMeshProUGUI windowtmpu;
     public float devide = 300f; //분모여서 속도와 반비례관계
     public float parentYSum;   //사형수, 교수대(부모들) y 추가
+    public delegate void ShowData();
+    ShowData showdata;
 
     public Line(GameObject _lineObject, GameObject _windowObject)
     {
@@ -86,6 +88,11 @@ public class Line
         }
 
         windowObject.GetComponent<Image>().enabled = true;
-        windowObject.transform.GetChild(0).GetComponent<WindowShowData>().SetText();
+        showdata();
+    }
+
+    public void GetShowData(ShowData _showData)
+    {
+        showdata = new ShowData(_showData);
     }
 }

@@ -5,31 +5,26 @@ using UnityEngine;
 
 public class WindowShowData : MonoBehaviour
 {
-    WindowSetSize windowSetSize;
-    RecordData recordData;
+    protected WindowSetSize windowSetSize;
+    protected RecordData recordData;
 
-    void Awake()
+    protected void Awake()
     {
-        windowSetSize = FindObjectOfType<WindowSetSize>();
+        windowSetSize = transform.parent.GetComponent<WindowSetSize>();
     }
 
-    public void SetText()
+    //텍스트 설정//
+    public void SetText(string str)
     {
-        recordData = FindObjectOfType<AttackerInfo>().recordData;
+        GetComponent<TextMeshProUGUI>().text = str.Replace("\\n", "\n");
+    }
 
-        //텍스트 설정//
-        string text = "가해자: " + recordData.attackerData["familyName"] + " " + recordData.attackerData["name"] + "\n"
-            + "죄목: " + recordData.attackerData["crime"] + "\n"
-            + "발생 장소: " + recordData.attackerData["crimePlaceText"] + " 등급" + "\n"
-            + "피해자: " + recordData.victimData["familyName"] + " " + recordData.victimData["name"] + "\n"
-            + "경위: " + recordData.attackerData["crimeReasonText"];
-
-        GetComponent<TextMeshProUGUI>().text = text.Replace("\\n", "\n");
-
-        //창 크기 조절//
-        int maxlength = Mathf.Max((recordData.attackerData["familyName"] + recordData.attackerData["name"]).Length, 
-            (recordData.victimData["familyName"] + recordData.victimData["name"]).Length);
-        float width = 2.3f + 0.15f * (maxlength - 3);
+    ////창 크기 조절//
+    protected void SetTextSize(int maxLength)
+    {
+        float width = 2.3f + 0.15f * (maxLength - 3);
         windowSetSize.SetSize(width);
     }
+
+    virtual protected void Showdata() { }
 }
