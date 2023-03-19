@@ -11,10 +11,13 @@ public class Line
     public GameObject lineObject { get; private set; }
     public GameObject windowObject { get; private set; }
     private LineRenderer lineLR;
-    public Image windowImage { get; private set; }
+    public Image windowImage;
+    SpriteRenderer buttonSpriteRenderer;
     private TextMeshProUGUI windowtmpu;
     public float devide = 300f; //분모여서 속도와 반비례관계
     public float parentYSum;   //사형수, 교수대(부모들) y 추가
+    public delegate void ShowData();
+    ShowData showdata;
 
     public Line(GameObject _lineObject, GameObject _windowObject)
     {
@@ -23,14 +26,26 @@ public class Line
         lineLR = lineObject.GetComponent<LineRenderer>();
         windowImage = windowObject.GetComponent<Image>();
         windowtmpu = windowObject.transform.GetChild(0).GetComponentInChildren<TextMeshProUGUI>();
+        buttonSpriteRenderer = windowObject.transform.GetChild(1).GetComponentInChildren<SpriteRenderer>();
     }
 
     public void SetAlpha(float alpha)
-    {
-        lineLR.startColor = new Color(1, 1, 1, alpha);   //컬러 나중에 재조정 필요
-        lineLR.endColor = new Color(1, 1, 1, alpha);
-        windowImage.color = new Color(1, 1, 1, alpha);
-        windowtmpu.color = new Color(0, 0, 0, alpha);
+    {   
+        //처음 라인 만들어질 때//
+        if (alpha == -1)
+        {
+            windowImage.color = new Color(1, 1, 1, 0);
+            windowtmpu.color = new Color(0, 0, 0, 0);
+            buttonSpriteRenderer.color = new Color(1, 1, 1, 0);
+        }
+        else
+        {
+            lineLR.startColor = new Color(1, 1, 1, alpha * 3f);   //컬러 나중에 재조정 필요
+            lineLR.endColor = new Color(1, 1, 1, alpha * 3f);
+            windowImage.color = new Color(1, 1, 1, alpha);
+            windowtmpu.color = new Color(0, 0, 0, alpha);
+            buttonSpriteRenderer.color = new Color(1, 1, 1, alpha);
+        }
     }
 
     public IEnumerator ChangeTransparency(int mode)
@@ -85,7 +100,12 @@ public class Line
             d = ++i / devide;
         }
 
-        windowObject.GetComponent<Image>().enabled = true;
-        windowObject.transform.GetChild(0).GetComponent<WindowShowData>().SetText();
+        SetAlpha(1);
+        showdata();
+    }
+
+    public void GetShowData(ShowData _showData)
+    {
+        showdata = new ShowData(_showData);
     }
 }

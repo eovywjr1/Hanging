@@ -6,12 +6,13 @@ public class RecordData
 {
     public Dictionary<string, string> attackerData { get; private set; }
     public Dictionary<string, string> victimData { get; private set; }
+    public Dictionary<string, List<string>> lieORInfoError = new Dictionary<string, List<string>>();
     public int isHanging;
 
     public RecordData(TableManager tableManager)
     {
-        attackerData = tableManager.GetData(null, null);
-        victimData = tableManager.GetData(attackerData["familyName"], attackerData["name"]);
+        attackerData = tableManager.GetData(null, null, ref lieORInfoError);
+        victimData = tableManager.GetData(attackerData["familyName"], attackerData["name"], ref lieORInfoError);
         
         Debug.Log("PositionGrade : " + attackerData["positionGrade"]);
         Debug.Log("FamilyGrade : " + attackerData["familyGrade"]);
@@ -22,6 +23,7 @@ public class RecordData
         Debug.Log("VictimMove : " + victimData["move"]);
         Debug.Log("CrimeRecord : " + attackerData["crimeRecord"]);
         Debug.Log("Lie : " + attackerData["lie"]);
+        Debug.Log("InfoError : " + attackerData["infoError"]);
 
         Judgement();
     }
@@ -30,15 +32,14 @@ public class RecordData
     void Judgement()
     {
         List<List<Dictionary<string, List<string>>>> judgeList = TableManager.judgeT;
-        List<int> dayList = GetJudgementDay(HangingManager.day);
+        
         isHanging = 1;
 
-        for (int i= 0; i < dayList.Count; i++)
+        for (int i= HangingManager.day - 1; i >= 0; i--)
         {
-            int day = dayList[i];
-            for (int j = 0; j < judgeList[day].Count; j++)
+            for (int j = 0; j < judgeList[i].Count; j++)
             {
-                List<string> headerList = judgeList[day][0]["header"];
+                List<string> headerList = judgeList[i][0]["header"];
                 bool isMatch = true;
                 for (int k = 0; k < headerList.Count - 1; k++)
                 {
@@ -53,12 +54,12 @@ public class RecordData
                     if (header.Length > 6 && header.Substring(0, 6).Equals("victim"))
                     {
                         compareList = victimData;
-                        subHeader = header.Substring(6); //subHeader는 이제 "positionGrade"
+                        subHeader = header.Substring(6);
                     }
                     else if (header.Length > 8 && header.Substring(0, 8).Equals("attacker"))
                     {
                         compareList = attackerData;
-                        subHeader = header.Substring(8);//subHeader는 이제 "job ..."
+                        subHeader = header.Substring(8);
                     }
                     else
                     {
@@ -67,7 +68,7 @@ public class RecordData
                     }
 
                     //하나의 셀의 여러 개의 값 확인//
-                    foreach (string str in judgeList[day][j][header])
+                    foreach (string str in judgeList[i][j][header])
                     {
                         if (str.Equals(compareList[subHeader]))
                         {
@@ -85,13 +86,13 @@ public class RecordData
                 //검색 완료//
                 if (isMatch)
                 {
-                    isHanging = int.Parse(judgeList[day][j]["judgement"][0]);
-                    if (judgeList[day][j].ContainsKey("ask"))
+                    isHanging = int.Parse(judgeList[i][j]["judgement"][0]);
+                    if (judgeList[i][j].ContainsKey("ask"))
                     {
-                        attackerData["ask"] = judgeList[day][j]["ask"][0];
+                        attackerData["ask"] = judgeList[i][j]["ask"][0];
                         Debug.Log(attackerData["ask"]);
                     }
-                    Debug.Log(day + ",," + j);
+                    Debug.Log(i + ",," + j);
                     Debug.Log(isHanging);
 
 
@@ -100,7 +101,7 @@ public class RecordData
                     {
                         //isHanging 값이 계속 2면 범죄등급이 계속 +1 될듯
                         //한번만 +1 된 범죄등급이 된 범죄자의 judgement를 0 또는 1으로 바꿔주는 구현 필요
-                        i--;
+                        i++;
                         attackerData["crimeGrade"] = (int.Parse(attackerData["crimeGrade"]) - 1).ToString();
                         break;
                     }
@@ -108,29 +109,5 @@ public class RecordData
                 }
             }
         }
-    }
-
-    List<int> GetJudgementDay(int day)
-    {
-        List<int> list = new List<int>();
-
-        switch (day)
-        {
-            case 1:
-            case 4:
-            case 5:
-            case 6:
-                list.Add(day - 1);
-                break;
-            case 2:
-            case 3:
-                list.Add(day - 1);
-                list.Add(0);
-                break;
-            default:
-                break;
-        }
-
-        return list;
     }
 }

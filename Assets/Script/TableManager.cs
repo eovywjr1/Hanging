@@ -29,19 +29,21 @@ public class TableManager : MonoBehaviour
             judgeT.Add(csvReader.Read(fileName + "4"));
             judgeT.Add(csvReader.Read(fileName + "5"));
             judgeT.Add(csvReader.Read(fileName + "6"));
+            judgeT.Add(csvReader.Read(fileName + "7"));
         }
     }
 
-    public Dictionary<string,string> GetData(string familyName, string name)
+    public Dictionary<string,string> GetData(string familyName, string name, ref Dictionary<string, List<string>> lieORInfoError)
     {
         Dictionary<string,string> data = new Dictionary<string,string>();
         Debug.Log("day : " + HangingManager.day);
         
         GetFamilyName(data);
-        data["name"] = GetString(nameT);
+        GetName(nameT, data);
+        data["age"] = GetAge();
         if (data["familyName"].Equals(familyName))
         {
-            while (!data["name"].Equals(name)) data["name"] = GetString(nameT);
+            while (!data["name"].Equals(name)) GetName(nameT, data);
         }
         
         data["move"] = data["crimePlace"].Equals(data["familyGrade"]) ? "1" :"0";
@@ -50,13 +52,13 @@ public class TableManager : MonoBehaviour
         //통합 기록일 경우 가해자 data에만 넣음//
         if (familyName == null)
         {
-            data["crimeRecord"] = GetCrimeRecord();
-            Getcrime(data);
+            GetcrimeRecord(data);
+            GetCrime(data);
             GetCrimeReason(data, data["crime"]);
             data["job"] = GetJob(data, data["positionGrade"], "attacker"); Debug.Log("Job : " + data["job"]);
 
-            //위증여부
-            data["lie"] = GetLie();
+            //위증여부//
+            if(HangingManager.day >= 6) GetLieORInfoError(data, ref lieORInfoError);
         }
         else
         {
@@ -66,7 +68,7 @@ public class TableManager : MonoBehaviour
         return data;
     }
 
-    private void Getcrime(Dictionary<string, string> data)
+    private void GetCrime(Dictionary<string, string> data)
     {
         while (true)
         {
@@ -103,12 +105,13 @@ public class TableManager : MonoBehaviour
         data["familyName"] = fnameT[valueid][fnameT[0]["header"][headerid]][0];
     }
 
-    private string GetString(List<Dictionary<string, List<string>>> list)
+    private void GetName(List<Dictionary<string, List<string>>> list, Dictionary<string, string> data)
     {
         int valueid = Random.Range(0, list.Count);
         int headerid = Random.Range(0, list[0]["header"].Count);
 
-        return list[valueid][list[0]["header"][headerid]][0];
+        data["gender"] = list[0]["header"][headerid];
+        data["name"] = list[valueid][list[0]["header"][headerid]][0];
     }
 
     private void GetCrimeReason(Dictionary<string, string> data, string crime)
@@ -204,6 +207,7 @@ public class TableManager : MonoBehaviour
         }
 
         string job = jobPossibleList[Random.Range(0, jobPossibleList.Count)];
+        data["jobText"] = job;
         Debug.Log("직업 : " + job);
         switch (HangingManager.day)
         {
@@ -224,26 +228,110 @@ public class TableManager : MonoBehaviour
                 }
             case 5:
             case 6:
-                if (job.Equals("상담가")) return "5";
-                else if (job.Equals("교사")) return "4";
-                else if (job.Equals("개발자") && data["positionGrade"].Equals("2")) return "3";
-                else if (job.Equals("연구원")) return "2";
-                else if (job.Equals("의사")) return "1";
-                else return "0";
-                
+                switch (job)
+                {
+                    case "상담가": return "5";
+                    case "교사": return "4";
+                    case "개발자":
+                        if(data["positionGrade"].Equals("2")) return "3";
+                        break;
+                    case "연구원": return "2";
+                    case "의사": return "1";
+                    default: return "0";
+                }
+                return null;
+            case 7:
+                switch (job)
+                {
+                    case "농업기술자": return "6";
+                    case "연구원":
+                        if (int.Parse(data["positionGrade"]) >= 3) return "5";
+                        break;
+                    case "기술자": return "4";
+                    case "교도관": return "3";
+                    case "의사": return "2";
+                    case "교사": return "1";
+                    default: return "0";
+                }
+                return null;
             default:
                 return null;
         }
     }
-
-
-    string GetCrimeRecord()
+    
+    string GetAge()
     {
-        return Random.Range(0, 6).ToString();
+        return Random.Range(20, 61).ToString();
     }
 
-    string GetLie()
+    void GetcrimeRecord(Dictionary<string, string> data)
     {
-        return Random.Range(0, 2).ToString();
+        if (HangingManager.day >= 4)
+        {
+            data["crimeRecord"] = Random.Range(0, 6).ToString();
+            if (int.Parse(data["crimeRecord"]) == 0)
+            {
+                data["crimeRecordText"] = "없음";
+                return;
+            }
+            while (true)
+            {
+                int valueid = Random.Range(0, crimeT.Count);
+                int headerId = int.Parse(data["crimeRecord"]) - 1;
+
+                string str = crimeT[valueid][crimeT[0]["header"][headerId]][0];
+                if (!str.Equals(""))
+                {
+                    data["crimeRecordText"] = str;
+                    return;
+                }
+            }
+        }
+    }
+
+    void GetLieORInfoError(Dictionary<string, string> data, ref Dictionary<string, List<string>> lieORInfoError)
+    {
+        string[] strs = { "name", "crime", "crimePlace", "crimeResonText" };
+        bool crimePlaceFlag = false, lieFlag = false;
+        int cnt = 0;
+
+        for (int i = 0; i < 5; i++)
+        {
+            int lieORInfoErrorPossibility = Random.Range(0, 5);
+            if (lieORInfoErrorPossibility != 0) continue;
+
+            if (i == 2) crimePlaceFlag = true;
+            cnt++;
+
+            int lieORInfoErrorDistinguishPossibility = Random.Range(0, 2);
+            //6일차 무조건 위증//
+            if (HangingManager.day == 6) lieORInfoErrorDistinguishPossibility = 0;
+            //위증//
+            if (lieORInfoErrorDistinguishPossibility == 0)
+            {
+                lieFlag = true;
+                if (!lieORInfoError.ContainsKey("lie")) lieORInfoError["lie"] = new List<string>();
+                lieORInfoError["lie"].Add(strs[i]);
+            }
+
+            //정보 오류//
+            else
+            {
+                if (HangingManager.day >= 7)
+                {
+                    if (!lieORInfoError.ContainsKey("infoError")) lieORInfoError["infoError"] = new List<string>();
+                    lieORInfoError["infoError"].Add(strs[i]);
+                }
+            }
+        }
+
+        if (cnt >= 3)
+        {
+            if (crimePlaceFlag) data["infoError"] = "2";
+            else data["infoError"] = "0";
+        }
+        else data["infoError"] = "1";
+
+        data["lie"] = lieFlag ? "0" : "1";
     }
 }
