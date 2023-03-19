@@ -6,12 +6,13 @@ public class RecordData
 {
     public Dictionary<string, string> attackerData { get; private set; }
     public Dictionary<string, string> victimData { get; private set; }
+    public Dictionary<string, List<string>> lieORInfoError = new Dictionary<string, List<string>>();
     public int isHanging;
 
     public RecordData(TableManager tableManager)
     {
-        attackerData = tableManager.GetData(null, null);
-        victimData = tableManager.GetData(attackerData["familyName"], attackerData["name"]);
+        attackerData = tableManager.GetData(null, null, ref lieORInfoError);
+        victimData = tableManager.GetData(attackerData["familyName"], attackerData["name"], ref lieORInfoError);
         
         Debug.Log("PositionGrade : " + attackerData["positionGrade"]);
         Debug.Log("FamilyGrade : " + attackerData["familyGrade"]);
@@ -22,6 +23,7 @@ public class RecordData
         Debug.Log("VictimMove : " + victimData["move"]);
         Debug.Log("CrimeRecord : " + attackerData["crimeRecord"]);
         Debug.Log("Lie : " + attackerData["lie"]);
+        Debug.Log("InfoError : " + attackerData["infoError"]);
 
         Judgement();
     }

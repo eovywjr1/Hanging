@@ -33,7 +33,7 @@ public class TableManager : MonoBehaviour
         }
     }
 
-    public Dictionary<string,string> GetData(string familyName, string name)
+    public Dictionary<string,string> GetData(string familyName, string name, ref Dictionary<string, List<string>> lieORInfoError)
     {
         Dictionary<string,string> data = new Dictionary<string,string>();
         Debug.Log("day : " + HangingManager.day);
@@ -57,8 +57,8 @@ public class TableManager : MonoBehaviour
             GetCrimeReason(data, data["crime"]);
             data["job"] = GetJob(data, data["positionGrade"], "attacker"); Debug.Log("Job : " + data["job"]);
 
-            //위증여부
-            GetLieORInfoError(data);
+            //위증여부//
+            if(HangingManager.day >= 6) GetLieORInfoError(data, ref lieORInfoError);
         }
         else
         {
@@ -289,17 +289,49 @@ public class TableManager : MonoBehaviour
         }
     }
 
-    void GetLieORInfoError(Dictionary<string, string> data)
+    void GetLieORInfoError(Dictionary<string, string> data, ref Dictionary<string, List<string>> lieORInfoError)
     {
-        data["lie"] = Random.Range(0, 2).ToString();
-        if (HangingManager.day == 7)
+        string[] strs = { "name", "crime", "crimePlace", "crimeResonText" };
+        bool crimePlaceFlag = false, lieFlag = false;
+        int cnt = 0;
+
+        for (int i = 0; i < 5; i++)
         {
-            if (data["lie"].Equals("0")) data["infoError"] = "1";
+            int lieORInfoErrorPossibility = Random.Range(0, 5);
+            if (lieORInfoErrorPossibility != 0) continue;
+
+            if (i == 2) crimePlaceFlag = true;
+            cnt++;
+
+            int lieORInfoErrorDistinguishPossibility = Random.Range(0, 2);
+            //6일차 무조건 위증//
+            if (HangingManager.day == 6) lieORInfoErrorDistinguishPossibility = 0;
+            //위증//
+            if (lieORInfoErrorDistinguishPossibility == 0)
+            {
+                lieFlag = true;
+                if (!lieORInfoError.ContainsKey("lie")) lieORInfoError["lie"] = new List<string>();
+                lieORInfoError["lie"].Add(strs[i]);
+            }
+
+            //정보 오류//
             else
             {
-                data["infoError"] = Random.Range(0, 2).ToString();
-                if (data["infoError"].Equals("1")) data["infoError"] = "2";
+                if (HangingManager.day >= 7)
+                {
+                    if (!lieORInfoError.ContainsKey("infoError")) lieORInfoError["infoError"] = new List<string>();
+                    lieORInfoError["infoError"].Add(strs[i]);
+                }
             }
         }
+
+        if (cnt >= 3)
+        {
+            if (crimePlaceFlag) data["infoError"] = "2";
+            else data["infoError"] = "0";
+        }
+        else data["infoError"] = "1";
+
+        data["lie"] = lieFlag ? "0" : "1";
     }
 }
