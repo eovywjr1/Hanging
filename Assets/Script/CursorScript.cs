@@ -26,6 +26,8 @@ public class CursorScript : MonoBehaviour
             {
                 GameObject clickObj = hit.transform.gameObject;
                 Debug.Log(clickObj.name);
+
+                
             }
 
             if(hit.transform.gameObject.name == "penButton")
