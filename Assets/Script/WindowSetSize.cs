@@ -11,7 +11,7 @@ public class WindowSetSize : MonoBehaviour
     {
         rectTransform = GetComponent<RectTransform>();
         boxCollider2D = GetComponent<BoxCollider2D>();
-        buttonRectTransform = transform.GetChild(1).GetComponent<RectTransform>();
+        if(transform.childCount > 2) buttonRectTransform = transform.GetChild(2).GetComponent<RectTransform>();
         dataRectTransform = transform.GetChild(0).GetComponent<RectTransform>();
     }
 
@@ -20,8 +20,8 @@ public class WindowSetSize : MonoBehaviour
         Vector2 vector2 = new Vector2(x, rectTransform.rect.height);
 
         rectTransform.sizeDelta = vector2;
-        buttonRectTransform.sizeDelta = new Vector2(vector2.x - 0.7f, buttonRectTransform.sizeDelta.y);
-        dataRectTransform.sizeDelta = new Vector2(vector2.x - 0.7f, dataRectTransform.sizeDelta.y);
-        boxCollider2D.size = vector2;
+        if (buttonRectTransform != null) buttonRectTransform.sizeDelta = new Vector2(vector2.x - 0.75f, buttonRectTransform.sizeDelta.y);
+        dataRectTransform.sizeDelta = new Vector2(vector2.x - 0.75f, dataRectTransform.sizeDelta.y);
+        if(boxCollider2D != null) boxCollider2D.size = new Vector2(x, 1);
     }
 }

@@ -18,4 +18,9 @@ public class WindowButtonAddListner : MonoBehaviour
     {
         button.onClick.AddListener(lineManager.CreateLine);
     }
+
+    public void Deactivate()
+    {
+        Destroy(gameObject);
+    }
 }
