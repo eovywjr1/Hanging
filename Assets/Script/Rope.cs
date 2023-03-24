@@ -16,6 +16,8 @@ public class Rope : MonoBehaviour
     public Transform endTransform;
 
     private List<Segment> segments = new List<Segment>();
+    private bool isCutting = false;
+    private int cutIdx;
 
     private void Reset()
     {
@@ -34,12 +36,69 @@ public class Rope : MonoBehaviour
 
     private void FixedUpdate()
     {
-        UpdateSegments();
-        for(int i=0;i<constraintLoop;i++)
+        if (Input.GetMouseButtonDown(1))
         {
-            ApplyConstraint();
+            isCutting = true;
+            cutIdx = GetNearestSegmentIndex(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            Debug.Log(cutIdx);
         }
-        DrawRope();
+
+        if (Input.GetMouseButtonUp(1))
+        {
+            segmentCnt = cutIdx;
+            constraintLoop = cutIdx;
+
+    isCutting = false;
+            CutRope(cutIdx);
+        }
+
+        if (isCutting)
+        {
+            Vector2 cutPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            segments[cutIdx].position = cutPos;
+            UpdateSegments();
+            ApplyConstraint();
+            DrawRope();
+        }
+        else
+        {
+            UpdateSegments();
+            for (int i = 0; i < constraintLoop; i++)
+            {
+                ApplyConstraint();
+            }
+            DrawRope();
+        }
+    }
+
+    private int GetNearestSegmentIndex(Vector2 point)
+    {
+        int idx = 0;
+        float minDist = Mathf.Infinity;
+        for (int i = 0; i < segments.Count; i++)
+        {
+            float dist = (point - segments[i].position).sqrMagnitude;
+            if (dist < minDist)
+            {
+                minDist = dist;
+                idx = i;
+            }
+        }
+
+        return idx;
+    }
+
+    private void CutRope(int idx)
+    {
+        List<Segment> newSegments = new List<Segment>();
+        newSegments.Add(new Segment(segments[idx].position));
+        newSegments.Add(new Segment(segments[segments.Count - 1].position));
+
+        for (int i = idx + 1; i < segments.Count; i++)
+        {
+            newSegments.Add(segments[i]);
+        }
+        segments = newSegments;
     }
 
     private void DrawRope()
@@ -93,11 +152,11 @@ public class Rope : MonoBehaviour
         }
     }
 
-    public class Segment
+    public class Segment //세그먼트 클래스
     {
-        public Vector2 previousPos;
-        public Vector2 position;
-        public Vector2 velocity;
+        public Vector2 previousPos; //이전 위치
+        public Vector2 position; //현재 위치
+        public Vector2 velocity; //속도 변수
 
         public Segment(Vector2 _position) //리셋
         {

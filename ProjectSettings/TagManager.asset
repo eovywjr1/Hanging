@@ -7,6 +7,9 @@ TagManager:
   - criteria
   - floor
   - badge
+  - buttonObj
+  - rope
+  - link
   layers:
   - Default
   - TransparentFX
@@ -19,7 +22,7 @@ TagManager:
   - 
   - 
   - Attacker
-  - 
+  - Mask
   - 
   - 
   - 
@@ -43,4 +46,22 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: obsMask
+    uniqueID: 3961206049
+    locked: 0
+  - name: illusion
+    uniqueID: 4140746237
+    locked: 0
+  - name: illMask1
+    uniqueID: 3480445605
+    locked: 0
+  - name: illMask2
+    uniqueID: 1775478965
+    locked: 0
+  - name: illMask3
+    uniqueID: 4284610487
+    locked: 0
+  - name: illMask4
+    uniqueID: 595972223
     locked: 0
