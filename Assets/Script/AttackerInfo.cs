@@ -22,5 +22,8 @@ public class AttackerInfo : MonoBehaviour
         ask.ActiveAsk();
     }
 
-    
+    public RecordData GetRecordData()
+    {
+        return recordData;
+    }
 }

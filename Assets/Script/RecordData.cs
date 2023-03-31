@@ -8,6 +8,9 @@ public class RecordData
     public Dictionary<string, string> victimData { get; private set; }
     public Dictionary<string, List<string>> lieORInfoError = new Dictionary<string, List<string>>();
     public int isHanging;
+    public string[] correctState { get; private set; }
+    public string[] currentState { get; private set; }
+    public int lieORinfoErrorValue; //0-> 아무것도 아님, 1->lie, 2->infoError
 
     public RecordData(TableManager tableManager)
     {
@@ -26,6 +29,8 @@ public class RecordData
         Debug.Log("InfoError : " + attackerData["infoError"]);
 
         Judgement();
+        lieORinfoErrorValue = 0; // 0으로 초기화
+        MakeStatement(tableManager);  
     }
 
     //사형 판별//
@@ -109,5 +114,89 @@ public class RecordData
                 }
             }
         }
+    }
+    public Dictionary<string, List<string>> GetLieORInfoError()
+    {
+        return lieORInfoError;
+    }
+
+    public void MakeStatement(TableManager tableManager)
+    {
+        correctState = new string[4]{ attackerData["familyName"] +" "+ attackerData["name"] , attackerData["crime"], attackerData["crimePlaceText"], attackerData["crimeReasonText"] };
+        currentState = new string[4]{ attackerData["familyName"] +" "+ attackerData["name"] , attackerData["crime"], attackerData["crimePlaceText"], attackerData["crimeReasonText"] };
+
+        for (int i = 0; i < 4; i++)
+        {
+            Debug.Log("맞는거"+correctState[i]);
+        }
+
+        Debug.Log("실행생성");
+        if (lieORInfoError.ContainsKey("lie") || lieORInfoError.ContainsKey("infoError"))
+        {
+            if (lieORInfoError.ContainsKey("lie")){
+                Debug.Log("위증!");
+                lieORinfoErrorValue = 1;
+                
+
+                for(int i = 0; i < lieORInfoError["lie"].Count; i++)
+                {
+                    if (lieORInfoError["lie"][i] == "name") //이름이 위증인 경우 위조된 정보로 변경
+                    {
+                        currentState[0] = tableManager.GetRandomStatement("nameT");
+                    }
+                    if (lieORInfoError["lie"][i] == "familyName") //성이 위증인 경우 ~
+                    {
+                        currentState[1] = tableManager.GetRandomStatement("familyName");
+                    }
+                    if (lieORInfoError["lie"][i] == "crime") //성이 위증인 경우
+                    {
+                        currentState[2] = tableManager.GetRandomStatement("crime");
+                    }
+                    if (lieORInfoError["lie"][i] == "crimePlaceText") //성이 위증인 경우
+                    {
+                        currentState[3] = tableManager.GetRandomStatement("crimePlaceText");
+                    }
+                    if (lieORInfoError["lie"][i] == "crimeReasonText") //성이 위증인 경우
+                    {
+                        currentState[4] = tableManager.GetRandomStatement("crimeReasonText"); ;
+                    }
+                }
+            }
+            else
+            {
+                lieORinfoErrorValue = 2;
+                Debug.Log("정보오류!");
+
+                for (int i = 0; i < lieORInfoError["infoError"].Count; i++)
+                {
+                    if (lieORInfoError["infoError"][i] == "name") //이름이 위증인 경우 위조된 정보로 변경
+                    {
+                        currentState[0] = tableManager.GetRandomStatement("nameT");
+                    }
+                    if (lieORInfoError["infoError"][i] == "familyName") //성이 위증인 경우 ~
+                    {
+                        currentState[1] = tableManager.GetRandomStatement("familyName");
+                    }
+                    if (lieORInfoError["infoError"][i] == "crime") //성이 위증인 경우
+                    {
+                        currentState[2] = tableManager.GetRandomStatement("crime");
+                    }
+                    if (lieORInfoError["infoError"][i] == "crimePlaceText") //성이 위증인 경우
+                    {
+                        currentState[3] = tableManager.GetRandomStatement("crimePlaceText");
+                    }
+                    if (lieORInfoError["infoError"][i] == "crimeReasonText") //성이 위증인 경우
+                    {
+                        currentState[4] = tableManager.GetRandomStatement("crimeReasonText"); ;
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            Debug.Log("진술서에 보여지고 있는 것 : " + currentState[i]);
+        }
+
     }
 }
