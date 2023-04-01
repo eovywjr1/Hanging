@@ -295,7 +295,7 @@ public class TableManager : MonoBehaviour
         bool crimePlaceFlag = false, lieFlag = false;
         int cnt = 0;
 
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 4; i++)
         {
             int lieORInfoErrorPossibility = Random.Range(0, 5);
             if (lieORInfoErrorPossibility != 0) continue;
@@ -310,7 +310,7 @@ public class TableManager : MonoBehaviour
             if (lieORInfoErrorDistinguishPossibility == 0)
             {
                 lieFlag = true;
-                if (!lieORInfoError.ContainsKey("lie")) lieORInfoError["lie"] = new List<string>();
+                if (!lieORInfoError.ContainsKey("lie")) lieORInfoError.Add("lie", new List<string>());
                 lieORInfoError["lie"].Add(strs[i]);
             }
 
@@ -319,7 +319,7 @@ public class TableManager : MonoBehaviour
             {
                 if (HangingManager.day >= 7)
                 {
-                    if (!lieORInfoError.ContainsKey("infoError")) lieORInfoError["infoError"] = new List<string>();
+                    if (!lieORInfoError.ContainsKey("infoError")) lieORInfoError.Add("infoError", new List<string>());
                     lieORInfoError["infoError"].Add(strs[i]);
                 }
             }
