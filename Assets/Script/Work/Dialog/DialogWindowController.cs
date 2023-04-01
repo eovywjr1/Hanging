@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class DialogWindowController : MonoBehaviour
 {
+    [SerializeField] GameObject dialogWindow;
+
     public void VisibleDialogWindow()
     {
-        gameObject.SetActive( true );
+        dialogWindow.gameObject.SetActive( true );
     }
 
     public void UnVisibleDialogWindow()
     {
-        gameObject.SetActive( false );
+        dialogWindow.gameObject.SetActive( false );
     }
 }

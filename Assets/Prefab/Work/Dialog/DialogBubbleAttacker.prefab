@@ -88,6 +88,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: DialogBubbleText
       objectReference: {fileID: 0}
+    - target: {fileID: 2732164399847502272, guid: d8429f116e64eb04083920b040d717e3, type: 3}
+      propertyPath: m_text
+      value: hello
+      objectReference: {fileID: 0}
+    - target: {fileID: 2732164399847502272, guid: d8429f116e64eb04083920b040d717e3, type: 3}
+      propertyPath: m_margin.x
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 3086364304463393645, guid: d8429f116e64eb04083920b040d717e3, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -118,11 +126,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3086364304463393645, guid: d8429f116e64eb04083920b040d717e3, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 200
+      value: 133
       objectReference: {fileID: 0}
     - target: {fileID: 3086364304463393645, guid: d8429f116e64eb04083920b040d717e3, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 50
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 3086364304463393645, guid: d8429f116e64eb04083920b040d717e3, type: 3}
       propertyPath: m_LocalPosition.x

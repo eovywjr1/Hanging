@@ -357,7 +357,6 @@ GameObject:
   - component: {fileID: 1326683697}
   - component: {fileID: 1326683701}
   - component: {fileID: 1326683700}
-  - component: {fileID: 1326683699}
   - component: {fileID: 1326683698}
   m_Layer: 5
   m_Name: DialogWindow
@@ -402,18 +401,6 @@ MonoBehaviour:
   - {fileID: 3699062331940477817, guid: 6431aefd19c8a164f8b135e8380f0f32, type: 3}
   - {fileID: 1592825869439922931, guid: 126fe2837fa1d884cb60b7d5a019296a, type: 3}
   - {fileID: 2315152720415512878, guid: 3ee48ee9640b80344a585910a30a8a97, type: 3}
---- !u!114 &1326683699
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1326683696}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2ce1e2e676ce2547aef35a99d79ccd0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1326683700
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1140,21 +1127,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4999154630629337975, guid: 49384f57359b72a4a93d70114bbf4a7a, type: 3}
+      propertyPath: dialogWindow
+      value: 
+      objectReference: {fileID: 1326683696}
     - target: {fileID: 9054927331474103976, guid: 49384f57359b72a4a93d70114bbf4a7a, type: 3}
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 9054927331474103976, guid: 49384f57359b72a4a93d70114bbf4a7a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.88224494
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9054927331474103976, guid: 49384f57359b72a4a93d70114bbf4a7a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.4172709
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9054927331474103976, guid: 49384f57359b72a4a93d70114bbf4a7a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.1115962
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9054927331474103976, guid: 49384f57359b72a4a93d70114bbf4a7a, type: 3}
       propertyPath: m_LocalRotation.w
