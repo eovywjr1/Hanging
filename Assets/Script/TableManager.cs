@@ -295,7 +295,7 @@ public class TableManager : MonoBehaviour
         bool crimePlaceFlag = false, lieFlag = false;
         int cnt = 0;
 
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 4; i++)
         {
             int lieORInfoErrorPossibility = Random.Range(0, 5);
             if (lieORInfoErrorPossibility != 0) continue;
@@ -333,5 +333,40 @@ public class TableManager : MonoBehaviour
         else data["infoError"] = "1";
 
         data["lie"] = lieFlag ? "0" : "1";
+    }
+    public string GetRandomStatement(string str)
+    {
+        if (str == "nameT")
+        {
+            int valueid = Random.Range(0, nameT.Count);
+            int headerid = Random.Range(0, nameT[0]["header"].Count);
+
+            return nameT[valueid][nameT[0]["header"][headerid]][0];
+        }
+        else if (str == "fnameT")
+        {
+            int valueid = Random.Range(0, fnameT.Count);
+            int headerid = Random.Range(0, fnameT[0]["header"].Count);
+
+            return fnameT[valueid][fnameT[0]["header"][headerid]][0];
+        }
+        else if (str == "crime")
+        {
+            int valueid = Random.Range(0, crimeT.Count);
+            int headerid = Random.Range(0, crimeT[0]["header"].Count);
+
+            return crimeT[valueid][crimeT[0]["header"][headerid]][0];
+        }
+        else if (str == "crimePlaceText")
+        {
+            return GetCrimePlace(Random.Range(0, 7).ToString());
+        }
+        else //¸¶Áö¸· crimeReasonText
+        {
+            int valueid = Random.Range(0, crimeT.Count);
+            int headerid = Random.Range(0, crimeT[0]["header"].Count);
+
+            return detailT[valueid][detailT[0]["header"][0]][0];
+        }
     }
 }

@@ -10,7 +10,7 @@ public class HangingManager : MonoBehaviour
     public bool isTodesstrafe;
     public AttackerMouseMove attackerMouseMove;
     public AttackerInfo attackerInfo;
-    public static int day = 7, attackerCount = 1;
+    public static int day =7, attackerCount = 1;
     static bool isCorrect = true;
     private AnalogGlitch analogGlitch;
     [SerializeField] BossHand bossHand;
@@ -64,12 +64,14 @@ public class HangingManager : MonoBehaviour
     {
         if (mode == attackerInfo.recordData.isHanging)
         {
+            Debug.Log("ㅅㅂ"+attackerInfo.recordData.isHanging);
             isCorrect = false;
             NextAttacker();
             return true;
         }
         else
         {
+            Debug.Log("ㅅㅂ" + attackerInfo.recordData.isHanging);
             isCorrect = false;
             StartCoroutine(StartGlitch());
             return false;
@@ -114,8 +116,22 @@ public class HangingManager : MonoBehaviour
         NextAttacker();
     }
 
+
     IEnumerator StartHoldOutHands()
     {
+        yield return new WaitForSecondsRealtime(1.25f);
+
+        bossHand.holdOutHand();
+    }
+
+    public IEnumerator StartStateWrong() //진술서 클릭 틀릴때 
+    {
+        analogGlitch._isGlitch = true;
+
+        yield return new WaitForSecondsRealtime(0.75f);
+
+        analogGlitch._isGlitch = false;
+
         yield return new WaitForSecondsRealtime(1.25f);
 
         bossHand.holdOutHand();
