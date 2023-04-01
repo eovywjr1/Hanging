@@ -14,7 +14,6 @@ public class AttackerInfo : MonoBehaviour
         recordData = new RecordData(tableManager);
 
         if (recordData.attackerData.ContainsKey("ask") && recordData.attackerData["ask"].Equals("1")) ActiveAsk();
-        //if (recordData.attackerData.ContainsKey("lie") && 
     }
 
     void ActiveAsk()

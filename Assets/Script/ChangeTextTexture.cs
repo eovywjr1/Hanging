@@ -23,9 +23,7 @@ public class ChangeTextTexture : MonoBehaviour
         if (cursorScript.penCursor && afterClick==false)
         {
             Debug.Log("마우스 인");
-            gameObject.transform.GetChild(0).GetComponent<Image>().color = new Color32(239,239,239,255);
-            //gameObject.transform.GetChild(0).GetChild(0).GetComponent<TMP_Text>().color = Color.white;
-
+            gameObject.transform.GetChild(0).GetComponent<Image>().color = new Color32(239, 239, 239, 255);
         }
     }
 
@@ -34,7 +32,6 @@ public class ChangeTextTexture : MonoBehaviour
         if(afterClick == false)
         {
             gameObject.transform.GetChild(0).GetComponent<Image>().color = Color.white;
-            //gameObject.transform.GetChild(0).GetChild(0).GetComponent<TMP_Text>().color = Color.black;
         }
 
     }

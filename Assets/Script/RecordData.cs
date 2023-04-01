@@ -120,6 +120,7 @@ public class RecordData
         return lieORInfoError;
     }
 
+    //진술서 데이터 생성
     public void MakeStatement(TableManager tableManager)
     {
         correctState = new string[4]{ attackerData["familyName"] +" "+ attackerData["name"] , attackerData["crime"], attackerData["crimePlaceText"], attackerData["crimeReasonText"] };

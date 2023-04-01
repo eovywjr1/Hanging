@@ -50,7 +50,7 @@ public class ScrollViewController : MonoBehaviour
     {
         var newUi=Instantiate(uiPrefab,scrollRect.content).GetComponent<RectTransform>();
 
-        //str = "æ»≥Á«œººø‰æ»≥Á«œººø‰æ»≥Á«œººø‰æ»≥Á«œººø‰æ»≥Á«œººø‰";
+        str = "æ»≥Á«œººø‰æ»≥Á«œººø‰æ»≥Á«œººø‰æ»≥Á«œººø‰æ»≥Á«œººø‰";
 
         string txtAll =str;
         int lineCnt = 1;
