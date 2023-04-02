@@ -8,6 +8,7 @@ TagManager:
   - floor
   - badge
   - buttonObj
+  - statement
   layers:
   - Default
   - TransparentFX
@@ -53,4 +54,16 @@ TagManager:
     locked: 0
   - name: Attacker
     uniqueID: 2790971519
+    locked: 0
+  - name: illMask1
+    uniqueID: 1644934161
+    locked: 0
+  - name: illMask2
+    uniqueID: 3072078099
+    locked: 0
+  - name: illMask3
+    uniqueID: 2766912749
+    locked: 0
+  - name: illMask4
+    uniqueID: 417018255
     locked: 0
