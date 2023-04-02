@@ -17,16 +17,16 @@ public class RecordData
         attackerData = tableManager.GetData(null, null, ref lieORInfoError);
         victimData = tableManager.GetData(attackerData["familyName"], attackerData["name"], ref lieORInfoError);
         
-        Debug.Log("PositionGrade : " + attackerData["positionGrade"]);
-        Debug.Log("FamilyGrade : " + attackerData["familyGrade"]);
-        Debug.Log("CrimeGrade : " + attackerData["crimeGrade"]);
-        Debug.Log("CrimeReason : " + attackerData["crimeReason"]);
-        Debug.Log("AttackerJob : " + attackerData["job"]);
-        Debug.Log("AttackerMove : " + attackerData["move"]);
-        Debug.Log("VictimMove : " + victimData["move"]);
-        Debug.Log("CrimeRecord : " + attackerData["crimeRecord"]);
-        Debug.Log("Lie : " + attackerData["lie"]);
-        Debug.Log("InfoError : " + attackerData["infoError"]);
+        //Debug.Log("PositionGrade : " + attackerData["positionGrade"]);
+        //Debug.Log("FamilyGrade : " + attackerData["familyGrade"]);
+        //Debug.Log("CrimeGrade : " + attackerData["crimeGrade"]);
+        //Debug.Log("CrimeReason : " + attackerData["crimeReason"]);
+        //Debug.Log("AttackerJob : " + attackerData["job"]);
+        //Debug.Log("AttackerMove : " + attackerData["move"]);
+        //Debug.Log("VictimMove : " + victimData["move"]);
+        //Debug.Log("CrimeRecord : " + attackerData["crimeRecord"]);
+        //Debug.Log("Lie : " + attackerData["lie"]);
+        //Debug.Log("InfoError : " + attackerData["infoError"]);
 
         Judgement();
         lieORinfoErrorValue = 0; // 0으로 초기화

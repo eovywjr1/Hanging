@@ -11,10 +11,12 @@ public class DialogBubbleController : MonoBehaviour
     [SerializeField] GameObject []dialogBubblePrefab;
     List<GameObject> dialogBubbleList = new List<GameObject>();
     DialogWindowController dialogWindowController;
+    ContentSizeFitter csf;
 
     private void Awake()
     {
         dialogWindowController = FindObjectOfType<DialogWindowController>();
+        csf = GetComponent<ContentSizeFitter>();
     }
 
     private void Update()
@@ -24,10 +26,10 @@ public class DialogBubbleController : MonoBehaviour
 
     GameObject GetDialogBubble( int id ) // 플레이어(0), 사형수(1), 보스(2)
     {
-        return Instantiate( dialogBubblePrefab[id], dialogBubblePrefab[id].transform.position, Quaternion.identity, transform );
+        return Instantiate( dialogBubblePrefab[id], dialogBubblePrefab[id].transform.position, Quaternion.identity, transform);
     }
 
-    void CreateDialogBubble( int id , string str )
+    public void CreateDialogBubble( int id , string str )
     {
         dialogWindowController.VisibleDialogWindow();
         dialogBubbleList.Add( GetDialogBubble( id ) );
@@ -35,6 +37,7 @@ public class DialogBubbleController : MonoBehaviour
         DialogTextShow( str );
         BubbleSetSizeSet(str);
         SetPositionDialogBubble(260, id);
+        LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)csf.transform);
     }
 
     void SetPositionDialogBubble ( float startY, int id)
@@ -57,9 +60,18 @@ public class DialogBubbleController : MonoBehaviour
     void BubbleSetSizeSet(string str)
     {
         RectTransform dialogRectTransform = dialogBubbleList[dialogBubbleList.Count - 1].GetComponent<RectTransform>();
-        float x = str.Length * 11;
-        Vector2 vector2 = new Vector2(x, dialogRectTransform.sizeDelta.y);
-        dialogRectTransform.sizeDelta = vector2;
-        dialogBubbleList[dialogBubbleList.Count - 1].transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = vector2;
+        //float x = str.Length * 14;
+        //Vector2 vector2 = new Vector2(x, dialogRectTransform.sizeDelta.y);
+        //dialogRectTransform.sizeDelta = vector2;
+        //dialogRectTransform.sizeDelta = dialogBubbleList[dialogBubbleList.Count - 1].transform.GetChild(0).GetComponent<RectTransform>().sizeDelta;
+        StartCoroutine(BubbleSetSizeSet1());
+        //dialogBubbleList[dialogBubbleList.Count - 1].transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = vector2;
+    }
+
+    IEnumerator BubbleSetSizeSet1()
+    {
+        yield return new WaitForSecondsRealtime(0.1f * Time.deltaTime);
+        RectTransform dialogRectTransform = dialogBubbleList[dialogBubbleList.Count - 1].GetComponent<RectTransform>();
+        dialogRectTransform.sizeDelta = dialogBubbleList[dialogBubbleList.Count - 1].transform.GetChild(0).GetComponent<RectTransform>().sizeDelta;
     }
 }
