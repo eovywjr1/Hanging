@@ -31,6 +31,7 @@ public class DialogBubbleController : MonoBehaviour
     {
         dialogWindowController.VisibleDialogWindow();
         dialogBubbleList.Add( GetDialogBubble( id ) );
+        //길면 줄바꿈 함수 삽입 자리//
         DialogTextShow( str );
         BubbleSetSizeSet(str);
         SetPositionDialogBubble(260, id);
