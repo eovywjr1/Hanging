@@ -25,13 +25,10 @@ public class DialogCompulsory : MonoBehaviour
 
     IEnumerator Dialog()
     {
-        Debug.Log(this.GetType().GetMethod("ActiveGuide"));
         string id = HangingManager.day + "000";
 
         while (compulsoryT.ContainsKey(id))
         {
-            Debug.Log(id);
-            Debug.Log(compulsoryT[id][0][1]);
             foreach (var i in compulsoryT[id])
             {
                 dialogBubbleController.CreateDialogBubble(StringToInt(i[1]), i[2]);

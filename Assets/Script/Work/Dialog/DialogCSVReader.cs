@@ -31,7 +31,6 @@ public class DialogCSVReader
 
             List<string> valueList = new List<string>();
             for (var j = 1; j < header.Length; j++)
-                //valueList.Add(values[j].TrimStart(TRIM_CHARS).TrimEnd(TRIM_CHARS).Replace("\\", ""));
                 valueList.Add(values[j]);
             list[values[0]].Add(valueList);
         }
