@@ -34,7 +34,7 @@ public class ScrollViewController : MonoBehaviour
         
         if (flag == false)
         {
-            string[] fixtext = { "ÀÌ¸§ : ", "¹üÁË : ", "¹üÁËÀå¼Ò : ", "¹üÁË°æÀ§ : " };
+            string[] fixtext = { "ï¿½Ì¸ï¿½ : ", "ï¿½ï¿½ï¿½ï¿½ : ", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ : ", "ï¿½ï¿½ï¿½Ë°ï¿½ï¿½ï¿½ : " };
             for (int i = 0; i < 4; i++)
             {
                 compareMent = attackerInfo.recordData.correctState[i].Equals(attackerInfo.recordData.currentState[i]) ? true : false;
@@ -50,11 +50,11 @@ public class ScrollViewController : MonoBehaviour
     {
         var newUi=Instantiate(uiPrefab,scrollRect.content).GetComponent<RectTransform>();
 
-        str = "¾È³çÇÏ¼¼¿ä¾È³çÇÏ¼¼¿ä¾È³çÇÏ¼¼¿ä¾È³çÇÏ¼¼¿ä¾È³çÇÏ¼¼¿ä";
+        //str = "ï¿½È³ï¿½ï¿½Ï¼ï¿½ï¿½ï¿½È³ï¿½ï¿½Ï¼ï¿½ï¿½ï¿½È³ï¿½ï¿½Ï¼ï¿½ï¿½ï¿½È³ï¿½ï¿½Ï¼ï¿½ï¿½ï¿½È³ï¿½ï¿½Ï¼ï¿½ï¿½ï¿½";
 
         string txtAll =str;
         int lineCnt = 1;
-        if (txtALlTmp == null) Debug.Log("¾÷½Â¤±"); 
+        if (txtALlTmp == null) Debug.Log("ï¿½ï¿½ï¿½Â¤ï¿½"); 
         //txtALlTmp=new tmp
         txtALlTmp.text = txtAll;
 
@@ -62,12 +62,12 @@ public class ScrollViewController : MonoBehaviour
         string resultStr="";
         string addStr="";
 
-        //±ÛÀÚ°¡ Ã¢À» ³Ñ¾î°¡´Â ±æÀÌ¸é °³Çà¹®ÀÚ Ãß°¡ÇÔ//
+        //ï¿½ï¿½ï¿½Ú°ï¿½ Ã¢ï¿½ï¿½ ï¿½Ñ¾î°¡ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½à¹®ï¿½ï¿½ ï¿½ß°ï¿½ï¿½ï¿½//
         if (txtALlTmp.preferredWidth >= 300)  
         {
             while (txtALlTmp.preferredWidth > 300)
             {
-                //ÃÊ±âÈ­
+                //ï¿½Ê±ï¿½È­
                 addStr = "";
                 forWidth.text = "";
 
@@ -77,26 +77,26 @@ public class ScrollViewController : MonoBehaviour
                     txtAll = txtAll.Remove(0, 1);
                     txtALlTmp.text = txtAll;
 
-                    forWidth.text = addStr; // addStrÀÇ ±æÀÌ¸¦ ¾Ë¾Æ³»±â À§ÇÔ
+                    forWidth.text = addStr; // addStrï¿½ï¿½ ï¿½ï¿½ï¿½Ì¸ï¿½ ï¿½Ë¾Æ³ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                     
                 }
                 lineCnt++;
-                resultStr =resultStr+ addStr+System.Environment.NewLine; //ÁÙ¹Ù²Þ
+                resultStr =resultStr+ addStr+System.Environment.NewLine; //ï¿½Ù¹Ù²ï¿½
 
                 
             }
 
             resultStr = resultStr + txtAll;
 
-            //Á¤º¸´Ù¸¦¶§¸¸ ¸¶Áö¸· ¹®Àå ÀúÀå
+            //ï¿½ï¿½ï¿½ï¿½ï¿½Ù¸ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             if (compareMent == false)
             {
                 newUi.GetComponent<ChangeTextTexture>().lastMent = txtAll;
             }
         }
         else {
-            //txtALlTmp.text = resultStr; //À§Áõ/Á¤º¸¿À·ù ±Û¾¾ ±æÀÌ ÆÇ´ÜÀ» À§ÇÔ
-            //Á¤º¸´Ù¸¦¶§¸¸ ¸¶Áö¸· ¹®Àå ÀúÀå
+            //txtALlTmp.text = resultStr; //ï¿½ï¿½ï¿½ï¿½/ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Û¾ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ç´ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+            //ï¿½ï¿½ï¿½ï¿½ï¿½Ù¸ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             if (compareMent == false)
             {
                 newUi.GetComponent<ChangeTextTexture>().lastMent = resultStr;
@@ -106,19 +106,19 @@ public class ScrollViewController : MonoBehaviour
         }
 
         /*
-        //À§Áõ/Á¤º¸¿À·ù ±Û¾¾ Ãß°¡
-        if (lieORinfoErrorValue == 1) //À§Áõ
+        //ï¿½ï¿½ï¿½ï¿½/ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Û¾ï¿½ ï¿½ß°ï¿½
+        if (lieORinfoErrorValue == 1) //ï¿½ï¿½ï¿½ï¿½
         {
-            txtALlTmp.text = addStr + "ºÒÀÏÄ¡ -> À§Áõ";
+            txtALlTmp.text = addStr + "ï¿½ï¿½ï¿½ï¿½Ä¡ -> ï¿½ï¿½ï¿½ï¿½";
             if (txtALlTmp.preferredWidth >= 300)
             {
-                //À§Áõ ±Û¾¾¸¸ ¾Æ·¡ÁÙ·Î
-                resultStr = resultStr + System.Environment.NewLine + "ºÒÀÏÄ¡ -> À§Áõ";
+                //ï¿½ï¿½ï¿½ï¿½ ï¿½Û¾ï¿½ï¿½ï¿½ ï¿½Æ·ï¿½ï¿½Ù·ï¿½
+                resultStr = resultStr + System.Environment.NewLine + "ï¿½ï¿½ï¿½ï¿½Ä¡ -> ï¿½ï¿½ï¿½ï¿½";
             }
             else
             {
-                //À§Áõ ±Û¾¾ ±×³É Ãß°¡
-                resultStr = resultStr + "ºÒÀÏÄ¡ -> À§Áõ";
+                //ï¿½ï¿½ï¿½ï¿½ ï¿½Û¾ï¿½ ï¿½×³ï¿½ ï¿½ß°ï¿½
+                resultStr = resultStr + "ï¿½ï¿½ï¿½ï¿½Ä¡ -> ï¿½ï¿½ï¿½ï¿½";
             }
         }
         */
@@ -141,16 +141,16 @@ public class ScrollViewController : MonoBehaviour
 
         scrollRect.content.sizeDelta = new Vector2(scrollRect.content.sizeDelta.x, y);
 
-        Debug.Log("¸ÇÆ® Ãß°¡");
+        Debug.Log("ï¿½ï¿½Æ® ï¿½ß°ï¿½");
     }
 
     /*
     void ShowMent()
     {
-        Debug.Log("¾îÂ¿fkrh¶ó°í" );
+        Debug.Log("ï¿½ï¿½Â¿fkrhï¿½ï¿½ï¿½" );
         for (int i = 0; i < 4; i++)
         {
-            //Debug.Log("¾îÂ¿"+attackerInfo.recordData.isHanging);
+            //Debug.Log("ï¿½ï¿½Â¿"+attackerInfo.recordData.isHanging);
             compareMent = attackerInfo.recordData.correctState[i].Equals(attackerInfo.recordData.currentState[i]) ? true : false;
             AddMent(attackerInfo.recordData.currentState[i], compareMent);
         }
@@ -158,7 +158,7 @@ public class ScrollViewController : MonoBehaviour
     */
     void MakeMentList()
     {
-        string[] fixtext = { "ÀÌ¸§ : ", "¹üÁË : ", "¹üÁËÀå¼Ò : ", "¹üÁË°æÀ§ : " };
+        string[] fixtext = { "ï¿½Ì¸ï¿½ : ", "ï¿½ï¿½ï¿½ï¿½ : ", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ : ", "ï¿½ï¿½ï¿½Ë°ï¿½ï¿½ï¿½ : " };
         for (int i = 0; i < 4; i++)
         {
             compareMent = attackerInfo.recordData.correctState[i].Equals(attackerInfo.recordData.currentState[i]) ? true : false;
