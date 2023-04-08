@@ -64,14 +64,12 @@ public class HangingManager : MonoBehaviour
     {
         if (mode == attackerInfo.recordData.isHanging)
         {
-            Debug.Log("さげ"+attackerInfo.recordData.isHanging);
             isCorrect = false;
             NextAttacker();
             return true;
         }
         else
         {
-            Debug.Log("さげ" + attackerInfo.recordData.isHanging);
             isCorrect = false;
             StartCoroutine(StartGlitch());
             return false;
