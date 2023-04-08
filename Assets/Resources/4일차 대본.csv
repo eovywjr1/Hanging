@@ -1,4 +1,4 @@
-id,index,teller,message,condition,
+id,index,teller,message,condition,action
 4000,0,2,마침내 네 번째 아침을 맞게 되었군.,,
 4000,1,2,일이 꽤 적성에 맞는 모양이야?,,
 4000,2,2,"뭐, 정부가 괜히 자네를 이곳에 꽂은 게 아닐 테니.",,

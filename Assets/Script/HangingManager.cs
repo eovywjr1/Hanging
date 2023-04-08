@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class HangingManager : MonoBehaviour
 {
-    public bool isTodesstrafe;
+    public bool isTodesstrafe, isAmnesty, endPerAttacker;
     public AttackerMouseMove attackerMouseMove;
     public AttackerInfo attackerInfo;
     public static int day = 1, attackerCount = 1;
@@ -37,11 +37,12 @@ public class HangingManager : MonoBehaviour
         attackerMouseMove.SetisPossibleTodesstrafe(false);
         DestroyAllLineAndWindow();
 
-        isTodesstrafe = true;
+        endPerAttacker = true;
     }
 
     public void Todesstrafe()
     {
+        isTodesstrafe = true;
         EndTodesstrafe();
 
         //사형 판별//
@@ -52,6 +53,7 @@ public class HangingManager : MonoBehaviour
 
     public void UnTodesstrafe()
     {
+        isAmnesty = true;
         EndTodesstrafe();
 
         //사형 판별//
@@ -64,14 +66,14 @@ public class HangingManager : MonoBehaviour
     {
         if (mode == attackerInfo.recordData.isHanging)
         {
-            Debug.Log("ㅅㅂ"+attackerInfo.recordData.isHanging);
+            Debug.Log(attackerInfo.recordData.isHanging);
             isCorrect = false;
             NextAttacker();
             return true;
         }
         else
         {
-            Debug.Log("ㅅㅂ" + attackerInfo.recordData.isHanging);
+            Debug.Log(attackerInfo.recordData.isHanging);
             isCorrect = false;
             StartCoroutine(StartGlitch());
             return false;

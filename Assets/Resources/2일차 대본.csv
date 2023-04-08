@@ -1,4 +1,4 @@
-id,index,teller,message,condition,
+id,index,teller,message,condition,action
 2000,0,2,"오, 피터 자네.",,
 2000,1,2,용케 첫날을 버텨냈군?,,
 2000,2,2,으레 처음이 어려운 법이지.,,

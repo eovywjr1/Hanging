@@ -1,4 +1,4 @@
-id,index,teller,message,condition,
+id,index,teller,message,condition,action
 5000,0,2,다섯 번째가 되니 반가운데.,,
 5001,0,0,그런가요.,,
 5002,0,2,무슨 문제라도 있나?,,

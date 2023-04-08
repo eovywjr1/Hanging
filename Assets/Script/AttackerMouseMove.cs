@@ -6,6 +6,10 @@ using UnityEditor.Tilemaps;
 
 public class AttackerMouseMove : MonoBehaviour
 {
+    HangingManager hangingManager;
+    LineManager lineManager;
+    DialogCompulsory dialogCompulsory;
+
     Vector3 preMousePosition;
     [SerializeField] bool isPossibleTodesstrafe; // 구현 완료 후 serial 삭제
     bool isCreateLine;
@@ -15,8 +19,6 @@ public class AttackerMouseMove : MonoBehaviour
     float initialMouseX;
     [SerializeField] float minY; // 구현 완료 후 serial 삭제
     RectTransform windowRectTransform;
-    HangingManager hangingManager;
-    LineManager lineManager;
     Line line;
     GameObject window;
     [SerializeField] GameObject criteria;
@@ -26,6 +28,8 @@ public class AttackerMouseMove : MonoBehaviour
     {
         hangingManager = FindObjectOfType<HangingManager>();
         lineManager = FindObjectOfType<LineManager>();
+        dialogCompulsory = FindObjectOfType<DialogCompulsory>();
+
         isPossibleTodesstrafe = true;
     }
 
@@ -53,6 +57,8 @@ public class AttackerMouseMove : MonoBehaviour
 
     void OnMouseDown()
     {
+        dialogCompulsory.isCickAttacker = true; // 대사 관련 이벤트 전달
+
         if (isPossibleTodesstrafe)
         {
             if (!isCreateLine) lineManager.CreateLine();

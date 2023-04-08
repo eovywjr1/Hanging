@@ -14,6 +14,7 @@ public class DialogBubbleController : MonoBehaviour
     DialogWindowController dialogWindowController;
     RectTransform rectTransform;
     const int perBubbleHeight = 50;
+    [SerializeField] Scrollbar scrollbar;
 
     private void Awake()
     {
@@ -75,6 +76,11 @@ public class DialogBubbleController : MonoBehaviour
         StartCoroutine(BubbleSetSizeSet1(id, index));
     }
 
+    void SetScrollValue()
+    {
+        scrollbar.value = 0;
+    }
+
     IEnumerator BubbleSetSizeSet1(int id, int index)
     {
         yield return new WaitForSecondsRealtime(0.1f * Time.deltaTime);
@@ -82,5 +88,6 @@ public class DialogBubbleController : MonoBehaviour
         rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, rectTransform.sizeDelta.y + perBubbleHeight);
 
         SetPositionDialogBubble(id, index);
+        SetScrollValue();
     }
 }

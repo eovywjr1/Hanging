@@ -679,6 +679,7 @@ MonoBehaviour:
   - {fileID: 5341739407387433058, guid: aee67f288c338ee4785d2b97db49b096, type: 3}
   - {fileID: 5341739407387433058, guid: 775f0355aed41f64dba0c70dad17b50d, type: 3}
   - {fileID: 5341739407387433058, guid: 9e8cf63002b05784f9ac14a8367a25bf, type: 3}
+  scrollbar: {fileID: 1032565161}
 --- !u!114 &869116880
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -691,6 +692,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ca6fe71a970b5a4099ac195d5f957d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isCickAttacker: 0
 --- !u!114 &869116881
 MonoBehaviour:
   m_ObjectHideFlags: 0
