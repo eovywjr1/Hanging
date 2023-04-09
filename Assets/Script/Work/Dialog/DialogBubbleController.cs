@@ -12,19 +12,12 @@ public class DialogBubbleController : MonoBehaviour
     List<GameObject> dialogBubbleList = new List<GameObject>();
     List<RectTransform> dialogBubbleRecttransformList = new List<RectTransform>();
     DialogWindowController dialogWindowController;
-    RectTransform rectTransform;
     const int perBubbleHeight = 50;
     [SerializeField] Scrollbar scrollbar;
 
     private void Awake()
     {
         dialogWindowController = FindObjectOfType<DialogWindowController>();
-        rectTransform = GetComponent<RectTransform>();
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyUp(KeyCode.V)) CreateDialogBubble( 1 , "qweqweeqwweqeqwqweqwe");
     }
 
     GameObject GetDialogBubble( int id ) // 플레이어(0), 사형수(1), 보스(2)
@@ -34,23 +27,29 @@ public class DialogBubbleController : MonoBehaviour
 
     public void CreateDialogBubble( int id , string str )
     {
-        if (dialogWindowController == null)
-            Debug.Log("dialogWindowController가 null");
-        dialogWindowController.VisibleDialogWindow();
-
         if (dialogBubbleList == null)
-            Debug.Log("dialogBubbleList가 null");
-        if (id < 0 || id > 2)
-            Debug.Log("id가 유효하지 않음");
-        dialogBubbleList.Add( GetDialogBubble( id ).transform.GetChild(0).gameObject );
+        {
+            return;
+        }
+
+        if (dialogWindowController = null)
+        {
+            dialogWindowController.VisibleDialogWindow();
+        }
+
+        if (id >= 0 && id <= 2)
+        {
+            dialogBubbleList.Add(GetDialogBubble(id).transform.GetChild(0).gameObject);
+        }
         int bubbleIndex = dialogBubbleList.Count - 1;
-        if (bubbleIndex < 0)
-            Debug.Log("bubbleIndex가 유효하지 않음");
-        dialogBubbleRecttransformList.Add(dialogBubbleList[bubbleIndex].GetComponent<RectTransform>());
+        if (bubbleIndex >= 0)
+        {
+            dialogBubbleRecttransformList.Add(dialogBubbleList[bubbleIndex].GetComponent<RectTransform>());
+        }
 
         //길면 줄바꿈 함수 삽입 자리//
         DialogTextShow( str, bubbleIndex);
-        BubbleSetSizeSet(id, bubbleIndex);
+        SetBubbleSetSize(id, bubbleIndex);
     }
 
     void SetPositionDialogBubble (int id, int index)
@@ -71,9 +70,9 @@ public class DialogBubbleController : MonoBehaviour
         dialogBubbleList[index].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = str;
     }
 
-    void BubbleSetSizeSet(int id, int index)
+    void SetBubbleSetSize(int id, int index)
     {
-        StartCoroutine(BubbleSetSizeSet1(id, index));
+        StartCoroutine(SetBubble(id, index));
     }
 
     void SetScrollValue()
@@ -81,13 +80,14 @@ public class DialogBubbleController : MonoBehaviour
         scrollbar.value = 0;
     }
 
-    IEnumerator BubbleSetSizeSet1(int id, int index)
+    IEnumerator SetBubble(int id, int index)
     {
-        yield return new WaitForSecondsRealtime(0.1f * Time.deltaTime);
+        yield return new WaitForSecondsRealtime(Time.deltaTime);
         dialogBubbleRecttransformList[index].sizeDelta = dialogBubbleList[index].transform.GetChild(0).GetComponent<RectTransform>().sizeDelta;
-        rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, rectTransform.sizeDelta.y + perBubbleHeight);
 
+        yield return new WaitForSecondsRealtime(Time.deltaTime); //생성 딜레이 후 set 적용
         SetPositionDialogBubble(id, index);
         SetScrollValue();
+
     }
 }

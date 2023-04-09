@@ -172,6 +172,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DialogBubbleBoss
       objectReference: {fileID: 0}
+    - target: {fileID: 4853138109380318137, guid: 3ee48ee9640b80344a585910a30a8a97, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 30
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3ee48ee9640b80344a585910a30a8a97, type: 3}
 --- !u!224 &6439108169294465092 stripped

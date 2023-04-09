@@ -5,10 +5,12 @@ using UnityEngine.EventSystems;
 
 public class CutRope : MonoBehaviour
 {
+    HangingManager hangingManager;
+
     Vector3 initialMousePosition;
     public GameObject rope;
+
     private float cutDistance = 2f;
-    HangingManager hangingManager;
     private bool isCut = false;
 
     private void Awake()
@@ -18,7 +20,7 @@ public class CutRope : MonoBehaviour
 
     private void Update()
     {
-        if (hangingManager.isTodesstrafe)
+        if ((hangingManager.isTodesstrafe == false) && (hangingManager.isAmnesty == false))
         {
             if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject() && rope != null)
             {
@@ -35,7 +37,8 @@ public class CutRope : MonoBehaviour
                 if ((initialMousePosition.x >= ropePosition.x && initialMousePosition.x - currentMousePosition.x >= cutDistance && currentMousePosition.x < ropePosition.x) ||
                     (initialMousePosition.x < ropePosition.x && currentMousePosition.x - initialMousePosition.x >= cutDistance && currentMousePosition.x > ropePosition.x))
                 {
-                    hangingManager.UnTodesstrafe();
+                    HangingManager.attackerDialogEvent.SetSituationDialogEvent(HangingManager.attackerDialogEvent.GetRandomId(21, 28), 0);
+                    hangingManager.Amnesty();
                 }
             }
             else if (Input.GetMouseButtonUp(0)) isCut = false;

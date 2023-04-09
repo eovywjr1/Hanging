@@ -8,13 +8,10 @@ public class AttackerMouseMove : MonoBehaviour
 {
     HangingManager hangingManager;
     LineManager lineManager;
-    DialogCompulsory dialogCompulsory;
+    AttackerDialogEvent attackerDialogEvent;
 
     Vector3 preMousePosition;
-    [SerializeField] bool isPossibleTodesstrafe; // 구현 완료 후 serial 삭제
-    bool isCreateLine;
-    bool isDescend;
-    bool isTodesstrafe;
+    [SerializeField] bool isPossibleTodesstrafe, isPossibleClick, isCreateLine, isDescend, isTodesstrafe;
     float descendSpeed = 2f;
     float initialMouseX;
     [SerializeField] float minY; // 구현 완료 후 serial 삭제
@@ -28,14 +25,16 @@ public class AttackerMouseMove : MonoBehaviour
     {
         hangingManager = FindObjectOfType<HangingManager>();
         lineManager = FindObjectOfType<LineManager>();
-        dialogCompulsory = FindObjectOfType<DialogCompulsory>();
+    }
 
-        isPossibleTodesstrafe = true;
+    private void Start()
+    {
+        attackerDialogEvent = HangingManager.attackerDialogEvent;
     }
 
     void Update()
     {
-        if (isPossibleTodesstrafe || !isTodesstrafe)
+        if (isPossibleTodesstrafe || (isTodesstrafe == false)) 
         {
             if (Line.lineList.Count > 0 && line == null)
             {
@@ -57,12 +56,15 @@ public class AttackerMouseMove : MonoBehaviour
 
     void OnMouseDown()
     {
-        dialogCompulsory.isCickAttacker = true; // 대사 관련 이벤트 전달
-
-        if (isPossibleTodesstrafe)
+        if (isPossibleClick || isPossibleTodesstrafe)
         {
-            if (!isCreateLine) lineManager.CreateLine();
-            else criteria.SetActive(true);
+            attackerDialogEvent.SetCompulsoryDialogEvent("isClickAttacker");
+
+            if (isCreateLine == false)
+            {
+                lineManager.CreateLine();
+                isCreateLine = true;
+            }
 
             isDescend = false;
 
@@ -70,7 +72,10 @@ public class AttackerMouseMove : MonoBehaviour
             initialMouseX = Input.mousePosition.x;
             preMousePosition = Camera.main.ScreenToWorldPoint(mousePosition);   //이상한 위치로 이동 방지하기 위해 preMousePosition 초기화
 
-            LineChangeTransparency(-1);
+            if (isPossibleTodesstrafe) // 필수 대사에서 클릭했을 때 투명도 감소 방지
+            {
+                LineChangeTransparency(-1);
+            }
         }
     }
 
@@ -96,11 +101,15 @@ public class AttackerMouseMove : MonoBehaviour
     {
         if (isPossibleTodesstrafe)
         {
-            criteria.SetActive(false);
+            if (isCreateLine)
+            {
+                LineChangeTransparency(1);
+            }
 
-            if(isCreateLine) LineChangeTransparency(1);
-
-            if (transform.position.y > minY) isDescend = true;
+            if (transform.position.y > minY)
+            {
+                isDescend = true;
+            }
             isCreateLine = true;
         }
     }
@@ -115,12 +124,22 @@ public class AttackerMouseMove : MonoBehaviour
                 isPossibleTodesstrafe = false;
                 isTodesstrafe = true;
             }
+
+            if((collision.CompareTag("middleCriteria")) && (isDescend == false))
+            {
+                attackerDialogEvent.SetSituationDialogEvent(attackerDialogEvent.GetRandomId(11, 20), 0);
+            }
         }
     }
 
-    public void SetisPossibleTodesstrafe(bool _isPossibleTodesstrafe)
+    public void SetPossibleTodesstrafe(bool _isPossibleTodesstrafe)
     {
         isPossibleTodesstrafe = _isPossibleTodesstrafe;
+    }
+
+    public void SetPossibleClick(bool _isPossibleClick)
+    {
+        isPossibleClick = _isPossibleClick;
     }
 
     public void LineChangeTransparency(int mode)

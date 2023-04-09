@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 161126516914584283}
   - component: {fileID: 161126516914584285}
   - component: {fileID: 161126516914584284}
+  - component: {fileID: 4498863379272058059}
   m_Layer: 10
   m_Name: Prisoner
   m_TagString: Untagged
@@ -80,7 +81,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e05d635ee6d622345baba38528eed600, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isPossibleTodesstrafe: 1
+  isPossibleTodesstrafe: 0
+  isPossibleClick: 0
+  isCreateLine: 0
+  isDescend: 0
+  isTodesstrafe: 0
   minY: 0
   criteria: {fileID: 0}
 --- !u!114 &161126516914584284
@@ -95,8 +100,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9cc1be5df1adf14fb81205e36fddc40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tableManager: {fileID: 0}
   ask: {fileID: 0}
+  lie: {fileID: 0}
+--- !u!114 &4498863379272058059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 161126516914584281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edd51df7f15a0be4987e162b2a15c748, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &161126516951867916
 GameObject:
   m_ObjectHideFlags: 0

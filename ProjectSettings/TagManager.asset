@@ -8,6 +8,8 @@ TagManager:
   - floor
   - badge
   - buttonObj
+  - statement
+  - middleCriteria
   layers:
   - Default
   - TransparentFX

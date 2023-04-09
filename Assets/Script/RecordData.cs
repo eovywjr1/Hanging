@@ -6,7 +6,7 @@ public class RecordData
 {
     public Dictionary<string, string> attackerData { get; private set; }
     public Dictionary<string, string> victimData { get; private set; }
-    public Dictionary<string, List<string>> lieORInfoError = new Dictionary<string, List<string>>();
+    public Dictionary<string, List<string>> lieORInfoError;
     public int isHanging;
     public string[] correctState { get; private set; }
     public string[] currentState { get; private set; }
@@ -14,6 +14,8 @@ public class RecordData
 
     public RecordData(TableManager tableManager)
     {
+        lieORInfoError = new Dictionary<string, List<string>>();
+
         attackerData = tableManager.GetData(null, null, ref lieORInfoError);
         victimData = tableManager.GetData(attackerData["familyName"], attackerData["name"], ref lieORInfoError);
         
