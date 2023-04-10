@@ -4,14 +4,14 @@ using UnityEngine;
 using System.Net;
 using UnityEditor.Tilemaps;
 
-public class AttackerMouseMove : MonoBehaviour
+public class AttackerMouseMove : MonoBehaviour, IListener
 {
     HangingManager hangingManager;
     LineManager lineManager;
     AttackerDialogEvent attackerDialogEvent;
 
     Vector3 preMousePosition;
-    [SerializeField] bool isPossibleTodesstrafe, isPossibleClick, isCreateLine, isDescend, isTodesstrafe;
+    bool isPossibleTodesstrafe, isPossibleClick, isCreateLine, isDescend;
     float descendSpeed = 2f;
     float initialMouseX;
     [SerializeField] float minY; // 구현 완료 후 serial 삭제
@@ -30,11 +30,13 @@ public class AttackerMouseMove : MonoBehaviour
     private void Start()
     {
         attackerDialogEvent = HangingManager.attackerDialogEvent;
+        EventManager.instance.addListener("clickAttacker", this);
+        EventManager.instance.addListener("todesstrafe", this);
     }
 
     void Update()
     {
-        if (isPossibleTodesstrafe || (isTodesstrafe == false)) 
+        if (isPossibleTodesstrafe) 
         {
             if (Line.lineList.Count > 0 && line == null)
             {
@@ -58,7 +60,7 @@ public class AttackerMouseMove : MonoBehaviour
     {
         if (isPossibleClick || isPossibleTodesstrafe)
         {
-            attackerDialogEvent.SetCompulsoryDialogEvent("isClickAttacker");
+            EventManager.instance.postNotification("dialogEvent", this, "clickAttacker");
 
             if (isCreateLine == false)
             {
@@ -120,15 +122,13 @@ public class AttackerMouseMove : MonoBehaviour
         {
             if (collision.CompareTag("criteria"))
             {
-                hangingManager.Todesstrafe();
                 isPossibleTodesstrafe = false;
-                isTodesstrafe = true;
+                EventManager.instance.postNotification("dialogEvent", this, "todesstrafe");
+                hangingManager.Todesstrafe();
             }
 
             if((collision.CompareTag("middleCriteria")) && (isDescend == false))
-            {
                 attackerDialogEvent.SetSituationDialogEvent(attackerDialogEvent.GetRandomId(11, 20), 0);
-            }
         }
     }
 
@@ -137,14 +137,23 @@ public class AttackerMouseMove : MonoBehaviour
         isPossibleTodesstrafe = _isPossibleTodesstrafe;
     }
 
-    public void SetPossibleClick(bool _isPossibleClick)
-    {
-        isPossibleClick = _isPossibleClick;
-    }
-
     public void LineChangeTransparency(int mode)
     {
         if (preChangeTransparency != null) StopCoroutine(preChangeTransparency);
         if (line != null) preChangeTransparency = StartCoroutine(line.ChangeTransparency(mode));
+    }
+
+    public void OnEvent(string eventType, Component sender, object parameter = null)
+    {
+        switch (eventType)
+        {
+            case "clickAttacker":
+                isPossibleClick = true;
+                break;
+
+            case "todesstrafe":
+                isPossibleTodesstrafe = true;
+                break;
+        }
     }
 }

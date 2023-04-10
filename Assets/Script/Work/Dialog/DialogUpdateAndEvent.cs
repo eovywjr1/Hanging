@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 using Unity.VisualScripting;
 
-public class DialogUpdateAndEvent : MonoBehaviour
+public class DialogUpdateAndEvent : MonoBehaviour, IListener
 {
     DialogCSVReader dialogReader = new DialogCSVReader();
     DialogBubbleController dialogBubbleController;
@@ -13,13 +13,15 @@ public class DialogUpdateAndEvent : MonoBehaviour
 
     private Dictionary<string, List<List<string>>> compulsoryT, situationD;
 
-    bool timeover = false;
-    public bool isClickAttacker = false;
-   
+    bool timeover;
+    public bool clickAttacker, todesstrafe, amnesty, moveCameraToDesk; // waituntil 위해서 public
+
+    string conditionName;
+
     private void Awake()
     {
         dialogBubbleController = GetComponent<DialogBubbleController>();
-        dialogWindowController = GetComponent<DialogWindowController>();
+        dialogWindowController = FindObjectOfType<DialogWindowController>();
         hangingManager = FindObjectOfType<HangingManager>();
 
         string fileName = HangingManager.day + "DayCompulsoryDialog";
@@ -29,6 +31,8 @@ public class DialogUpdateAndEvent : MonoBehaviour
 
     void Start()
     {
+        EventManager.instance.addListener("dialogEvent", this);
+
         string id = HangingManager.day + "000";
         StartCoroutine(UpdateDialogCompulsory(id));
     }
@@ -71,7 +75,21 @@ public class DialogUpdateAndEvent : MonoBehaviour
             yield return StartCoroutine(Timer(0.2f)); // 검토 //
 
             if ((i.Count > 3) && (i[3].Equals("") == false))
-                yield return new WaitUntil(() => (bool)this.GetType().GetMethod(i[3]).Invoke(this, null));
+            {
+                if (i[3] != "InputKeyG" && i[3] != "ClickBasicJudgementGuide")  // 임시 > 이벤트 연결 후 삭제
+                {
+                    conditionName = i[3];
+                    yield return new WaitUntil(() =>
+                    {
+                        EventManager.instance.postNotification(conditionName, this, null);
+
+                        if (this.GetType().GetField(conditionName).GetValue(this).ConvertTo<bool>())
+                            return true;
+
+                        return false;
+                    });
+                }
+            }
 
             if ((i.Count > 4) && (i[4].Equals("") == false))
             {
@@ -114,68 +132,6 @@ public class DialogUpdateAndEvent : MonoBehaviour
         this.GetType().GetField(name).SetValue(this, true);
     }
 
-    public bool InputKeyG()
-    {
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            return true;
-        }
-
-        return false;
-    }
-
-    public bool ClickAttacker()
-    {
-        hangingManager.attackerMouseMove.SetPossibleClick(true);
-        if (isClickAttacker)
-        {
-            return true;
-        }
-
-        return false;
-    }
-
-    public bool ClickBasicJudgementGuide()
-    {
-        if (true)
-            return true;
-
-        //return false;
-    }
-
-    public bool Todesstrafe()
-    {
-        hangingManager.attackerMouseMove.SetPossibleTodesstrafe(true);
-        if (hangingManager.isTodesstrafe)
-        {
-            return true;
-        }
-
-        return false;
-    }
-
-    public bool Amnesty()
-    {
-        hangingManager.attackerMouseMove.SetPossibleTodesstrafe(true);
-        if (hangingManager.isAmnesty)
-        {
-            return true;
-        }
-
-        return false;
-    }
-
-    public bool InputKeySpace()
-    {
-        hangingManager.cameraMoveScript.SetPossibleMove(true);
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            return true;
-        }
-
-        return false;
-    }
-
     void Initialize()
     {
         timeover = false;
@@ -184,5 +140,27 @@ public class DialogUpdateAndEvent : MonoBehaviour
     int StringToInt(string str)
     {
         return int.Parse(str);
+    }
+
+    public void OnEvent(string eventType, Component sender, object parameter = null)
+    {
+        switch (parameter)
+        {
+            case "clickAttacker":
+                clickAttacker = true;
+                break;
+
+            case "todesstrafe":
+                todesstrafe = true;
+                break;
+
+            case "amnesty":
+                amnesty = true;
+                break;
+
+            case "moveCameraToDesk":
+                moveCameraToDesk = true;
+                break;
+        }
     }
 }

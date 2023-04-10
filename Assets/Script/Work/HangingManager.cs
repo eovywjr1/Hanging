@@ -159,6 +159,9 @@ public class HangingManager : MonoBehaviour
         cameraMoveScript.SetPossibleMove(true);
         attackerMouseMove.SetPossibleTodesstrafe(true);
         dialogWindowController.SetEnabled(true);
+        //EventManager.instance.postNotification("amnesty", this, null);
+        //EventManager.instance.postNotification("moveCameraToDesk", this, null);
+
     }
 
     void InitialAttacker()

@@ -666,10 +666,6 @@ PrefabInstance:
       propertyPath: convertEffect
       value: 
       objectReference: {fileID: 1298694843}
-    - target: {fileID: 9054927331804017861, guid: 49384f57359b72a4a93d70114bbf4a7a, type: 3}
-      propertyPath: attackerPrefab
-      value: 
-      objectReference: {fileID: 161126516914584281, guid: 6beec38e063e9b14eb2c6bf09c909fca, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 49384f57359b72a4a93d70114bbf4a7a, type: 3}
 --- !u!1001 &1049364012

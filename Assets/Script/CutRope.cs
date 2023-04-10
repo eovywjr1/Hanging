@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CutRope : MonoBehaviour
+public class CutRope : MonoBehaviour, IListener
 {
     HangingManager hangingManager;
 
@@ -11,16 +11,21 @@ public class CutRope : MonoBehaviour
     public GameObject rope;
 
     private float cutDistance = 2f;
-    private bool isCut = false;
+    bool isCut, isPossibleAmnesty, isAmnesty;
 
     private void Awake()
     {
         hangingManager = FindObjectOfType<HangingManager>();
     }
 
+    private void Start()
+    {
+        EventManager.instance.addListener("amnesty", this);
+    }
+
     private void Update()
     {
-        if ((hangingManager.isTodesstrafe == false) && (hangingManager.isAmnesty == false))
+        if (isPossibleAmnesty && isAmnesty == false)
         {
             if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject() && rope != null)
             {
@@ -37,11 +42,23 @@ public class CutRope : MonoBehaviour
                 if ((initialMousePosition.x >= ropePosition.x && initialMousePosition.x - currentMousePosition.x >= cutDistance && currentMousePosition.x < ropePosition.x) ||
                     (initialMousePosition.x < ropePosition.x && currentMousePosition.x - initialMousePosition.x >= cutDistance && currentMousePosition.x > ropePosition.x))
                 {
+                    isAmnesty = true;
                     HangingManager.attackerDialogEvent.SetSituationDialogEvent(HangingManager.attackerDialogEvent.GetRandomId(21, 28), 0);
                     hangingManager.Amnesty();
+                    EventManager.instance.postNotification("dialogEvent", this, "amnesty");
                 }
             }
             else if (Input.GetMouseButtonUp(0)) isCut = false;
+        }
+    }
+
+    public void OnEvent(string eventType, Component sender, object parameter = null)
+    {
+        switch (eventType)
+        {
+            case "amnesty":
+                isPossibleAmnesty = true;
+                break;
         }
     }
 }
