@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class HangingManager : MonoBehaviour
+public class HangingManager : MonoBehaviour, IListener
 {
     public AttackerMouseMove attackerMouseMove;
     public AttackerInfo attackerInfo;
@@ -13,19 +13,27 @@ public class HangingManager : MonoBehaviour
     private AnalogGlitch analogGlitch;
     [SerializeField] BossHand bossHand;
     HangingTimer hangingTimer;
-    public CameraMoveScript cameraMoveScript;
     public DialogWindowController dialogWindowController;
     [SerializeField] GameObject convertEffect, attackerPrefab;
 
     public bool isTodesstrafe, isAmnesty;
     public static bool isCompulsoryEnd;
-    public static int day = 1, attackerCount = 1;
+    int _attackerCount = 1;
+    public int attackerCount
+    {
+        get { return _attackerCount; }
+        set { 
+            _attackerCount = value;
+            EventManager.instance.postNotification("updateAttackerCountCCTV", this, _attackerCount);
+        }
+    }
+            
+    public static int day = 1;
     static bool isCorrect = true;
 
     private void Awake()
     {
         dialogWindowController = FindObjectOfType<DialogWindowController>();
-        cameraMoveScript = FindObjectOfType<CameraMoveScript>();
         hangingTimer = FindObjectOfType<HangingTimer>();
         analogGlitch = FindObjectOfType<AnalogGlitch>();
         InitialAttacker();
@@ -102,19 +110,18 @@ public class HangingManager : MonoBehaviour
 
     void NextAttacker()
     {
-        attackerCount++;
+        _attackerCount++;
 
-        StartCoroutine(ConvertSceneEffect());
+        StartCoroutine(ConvertAttackerEffect());
     }
 
-    IEnumerator ConvertSceneEffect()
+    IEnumerator ConvertAttackerEffect()
     {
         convertEffect.SetActive(true);
 
         yield return new WaitForSecondsRealtime(1.5f);
 
         convertEffect.SetActive(false);
-        //SceneManager.LoadScene("Merge");
         InitialAttacker();
     }
 
@@ -151,32 +158,38 @@ public class HangingManager : MonoBehaviour
 
     public void EndCompulsory()
     {
-        HangingManager.isCompulsoryEnd = true;
+        isCompulsoryEnd = true;
 
         attackerDialogEvent.SetSituationDialogEvent(UnityEngine.Random.Range(1, 11), 3f);
 
         hangingTimer.SetTimer(true);
-        cameraMoveScript.SetPossibleMove(true);
-        attackerMouseMove.SetPossibleTodesstrafe(true);
+        EventManager.instance.postNotification("moveCameraToDesk", this, null);
+        EventManager.instance.postNotification("todesstrafe", this, null);
         dialogWindowController.SetEnabled(true);
-        //EventManager.instance.postNotification("amnesty", this, null);
-        //EventManager.instance.postNotification("moveCameraToDesk", this, null);
 
     }
 
     void InitialAttacker()
     {
         if (attackerMouseMove != null)
-        {
             Destroy(attackerMouseMove.gameObject);
-        }
+
         GameObject attacker = Instantiate(attackerPrefab);
         attackerMouseMove = attacker.GetComponent<AttackerMouseMove>();
         attackerInfo = attacker.GetComponent<AttackerInfo>();
         attackerDialogEvent = attacker.GetComponent<AttackerDialogEvent>();
 
+        if (isCompulsoryEnd)
+        {
+            EventManager.instance.postNotification("todesstrafe", this, null);
+            EventManager.instance.postNotification("amnesty", this, null);
+        }
+
         isTodesstrafe = false;
         isAmnesty = false;
-        hangingTimer.Initial();
+    }
+
+    public void OnEvent(string eventType, Component sender, object parameter = null)
+    {
     }
 }

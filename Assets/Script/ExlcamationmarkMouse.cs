@@ -31,6 +31,7 @@ public class ExlcamationmarkMouse : MonoBehaviour
 
     private void OnMouseExit()
     {
-        dataObject.SetActive(false);
+        if (dataObject)
+            dataObject.SetActive(false);
     }
 }

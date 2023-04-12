@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using static UnityEngine.RuleTile.TilingRuleOutput;
 using UnityEngine.UI;
+using Unity.VisualScripting;
 
 public class Line
 {
@@ -14,7 +15,7 @@ public class Line
     public Image windowImage;
     SpriteRenderer buttonSpriteRenderer;
     private TextMeshProUGUI windowtmpu;
-    public float devide = 300f; //분모여서 속도와 반비례관계
+    const float devide = 300f; //분모여서 속도와 반비례관계
     public float parentYSum;   //사형수, 교수대(부모들) y 추가
     public delegate void ShowData();
     ShowData showdata;
@@ -50,6 +51,9 @@ public class Line
 
     public IEnumerator ChangeTransparency(int mode)
     {
+        if (lineList.Count == 0)
+            yield break;
+            
         float initAlpha = lineList[0].windowImage.color.a;
         float speed = 0.02f;
         float oper = (mode == 1) ? speed * 0.5f : -1 * speed;  //나타날 때 더 빠르게 보이는 경향 있음

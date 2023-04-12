@@ -11,7 +11,7 @@ public class AttackerMouseMove : MonoBehaviour, IListener
     AttackerDialogEvent attackerDialogEvent;
 
     Vector3 preMousePosition;
-    bool isPossibleTodesstrafe, isPossibleClick, isCreateLine, isDescend;
+    bool isPossibleTodesstrafe, isPossibleClick, isCreateLine, isDescend, isFirstClick = true;
     float descendSpeed = 2f;
     float initialMouseX;
     [SerializeField] float minY; // 구현 완료 후 serial 삭제
@@ -51,6 +51,8 @@ public class AttackerMouseMove : MonoBehaviour, IListener
                 if (transform.position.y <= minY)
                     isDescend = false;
 
+                if (transform == null || windowRectTransform == null)
+                    return;
                 line.MoveTo(windowRectTransform.position.x, windowRectTransform.position.y, transform.position.x, transform.position.y);
             }
         }
@@ -67,17 +69,16 @@ public class AttackerMouseMove : MonoBehaviour, IListener
                 lineManager.CreateLine();
                 isCreateLine = true;
             }
+            else
+            {
+                LineChangeTransparency(-1);
+            }
 
             isDescend = false;
 
             Vector3 mousePosition = new Vector3(0, Input.mousePosition.y, 0);
             initialMouseX = Input.mousePosition.x;
             preMousePosition = Camera.main.ScreenToWorldPoint(mousePosition);   //이상한 위치로 이동 방지하기 위해 preMousePosition 초기화
-
-            if (isPossibleTodesstrafe) // 필수 대사에서 클릭했을 때 투명도 감소 방지
-            {
-                LineChangeTransparency(-1);
-            }
         }
     }
 
@@ -95,6 +96,8 @@ public class AttackerMouseMove : MonoBehaviour, IListener
                 preMousePosition = currentMousePosition;
             }
 
+            if (transform == null || windowRectTransform == null)
+                return;
             line.MoveTo(windowRectTransform.position.x, windowRectTransform.position.y, transform.position.x, transform.position.y);
         }
     }
@@ -103,16 +106,13 @@ public class AttackerMouseMove : MonoBehaviour, IListener
     {
         if (isPossibleTodesstrafe)
         {
-            if (isCreateLine)
-            {
+            if (isFirstClick == false)
                 LineChangeTransparency(1);
-            }
 
             if (transform.position.y > minY)
-            {
                 isDescend = true;
-            }
-            isCreateLine = true;
+
+            isFirstClick = false;
         }
     }
 

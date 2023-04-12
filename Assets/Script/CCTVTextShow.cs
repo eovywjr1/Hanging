@@ -4,8 +4,9 @@ using TMPro;
 using UnityEngine;
 using System;
 using System.Globalization;
+using Unity.VisualScripting;
 
-public class CCTVTextShow : MonoBehaviour
+public class CCTVTextShow : MonoBehaviour, IListener
 {
     private TextMeshPro textMeshProUGUI;
 
@@ -16,18 +17,29 @@ public class CCTVTextShow : MonoBehaviour
 
     private void Start()
     {
-        UpdateText();
+        EventManager.instance.addListener("updateAttackerCountCCTV", this);
+        UpdateText(1);
     }
 
-    public void UpdateText()
+    public void UpdateText(int attackerCount)
     {
         DateTime date = System.Convert.ToDateTime("2132/2/1");
         date = date.AddDays(HangingManager.day - 1);
 
-        string text = "CAMERA" + HangingManager.attackerCount.ToString() + "\n"
+        string text = "CAMERA" + attackerCount.ToString() + "\n"
             + "PLAY ¢º" + "\n"
             + date.ToString("yy/MM/dd ") + " " + date.ToString("ddd", new CultureInfo("en-US"));
 
         textMeshProUGUI.text = text.Replace("\\n", "\n");
+    }
+
+    public void OnEvent(string eventType, Component sender, object parameter = null)
+    {
+        switch (eventType)
+        {
+            case "updateAttackerCountCCTV":
+                UpdateText((int)parameter);
+                break;
+        }
     }
 }

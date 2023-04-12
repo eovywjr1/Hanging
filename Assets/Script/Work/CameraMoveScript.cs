@@ -36,11 +36,6 @@ public class CameraMoveScript : MonoBehaviour, IListener
         }
     }
 
-    public void SetPossibleMove(bool _isPossibleMove)
-    {
-        isPossibleMove = _isPossibleMove;
-    }
-
     public void OnEvent(string eventType, Component sender, object parameter = null)
     {
         switch (eventType)
