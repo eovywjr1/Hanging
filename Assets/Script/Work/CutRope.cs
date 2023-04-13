@@ -5,18 +5,11 @@ using UnityEngine.EventSystems;
 
 public class CutRope : MonoBehaviour, IListener
 {
-    HangingManager hangingManager;
-
     Vector3 initialMousePosition;
     public GameObject rope;
 
     private float cutDistance = 2f;
     bool isCut, isPossibleAmnesty, isAmnesty;
-
-    private void Awake()
-    {
-        hangingManager = FindObjectOfType<HangingManager>();
-    }
 
     private void Start()
     {
@@ -43,9 +36,8 @@ public class CutRope : MonoBehaviour, IListener
                     (initialMousePosition.x < ropePosition.x && currentMousePosition.x - initialMousePosition.x >= cutDistance && currentMousePosition.x > ropePosition.x))
                 {
                     isAmnesty = true;
-                    HangingManager.attackerDialogEvent.SetSituationDialogEvent(HangingManager.attackerDialogEvent.GetRandomId(21, 28), 0);
-                    hangingManager.Amnesty();
                     EventManager.instance.postNotification("dialogEvent", this, "amnesty");
+                    EventManager.instance.postNotification("amnesty", this, null);
                 }
             }
             else if (Input.GetMouseButtonUp(0)) isCut = false;

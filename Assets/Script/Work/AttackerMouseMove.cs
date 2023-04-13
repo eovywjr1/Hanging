@@ -8,7 +8,6 @@ public class AttackerMouseMove : MonoBehaviour, IListener
 {
     HangingManager hangingManager;
     LineManager lineManager;
-    AttackerDialogEvent attackerDialogEvent;
 
     Vector3 preMousePosition;
     bool isPossibleTodesstrafe, isPossibleClick, isCreateLine, isDescend, isFirstClick = true;
@@ -29,7 +28,6 @@ public class AttackerMouseMove : MonoBehaviour, IListener
 
     private void Start()
     {
-        attackerDialogEvent = HangingManager.attackerDialogEvent;
         EventManager.instance.addListener("clickAttacker", this);
         EventManager.instance.addListener("todesstrafe", this);
     }
@@ -127,8 +125,8 @@ public class AttackerMouseMove : MonoBehaviour, IListener
                 hangingManager.Todesstrafe();
             }
 
-            if((collision.CompareTag("middleCriteria")) && (isDescend == false))
-                attackerDialogEvent.SetSituationDialogEvent(attackerDialogEvent.GetRandomId(11, 20), 0);
+            if ((collision.CompareTag("middleCriteria")) && (isDescend == false))
+                EventManager.instance.postNotification("dialogEvent", this, "drawToMiddle");
         }
     }
 

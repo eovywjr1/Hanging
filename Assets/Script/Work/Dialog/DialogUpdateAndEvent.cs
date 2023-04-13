@@ -14,7 +14,7 @@ public class DialogUpdateAndEvent : MonoBehaviour, IListener
     private Dictionary<string, List<List<string>>> compulsoryT, situationD;
 
     bool timeover;
-    public bool clickAttacker, todesstrafe, amnesty, moveCameraToDesk; // waituntil 위해서 public
+    public bool clickAttacker, todesstrafe, amnesty, moveCameraToDesk, submitBadge; // waituntil 위해서 public
 
     string conditionName;
 
@@ -32,6 +32,8 @@ public class DialogUpdateAndEvent : MonoBehaviour, IListener
     void Start()
     {
         EventManager.instance.addListener("dialogEvent", this);
+        EventManager.instance.addListener("createAttacker", this);
+        EventManager.instance.addListener("drawToMiddle", this);
 
         string id = HangingManager.day + "000";
         StartCoroutine(UpdateDialogCompulsory(id));
@@ -144,7 +146,10 @@ public class DialogUpdateAndEvent : MonoBehaviour, IListener
 
     public void OnEvent(string eventType, Component sender, object parameter = null)
     {
-        switch (parameter)
+        if (sender == this)
+            return;
+
+        switch (parameter)  //필수 일차별 대사 관련 이벤트는 eventType 사용 x => resource 변수랑 같게 하기 위해서
         {
             case "clickAttacker":
                 clickAttacker = true;
@@ -156,10 +161,30 @@ public class DialogUpdateAndEvent : MonoBehaviour, IListener
 
             case "amnesty":
                 amnesty = true;
+                StartCoroutine(SetSituationDialog(UnityEngine.Random.Range(21, 28), 0));
                 break;
 
             case "moveCameraToDesk":
                 moveCameraToDesk = true;
+                break;
+        }
+
+        switch (eventType)
+        {
+            case "createAttacker":
+                StartCoroutine(SetSituationDialog(UnityEngine.Random.Range(1, 11), 3f));
+                break;
+
+            case "drawToMiddle":
+                StartCoroutine(SetSituationDialog(UnityEngine.Random.Range(11, 21), 0));
+                break;
+
+            case "badge":
+                StartCoroutine(SetSituationDialog(UnityEngine.Random.Range(53, 58), 0));
+                break;
+
+            case "submitBadge":
+                submitBadge = true;
                 break;
         }
     }

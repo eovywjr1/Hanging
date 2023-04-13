@@ -9,7 +9,6 @@ public class HangingManager : MonoBehaviour, IListener
 {
     public AttackerMouseMove attackerMouseMove;
     public AttackerInfo attackerInfo;
-    public static AttackerDialogEvent attackerDialogEvent;
     private AnalogGlitch analogGlitch;
     [SerializeField] BossHand bossHand;
     HangingTimer hangingTimer;
@@ -91,7 +90,7 @@ public class HangingManager : MonoBehaviour, IListener
         {
             Debug.Log(attackerInfo.recordData.isHanging);
             isCorrect = false;
-            StartCoroutine(StartGlitch());
+            StartCoroutine(StartStateWrong());
 
             return false;
         }
@@ -128,10 +127,9 @@ public class HangingManager : MonoBehaviour, IListener
     IEnumerator StartGlitch()
     {
         analogGlitch._isGlitch = true;
-
         yield return new WaitForSecondsRealtime(0.75f);
-
         analogGlitch._isGlitch = false;
+
         NextAttacker();
     }
 
@@ -139,28 +137,23 @@ public class HangingManager : MonoBehaviour, IListener
     IEnumerator StartHoldOutHands()
     {
         yield return new WaitForSecondsRealtime(1.25f);
-
-        bossHand.holdOutHand();
+        EventManager.instance.postNotification("badge", this, null);
     }
 
     public IEnumerator StartStateWrong() //진술서 클릭 틀릴때 
     {
         analogGlitch._isGlitch = true;
-
         yield return new WaitForSecondsRealtime(0.75f);
-
         analogGlitch._isGlitch = false;
 
-        yield return new WaitForSecondsRealtime(1.25f);
-
-        bossHand.holdOutHand();
+        StartCoroutine(StartHoldOutHands());
     }
 
     public void EndCompulsory()
     {
         isCompulsoryEnd = true;
 
-        attackerDialogEvent.SetSituationDialogEvent(UnityEngine.Random.Range(1, 11), 3f);
+        EventManager.instance.postNotification("dialogEvent", this, "createAttacker");
 
         hangingTimer.SetTimer(true);
         EventManager.instance.postNotification("moveCameraToDesk", this, null);
@@ -177,7 +170,6 @@ public class HangingManager : MonoBehaviour, IListener
         GameObject attacker = Instantiate(attackerPrefab);
         attackerMouseMove = attacker.GetComponent<AttackerMouseMove>();
         attackerInfo = attacker.GetComponent<AttackerInfo>();
-        attackerDialogEvent = attacker.GetComponent<AttackerDialogEvent>();
 
         if (isCompulsoryEnd)
         {
@@ -191,5 +183,11 @@ public class HangingManager : MonoBehaviour, IListener
 
     public void OnEvent(string eventType, Component sender, object parameter = null)
     {
+        switch (eventType)
+        {
+            case "amnesty":
+                Amnesty();
+                break;
+        }
     }
 }
