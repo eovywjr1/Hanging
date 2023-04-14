@@ -33,7 +33,7 @@ public class LineToBox : MonoBehaviour
     {
         //위치 결정 기다리기
         RecordStartPosition recordStartPosition = uiBox.GetComponent<RecordStartPosition>();
-        while (!recordStartPosition.isPrepare) yield return null;
+        while (recordStartPosition.isPrepare == false) yield return null;
 
         parentYSum = (transform.parent.transform != null) ? (parentTransform.position.y * -1) : 0;
         StartCoroutine(line.ExpendLine(parentTransform.position.x, parentYSum));

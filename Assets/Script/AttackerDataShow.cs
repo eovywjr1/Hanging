@@ -29,9 +29,10 @@ public class AttackerDataShow : WindowShowData
 
         int maxLength = Mathf.Max(recordData.attackerData["familyName"].Length + recordData.attackerData["name"].Length,
                         2 + recordData.attackerData["jobText"].Length);
-        float width = 1.55f + 0.22f * (maxLength - 4);
+        
+        float width = 1.95f + 0.25f * (maxLength - 6);
 
         SetText(str);
-        if (maxLength > 4) SetTextSize(width);
+        if (maxLength > 6) SetTextSize(width);
     }
 }

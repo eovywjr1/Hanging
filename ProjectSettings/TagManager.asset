@@ -9,6 +9,10 @@ TagManager:
   - badge
   - buttonObj
   - statement
+<<<<<<< HEAD
+=======
+  - middleCriteria
+>>>>>>> MinsuDelveop
   layers:
   - Default
   - TransparentFX

@@ -6,12 +6,12 @@ public class RecordDataShow : WindowShowData
 {
     private void Start()
     {
-        Line.lineList[Line.lineList.Count - 1].GetShowData(ShowData);
+        Line.lineList[0].GetShowData(ShowData);
     }
 
     void ShowData()
     {
-        recordData = FindObjectOfType<AttackerInfo>().recordData;
+        RecordData recordData = FindObjectOfType<AttackerInfo>().recordData;
 
         string str = "가해자: " + recordData.attackerData["familyName"] + " " + recordData.attackerData["name"] + "\n"
             + "죄목: " + recordData.attackerData["crime"] + "\n"

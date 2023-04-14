@@ -5,9 +5,14 @@ using UnityEngine;
 public class AttackerInfo : MonoBehaviour
 {
     public RecordData recordData;
-    [SerializeField] TableManager tableManager;
+    TableManager tableManager;
     [SerializeField] Ask ask;
     [SerializeField] Lie lie;
+
+    private void Awake()
+    {
+        tableManager = FindObjectOfType<TableManager>();
+    }
 
     void Start()
     {
