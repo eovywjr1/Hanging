@@ -5,8 +5,8 @@ using UnityEngine;
 public class Rope : MonoBehaviour
 {
     public LineRenderer lineRenderer;
-    public int segmentCnt = 30;
-    public int constraintLoop = 30;
+    public int segmentCnt = 50;
+    public int constraintLoop = 50;
     public float segmentLength = 0.1f;
     public float ropeWidth = 0.1f;
     public Vector2 gravity = new Vector2(0f, -9.81f);
@@ -42,6 +42,44 @@ public class Rope : MonoBehaviour
         DrawRope();
     }
 
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(1))
+        {
+            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            int closestSegmentIndex = FindClosestSegmentIndex(mousePos);
+            Debug.Log("눌린 세그먼트 인덱스 : " + closestSegmentIndex);
+
+            endTransform = null;
+            if (closestSegmentIndex != -1)
+            {
+                for (int i = closestSegmentIndex; i < segments.Count; i++)
+                {
+                    segments.RemoveAt(i);
+                }
+            }
+        }
+    }
+
+    private int FindClosestSegmentIndex(Vector2 mousePos)
+    {
+        float minDistance = Mathf.Infinity;
+        int closestIndex = -1;
+
+        for (int i = 0; i < segments.Count; i++)
+        {
+            float distance = (mousePos - segments[i].position).magnitude;
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+                closestIndex = i;
+            }
+        }
+
+        return closestIndex;
+    }
+
+
     private void DrawRope()
     {
         lineRenderer.startWidth = ropeWidth;
@@ -67,12 +105,20 @@ public class Rope : MonoBehaviour
         }
     }
 
+
     private void ApplyConstraint()
     {
+        int lastIdx = segments.Count;
+
         //맨 위(첫번째) 세그먼트만 고정시킴
         segments[0].position = startTransform.position;
-        segments[segments.Count - 1].position = endTransform.position;
-        
+
+        if (endTransform)
+        {
+            segments[segments.Count - 1].position = endTransform.position;
+            lastIdx -= 1;
+        }
+
         for(int i=0;i<segments.Count - 1;i++)
         {
             float distance = (segments[i].position - segments[i + 1].position).magnitude;
@@ -85,7 +131,7 @@ public class Rope : MonoBehaviour
             {
                 segments[i + 1].position += movement;
             }
-            else if(i < segments.Count - 1)
+            else if(i < lastIdx)
             {
                 segments[i].position -= movement * 0.5f;
                 segments[i + 1].position += movement * 0.5f;
