@@ -22,11 +22,15 @@ public class AttackerMouseMove : MonoBehaviour
     [SerializeField] GameObject criteria;
     Coroutine preChangeTransparency = null;
 
+    prisoner prisoner;
+
     void Awake()
     {
         hangingManager = FindObjectOfType<HangingManager>();
         lineManager = FindObjectOfType<LineManager>();
         isPossibleTodesstrafe = true;
+
+        prisoner = GetComponentInChildren<prisoner>();
     }
 
     void Update()
@@ -65,6 +69,8 @@ public class AttackerMouseMove : MonoBehaviour
             preMousePosition = Camera.main.ScreenToWorldPoint(mousePosition);   //이상한 위치로 이동 방지하기 위해 preMousePosition 초기화
 
             LineChangeTransparency(-1);
+
+            prisoner.isLift = false;
         }
     }
 
@@ -83,6 +89,8 @@ public class AttackerMouseMove : MonoBehaviour
             }
 
             line.MoveTo(windowRectTransform.position.x, windowRectTransform.position.y, transform.position.x, transform.position.y);
+
+            prisoner.isLift = true;
         }
     }
 
