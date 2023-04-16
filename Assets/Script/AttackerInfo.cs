@@ -6,7 +6,6 @@ public class AttackerInfo : MonoBehaviour
 {
     public RecordData recordData;
     TableManager tableManager;
-    [SerializeField] Ask ask;
     [SerializeField] Lie lie;
 
     private void Awake()
@@ -18,12 +17,9 @@ public class AttackerInfo : MonoBehaviour
     {
         recordData = new RecordData(tableManager);
 
-        if (recordData.attackerData.ContainsKey("ask") && recordData.attackerData["ask"].Equals("1")) ActiveAsk();
-    }
-
-    void ActiveAsk()
-    {
-        ask.ActiveAsk();
+        EventManager.instance.postNotification("activeAsk", this, null); //임시 (버튼 누를 때 이거 실행)
+        //if (recordData.attackerData.ContainsKey("ask") && recordData.attackerData["ask"].Equals("1"))
+        //    EventManager.instance.postNotification("activeAsk", this, null);
     }
 
     public RecordData GetRecordData()

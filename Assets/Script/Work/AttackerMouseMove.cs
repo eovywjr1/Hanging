@@ -28,8 +28,10 @@ public class AttackerMouseMove : MonoBehaviour, IListener
 
     private void Start()
     {
-        EventManager.instance.addListener("clickAttacker", this);
-        EventManager.instance.addListener("todesstrafe", this);
+        EventManager.instance.addListener("possibleclickAttacker", this);
+        EventManager.instance.addListener("possibletodesstrafe", this); 
+        
+        isFirstClick = true;
     }
 
     void Update()
@@ -61,7 +63,7 @@ public class AttackerMouseMove : MonoBehaviour, IListener
         if (isPossibleClick || isPossibleTodesstrafe)
         {
             EventManager.instance.postNotification("dialogEvent", this, "clickAttacker");
-
+            
             if (isCreateLine == false)
             {
                 lineManager.CreateLine();
@@ -102,6 +104,8 @@ public class AttackerMouseMove : MonoBehaviour, IListener
 
     void OnMouseUp()
     {
+        isFirstClick = false;
+
         if (isPossibleTodesstrafe)
         {
             if (isFirstClick == false)
@@ -109,8 +113,6 @@ public class AttackerMouseMove : MonoBehaviour, IListener
 
             if (transform.position.y > minY)
                 isDescend = true;
-
-            isFirstClick = false;
         }
     }
 
@@ -121,8 +123,7 @@ public class AttackerMouseMove : MonoBehaviour, IListener
             if (collision.CompareTag("criteria"))
             {
                 isPossibleTodesstrafe = false;
-                EventManager.instance.postNotification("dialogEvent", this, "todesstrafe");
-                hangingManager.Todesstrafe();
+                EventManager.instance.postNotification("todesstrafe", this, null);
             }
 
             if ((collision.CompareTag("middleCriteria")) && (isDescend == false))
@@ -145,11 +146,11 @@ public class AttackerMouseMove : MonoBehaviour, IListener
     {
         switch (eventType)
         {
-            case "clickAttacker":
+            case "possibleclickAttacker":
                 isPossibleClick = true;
                 break;
 
-            case "todesstrafe":
+            case "possibletodesstrafe":
                 isPossibleTodesstrafe = true;
                 break;
         }
