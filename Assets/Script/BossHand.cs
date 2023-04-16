@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BossHand : MonoBehaviour
+public class BossHand : MonoBehaviour, IListener
 {
     public static BossHand instance;
 
@@ -21,6 +21,8 @@ public class BossHand : MonoBehaviour
 
     private void Start()
     {
+        EventManager.instance.addListener("badge", this);
+
         originalLoca = transform.position;
         destination = new Vector3(3, transform.position.y, transform.position.z);
         isHoldOut = false;
@@ -43,11 +45,13 @@ public class BossHand : MonoBehaviour
         //badge를 BossHand의 자식으로
         GameObject badge = GameObject.FindGameObjectWithTag("badge");
         badge.transform.parent = this.gameObject.transform;
+
+        EventManager.instance.postNotification("submitBadge", this, null);
     }
 
     public void holdOutHand() //상사 손 내밀기
     {
-        if(!isHoldOut)
+        if (isHoldOut == false)
         {
             StartCoroutine(MoveTo(gameObject, destination));
             isHoldOut = true;
@@ -80,4 +84,13 @@ public class BossHand : MonoBehaviour
         }
     }
 
+    public void OnEvent(string eventType, Component sender, object parameter = null)
+    {
+        switch (eventType)
+        {
+            case "badge":
+                holdOutHand();
+                break;
+        }
+    }
 }

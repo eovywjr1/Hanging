@@ -10,56 +10,84 @@ public class DialogBubbleController : MonoBehaviour
 {
     [SerializeField] GameObject []dialogBubblePrefab;
     List<GameObject> dialogBubbleList = new List<GameObject>();
+    List<RectTransform> dialogBubbleRecttransformList = new List<RectTransform>();
     DialogWindowController dialogWindowController;
+    const int perBubbleHeight = 50;
+    [SerializeField] Scrollbar scrollbar;
 
     private void Awake()
     {
         dialogWindowController = FindObjectOfType<DialogWindowController>();
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyUp(KeyCode.V)) CreateDialogBubble( 1 , "qweqweeqwweqeqwqweqwe");
-    }
-
     GameObject GetDialogBubble( int id ) // 플레이어(0), 사형수(1), 보스(2)
     {
-        return Instantiate( dialogBubblePrefab[id], dialogBubblePrefab[id].transform.position, Quaternion.identity, transform );
+        return Instantiate( dialogBubblePrefab[id], dialogBubblePrefab[id].transform.position, Quaternion.identity, transform);
     }
 
-    void CreateDialogBubble( int id , string str )
+    public void CreateDialogBubble( int id , string str )
     {
-        dialogWindowController.VisibleDialogWindow();
-        dialogBubbleList.Add( GetDialogBubble( id ) );
+        if (dialogBubbleList == null)
+        {
+            return;
+        }
+
+        if (dialogWindowController = null)
+        {
+            dialogWindowController.VisibleDialogWindow();
+        }
+
+        if (id >= 0 && id <= 2)
+        {
+            dialogBubbleList.Add(GetDialogBubble(id).transform.GetChild(0).gameObject);
+        }
+        int bubbleIndex = dialogBubbleList.Count - 1;
+        if (bubbleIndex >= 0)
+        {
+            dialogBubbleRecttransformList.Add(dialogBubbleList[bubbleIndex].GetComponent<RectTransform>());
+        }
+
         //길면 줄바꿈 함수 삽입 자리//
-        DialogTextShow( str );
-        BubbleSetSizeSet(str);
-        SetPositionDialogBubble(260, id);
+        DialogTextShow( str, bubbleIndex);
+        SetBubbleSetSize(id, bubbleIndex);
     }
 
-    void SetPositionDialogBubble ( float startY, int id)
+    void SetPositionDialogBubble (int id, int index)
     {
-        RectTransform dialogRectTransform = dialogBubbleList[dialogBubbleList.Count - 1].GetComponent<RectTransform>();
-        float y = startY - (dialogBubbleList.Count - 1) * 40;
+        RectTransform dialogRectTransform = dialogBubbleRecttransformList[index];
         float x;
 
-        if (id == 0) x = 160 - dialogRectTransform.sizeDelta.x / 2;
-        else x = -160 + dialogRectTransform.sizeDelta.x / 2;
+        if (id == 0)
+            x = 155 - dialogRectTransform.sizeDelta.x / 2;
+        else
+            x = -155 + dialogRectTransform.sizeDelta.x / 2;
 
-        dialogRectTransform.localPosition = new Vector2(x, y);
+        dialogRectTransform.localPosition = new Vector2(x, 0);
     }
 
-    void DialogTextShow(string str)
+    void DialogTextShow(string str, int index)
     {
-        dialogBubbleList[dialogBubbleList.Count - 1].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = str;
+        dialogBubbleList[index].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = str;
     }
 
-    void BubbleSetSizeSet(string str)
+    void SetBubbleSetSize(int id, int index)
     {
-        RectTransform dialogRectTransform = dialogBubbleList[dialogBubbleList.Count - 1].GetComponent<RectTransform>();
-        float x = str.Length * 11;
-        Vector2 vector2 = new Vector2(x, dialogRectTransform.sizeDelta.y);
-        dialogRectTransform.sizeDelta = vector2;
-        dialogBubbleList[dialogBubbleList.Count - 1].transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = vector2;
+        StartCoroutine(SetBubble(id, index));
+    }
+
+    void SetScrollValue()
+    {
+        scrollbar.value = 0;
+    }
+
+    IEnumerator SetBubble(int id, int index)
+    {
+        yield return new WaitForSecondsRealtime(Time.deltaTime);
+        dialogBubbleRecttransformList[index].sizeDelta = dialogBubbleList[index].transform.GetChild(0).GetComponent<RectTransform>().sizeDelta;
+
+        yield return new WaitForSecondsRealtime(Time.deltaTime); //생성 딜레이 후 set 적용
+        SetPositionDialogBubble(id, index);
+        SetScrollValue();
+
     }
 }

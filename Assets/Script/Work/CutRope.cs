@@ -3,22 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CutRope : MonoBehaviour
+public class CutRope : MonoBehaviour, IListener
 {
     Vector3 initialMousePosition;
     public GameObject rope;
-    private float cutDistance = 2f;
-    HangingManager hangingManager;
-    private bool isCut = false;
 
-    private void Awake()
+    private float cutDistance = 2f;
+    bool isCut, isPossibleAmnesty, isAmnesty;
+
+    private void Start()
     {
-        hangingManager = FindObjectOfType<HangingManager>();
+        EventManager.instance.addListener("amnesty", this);
     }
 
     private void Update()
     {
-        if (hangingManager.isTodesstrafe)
+        if (isPossibleAmnesty && isAmnesty == false)
         {
             if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject() && rope != null)
             {
@@ -35,10 +35,22 @@ public class CutRope : MonoBehaviour
                 if ((initialMousePosition.x >= ropePosition.x && initialMousePosition.x - currentMousePosition.x >= cutDistance && currentMousePosition.x < ropePosition.x) ||
                     (initialMousePosition.x < ropePosition.x && currentMousePosition.x - initialMousePosition.x >= cutDistance && currentMousePosition.x > ropePosition.x))
                 {
-                    hangingManager.UnTodesstrafe();
+                    isAmnesty = true;
+                    EventManager.instance.postNotification("dialogEvent", this, "amnesty");
+                    EventManager.instance.postNotification("amnesty", this, null);
                 }
             }
             else if (Input.GetMouseButtonUp(0)) isCut = false;
+        }
+    }
+
+    public void OnEvent(string eventType, Component sender, object parameter = null)
+    {
+        switch (eventType)
+        {
+            case "amnesty":
+                isPossibleAmnesty = true;
+                break;
         }
     }
 }

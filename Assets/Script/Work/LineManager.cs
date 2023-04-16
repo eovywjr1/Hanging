@@ -11,8 +11,14 @@ public class LineManager : MonoBehaviour
     {
         Transform parentTransform;
 
-        if (Line.lineList.Count == 0) parentTransform = FindObjectOfType<AttackerMouseMove>().gameObject.transform;
-        else parentTransform = Line.lineList[Line.lineList.Count - 1].windowObject.transform;
+        if (Line.lineList.Count == 0)
+        {
+            parentTransform = FindObjectOfType<AttackerMouseMove>().gameObject.transform;
+        }
+        else
+        {
+            parentTransform = Line.lineList[Line.lineList.Count - 1].windowObject.transform;
+        }
 
         GameObject line = Instantiate(linePrefab, parentTransform.position, Quaternion.identity, parentTransform);
     }

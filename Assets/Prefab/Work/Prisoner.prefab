@@ -80,7 +80,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e05d635ee6d622345baba38528eed600, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isPossibleTodesstrafe: 1
   minY: 0
   criteria: {fileID: 0}
 --- !u!114 &161126516914584284
@@ -95,8 +94,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9cc1be5df1adf14fb81205e36fddc40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tableManager: {fileID: 0}
   ask: {fileID: 0}
+  lie: {fileID: 0}
 --- !u!1 &161126516951867916
 GameObject:
   m_ObjectHideFlags: 0

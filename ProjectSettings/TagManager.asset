@@ -11,6 +11,7 @@ TagManager:
   - statement
   - prisoner
   - rope
+  - middleCriteria
   layers:
   - Default
   - TransparentFX

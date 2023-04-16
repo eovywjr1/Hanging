@@ -4,19 +4,21 @@ using System.Xml;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Text.RegularExpressions;
 
 public class ScrollViewController : MonoBehaviour
 {
     private ScrollRect scrollRect;
-    public float space = 0f;
+    float space = 0f;
 
     public GameObject uiPrefab;
     public List<RectTransform> uiObjects= new List<RectTransform>();
     public AttackerInfo attackerInfo;
     public TMP_Text txtALlTmp;
     public TMP_Text forWidth;
-    private bool compareMent;
+    private bool compareMentBool;
     private bool flag;
+    private float height;
     // Start is called before the first frame update
     void Start()
     {
@@ -34,11 +36,11 @@ public class ScrollViewController : MonoBehaviour
         
         if (flag == false)
         {
-            string[] fixtext = { "ÀÌ¸§ : ", "¹üÁË : ", "¹üÁËÀå¼Ò : ", "¹üÁË°æÀ§ : " };
+            string[] fixtext = { "ì´ë¦„ : ", "ë²”ì£„ : ", "ë²”í–‰ì¥ì†Œ : ", "ë²”í–‰ë™ê¸° : " };
             for (int i = 0; i < 4; i++)
             {
-                compareMent = attackerInfo.recordData.correctState[i].Equals(attackerInfo.recordData.currentState[i]) ? true : false;
-                AddMent(fixtext[i] + attackerInfo.recordData.currentState[i], compareMent, attackerInfo.recordData.lieORinfoErrorValue);
+                compareMentBool = attackerInfo.recordData.correctState[i].Equals(attackerInfo.recordData.currentState[i]) ? true : false;
+                AddMent(fixtext[i] + attackerInfo.recordData.currentState[i], compareMentBool, attackerInfo.recordData.lieORinfoErrorValue);
             }
             flag = true;
             //MakeMentList();
@@ -46,124 +48,123 @@ public class ScrollViewController : MonoBehaviour
         }
        
     }
-    public void AddMent(string str, bool compareMent, int lieORinfoErrorValue)
+    public void AddMent(string str, bool compareMentBool, int lieORinfoErrorValue)
     {
         var newUi=Instantiate(uiPrefab,scrollRect.content).GetComponent<RectTransform>();
-
-        //str = "¾È³çÇÏ¼¼¿ä¾È³çÇÏ¼¼¿ä¾È³çÇÏ¼¼¿ä¾È³çÇÏ¼¼¿ä¾È³çÇÏ¼¼¿ä";
-
+        //str = "ì•ˆë…•í•˜ì„¸ìš”ì•ˆë…•í•˜ì„¸ìš”ì•ˆë…•í•˜ì„¸ìš”ì•ˆë…•í•˜ì„¸ìš”ì•ˆë…•í•˜ì„¸ìš”ì•ˆë…•í•˜ì„¸ìš”ì•ˆë…•í•˜ì„¸ìš”ì•ˆë…•í•˜ì„¸ìš”ì•ˆë…•í•˜ì„¸ìš”ì•ˆë…•í•˜ì„¸ìš”";
         string txtAll =str;
         int lineCnt = 1;
-        if (txtALlTmp == null) Debug.Log("¾÷½Â¤±"); 
-        //txtALlTmp=new tmp
         txtALlTmp.text = txtAll;
-
-        int a = 0;
         string resultStr="";
-        string addStr="";
 
-        //±ÛÀÚ°¡ Ã¢À» ³Ñ¾î°¡´Â ±æÀÌ¸é °³Çà¹®ÀÚ Ãß°¡ÇÔ//
+        Debug.Log("ì´ ì •ë³´ê°€ í‹€ë¦¬ëƒ ë§ëƒ!!!! : "+compareMentBool);
+
+        //ëŒ€í™”ì°½ ê°€ë¡œí­ë³´ë‹¤ ê¸´ í…ìŠ¤íŠ¸ëŠ” ì¤„ë‚´ë¦¼//
         if (txtALlTmp.preferredWidth >= 300)  
         {
-            while (txtALlTmp.preferredWidth > 300)
-            {
-                //ÃÊ±âÈ­
-                addStr = "";
-                forWidth.text = "";
-
-                for(int i = 0; forWidth.preferredWidth<= 300; i++) 
-                {
-                    addStr = addStr + txtAll[0]; 
-                    txtAll = txtAll.Remove(0, 1);
-                    txtALlTmp.text = txtAll;
-
-                    forWidth.text = addStr; // addStrÀÇ ±æÀÌ¸¦ ¾Ë¾Æ³»±â À§ÇÔ
-                    
-                }
-                lineCnt++;
-                resultStr =resultStr+ addStr+System.Environment.NewLine; //ÁÙ¹Ù²Ş
-
-                
-            }
-
-            resultStr = resultStr + txtAll;
-
-            //Á¤º¸´Ù¸¦¶§¸¸ ¸¶Áö¸· ¹®Àå ÀúÀå
-            if (compareMent == false)
+            (resultStr, txtAll, lineCnt) =LineCut(str);
+            
+            if (compareMentBool == false)
             {
                 newUi.GetComponent<ChangeTextTexture>().lastMent = txtAll;
+                Debug.Log("ë§ˆì§€ë§‰ë¬¸ì¥:"+txtAll);
             }
         }
-        else {
-            //txtALlTmp.text = resultStr; //À§Áõ/Á¤º¸¿À·ù ±Û¾¾ ±æÀÌ ÆÇ´ÜÀ» À§ÇÔ
-            //Á¤º¸´Ù¸¦¶§¸¸ ¸¶Áö¸· ¹®Àå ÀúÀå
-            if (compareMent == false)
+        else//ëŒ€í™”ì°½ ê°€ë¡œí­ë³´ë‹¤ ì§§ì€ í…ìŠ¤íŠ¸ëŠ” ê·¸ëŒ€ë¡œ ì¶œë ¥//
+        {
+            resultStr = str;
+
+            if (compareMentBool == false)
             {
                 newUi.GetComponent<ChangeTextTexture>().lastMent = resultStr;
-            }
-
-            resultStr = str;
-        }
-
-        /*
-        //À§Áõ/Á¤º¸¿À·ù ±Û¾¾ Ãß°¡
-        if (lieORinfoErrorValue == 1) //À§Áõ
-        {
-            txtALlTmp.text = addStr + "ºÒÀÏÄ¡ -> À§Áõ";
-            if (txtALlTmp.preferredWidth >= 300)
-            {
-                //À§Áõ ±Û¾¾¸¸ ¾Æ·¡ÁÙ·Î
-                resultStr = resultStr + System.Environment.NewLine + "ºÒÀÏÄ¡ -> À§Áõ";
-            }
-            else
-            {
-                //À§Áõ ±Û¾¾ ±×³É Ãß°¡
-                resultStr = resultStr + "ºÒÀÏÄ¡ -> À§Áõ";
+                Debug.Log("ë§ˆì§€ë§‰ë¬¸ì¥:" + resultStr);
             }
         }
-        */
-
-        //Debug.Log("resultStr : "+resultStr);
 
         newUi.transform.GetChild(0).GetChild(0).GetComponent<TMP_Text>().text = resultStr;
-        newUi.GetComponent<ChangeTextTexture>().mentTureORFalse = compareMent;
+        newUi.GetComponent<ChangeTextTexture>().mentTureORFalse = compareMentBool;
         newUi.GetComponent<ChangeTextTexture>().lieORinfoErrorValue = lieORinfoErrorValue;
-        
-        
         uiObjects.Add(newUi);
 
-        float y = 0f;
-        for(int i = 0; i < uiObjects.Count; i++) {
-            uiObjects[i].anchoredPosition = new Vector2(0f, -y);
-            y +=  9+ space; //9*lineCnt
-            Debug.Log("y : "+uiObjects[i].sizeDelta.y);
-        }
-
-        scrollRect.content.sizeDelta = new Vector2(scrollRect.content.sizeDelta.x, y);
-
-        Debug.Log("¸ÇÆ® Ãß°¡");
+        LineSpacing(lineCnt);
     }
 
-    /*
-    void ShowMent()
+    public void AddChangedMent(string str, bool compareMentBool, int lieORinfoErrorValue)
     {
-        Debug.Log("¾îÂ¿fkrh¶ó°í" );
-        for (int i = 0; i < 4; i++)
-        {
-            //Debug.Log("¾îÂ¿"+attackerInfo.recordData.isHanging);
-            compareMent = attackerInfo.recordData.correctState[i].Equals(attackerInfo.recordData.currentState[i]) ? true : false;
-            AddMent(attackerInfo.recordData.currentState[i], compareMent);
-        }
+        var newUi = Instantiate(uiPrefab, scrollRect.content).GetComponent<RectTransform>();
+        //str = "ì•ˆë…•í•˜ì„¸ìš”ì•ˆë…•í•˜ì„¸ìš”ì•ˆë…•í•˜ì„¸ìš”ì•ˆë…•í•˜ì„¸ìš”ì•ˆë…•í•˜ì„¸ìš”ì•ˆë…•í•˜ì„¸ìš”ì•ˆë…•í•˜ì„¸ìš”ì•ˆë…•í•˜ì„¸ìš”ì•ˆë…•í•˜ì„¸ìš”ì•ˆë…•í•˜ì„¸ìš”";
+        int lineCnt = 1;
+        string resultStr = str;
+
+        newUi.transform.GetChild(0).GetChild(0).GetComponent<TMP_Text>().text = resultStr;
+        newUi.GetComponent<ChangeTextTexture>().mentTureORFalse = compareMentBool;
+        newUi.GetComponent<ChangeTextTexture>().lieORinfoErrorValue = lieORinfoErrorValue;
+        uiObjects.Add(newUi);
+
+
+        LineSpacing(Regex.Matches(str,"\n").Count+1);
     }
-    */
-    void MakeMentList()
+
+    public void MakeMentList()
     {
-        string[] fixtext = { "ÀÌ¸§ : ", "¹üÁË : ", "¹üÁËÀå¼Ò : ", "¹üÁË°æÀ§ : " };
+        string[] fixtext = { "ì´ë¦„ : ", "ì£„ëª© : ", "ë°œìƒì¥ì†Œ : ", "ê²½ìœ„ : " };
+        height = 5f;
         for (int i = 0; i < 4; i++)
         {
-            compareMent = attackerInfo.recordData.correctState[i].Equals(attackerInfo.recordData.currentState[i]) ? true : false;
-            AddMent(fixtext[i] + attackerInfo.recordData.currentState[i], compareMent, attackerInfo.recordData.lieORinfoErrorValue);
+            compareMentBool = attackerInfo.recordData.correctState[i].Equals(attackerInfo.recordData.currentState[i]) ? true : false;
+            AddMent(fixtext[i] + attackerInfo.recordData.currentState[i], compareMentBool, attackerInfo.recordData.lieORinfoErrorValue);
         }
         flag = true;
     }
+
+    public void MakeMentCangedList(List<string> currentList)
+    {
+        string[] fixtext = { "ì´ë¦„ : ", "ì£„ëª© : ", "ë°œìƒì¥ì†Œ : ", "ê²½ìœ„ : " };
+        height = 5f;
+        for (int i = 0; i < 4; i++)
+        {
+            compareMentBool = attackerInfo.recordData.correctState[i].Equals(attackerInfo.recordData.currentState[i]) ? true : false;
+            AddChangedMent(currentList[i], compareMentBool, attackerInfo.recordData.lieORinfoErrorValue);
+        }
+        flag = true;
+    }
+
+    (string,string,int) LineCut(string str)
+    {
+        string txtAll = str;
+        string resultStr = "";
+        string addStr = "";
+        int lineCnt=1;
+
+        while (txtALlTmp.preferredWidth > 300)
+        {
+            //ì´ˆê¸°í™”
+            addStr = "";
+            forWidth.text = "";
+
+            for (int i = 0; forWidth.preferredWidth <= 300; i++)
+            {
+                addStr = addStr + txtAll[0];
+                txtAll = txtAll.Remove(0, 1);
+                txtALlTmp.text = txtAll;
+
+                forWidth.text = addStr; // addStr ê¸¸ì´ë¥¼ ì•Œê¸° ìœ„í•¨
+
+            }
+            lineCnt++;
+            resultStr = resultStr + addStr + System.Environment.NewLine; //í•œì¤„ ë‚´ë¦¼
+
+        }
+
+        resultStr = resultStr + txtAll;
+
+        return (resultStr, txtAll,lineCnt);
+    }
+
+    void LineSpacing(float lineCnt)
+    {
+        uiObjects[uiObjects.Count - 1].anchoredPosition = new Vector2(0f, -height);
+        height += 10 * lineCnt + space; //9*lineCnt
+        scrollRect.content.sizeDelta = new Vector2(scrollRect.content.sizeDelta.x, height);
+    } 
 }
