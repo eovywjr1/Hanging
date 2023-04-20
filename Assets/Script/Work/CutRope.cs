@@ -13,7 +13,7 @@ public class CutRope : MonoBehaviour, IListener
 
     private void Start()
     {
-        EventManager.instance.addListener("amnesty", this);
+        EventManager.instance.addListener("possibleamnesty", this);
     }
 
     private void Update()
@@ -37,6 +37,8 @@ public class CutRope : MonoBehaviour, IListener
                 {
                     isAmnesty = true;
                     EventManager.instance.postNotification("amnesty", this, null);
+                    EventManager.instance.postNotification("dialogEvent", this, UnityEngine.Random.Range(21, 28));
+                    EventManager.instance.postNotification("dialogEvent", this, "amnesty");
                 }
             }
             else if (Input.GetMouseButtonUp(0)) isCut = false;

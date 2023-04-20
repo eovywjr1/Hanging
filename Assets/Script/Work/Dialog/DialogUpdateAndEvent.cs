@@ -32,9 +32,7 @@ public class DialogUpdateAndEvent : MonoBehaviour, IListener
     void Start()
     {
         EventManager.instance.addListener("dialogEvent", this);
-        EventManager.instance.addListener("createAttacker", this);
-        EventManager.instance.addListener("badgeCountdownDialog", this);
-        
+
         string id = HangingManager.day + "000";
         StartCoroutine(UpdateDialogCompulsory(id));
     }
@@ -142,6 +140,9 @@ public class DialogUpdateAndEvent : MonoBehaviour, IListener
         if (sender == this)
             return;
 
+        if (parameter.GetType() == typeof(int))
+            StartCoroutine(SetSituationDialog(Convert.ToInt32(parameter), 0));
+
         switch (parameter)
         {
             case "clickAttacker":
@@ -152,35 +153,8 @@ public class DialogUpdateAndEvent : MonoBehaviour, IListener
                 moveCameraToDesk = true;
                 break;
 
-            case "drawToMiddle":
-                StartCoroutine(SetSituationDialog(UnityEngine.Random.Range(11, 21), 0));
-                break;
-
-            case "unSubmitBadgeForTenSec":
-                StartCoroutine(SetSituationDialog(UnityEngine.Random.Range(58, 60), 0));
-                break;
-
-            case "badgeCountdownDialog":
-                StartCoroutine(SetSituationDialog(60, 0));
-                break;
-
-            case "bossWarning":
-                StartCoroutine(SetSituationDialog(61, 0));
-                break;
-
-            case "bossAnger":
-                StartCoroutine(SetSituationDialog(62, 0));
-                break;
-        }
-
-        switch (eventType)
-        {
             case "createAttacker":
                 StartCoroutine(SetSituationDialog(UnityEngine.Random.Range(1, 11), 3f));
-                break;
-
-            case "badge":
-                StartCoroutine(SetSituationDialog(UnityEngine.Random.Range(53, 58), 0));
                 break;
 
             case "todesstrafe":
@@ -189,11 +163,6 @@ public class DialogUpdateAndEvent : MonoBehaviour, IListener
 
             case "amnesty":
                 amnesty = true;
-                StartCoroutine(SetSituationDialog(UnityEngine.Random.Range(21, 28), 0));
-                break;
-
-            case "badgeCountdownDialog":
-                StartCoroutine(SetSituationDialog(60, 0));
                 break;
         }
     }

@@ -3,45 +3,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Ask : MonoBehaviour, IListener
+public class Ask : MonoBehaviour
 {
-    [SerializeField] Button yes, no;
     [SerializeField] AttackerInfo attackerInfo;
-    bool isPossibleAsk;
+    bool isPossibleAsk, isActiveAsk;
+    public static bool isFirst = true;
 
     public void ActiveAsk()
     {
-        yes.gameObject.SetActive(true);
-        no.gameObject.SetActive(true);
-    }
-
-    public void StartAsk()
-    {
         int accept = Random.Range(0, 2);
-        if (accept == 1) attackerInfo.recordData.isHanging = 1;
-        else attackerInfo.recordData.isHanging = 0;
+        if (accept == 0)
+            rejectAsk();
+        else
+            acceptAsk();
 
-        DisableAsk();
+        EventManager.instance.postNotification("dialogEvent", this, 29);
+        EventManager.instance.postNotification("activeAsk", this, null);
     }
 
-    public void StopAsk()
+    public void acceptAsk()
     {
-        DisableAsk();
+        if (attackerInfo.recordData.attackerData.ContainsKey("ask") && attackerInfo.recordData.attackerData["ask"].Equals("1"))
+            attackerInfo.recordData.isHanging = 1;
+
+        EventManager.instance.postNotification("dialogEvent", this, UnityEngine.Random.Range(30, 41));
     }
 
-    public void DisableAsk()
+    public void rejectAsk()
     {
-        yes.gameObject.SetActive(false);
-        no.gameObject.SetActive(false);
-    }
-
-    public void OnEvent(string eventType, Component sender, object parameter = null)
-    {
-        switch (eventType)
-        {
-            case "activeAsk":
-                ActiveAsk();
-                break;
-        }
+        EventManager.instance.postNotification("dialogEvent", this, UnityEngine.Random.Range(41, 53));
     }
 }
