@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Text.RegularExpressions;
+using Unity.Burst.CompilerServices;
 
 public class ScrollViewController : MonoBehaviour
 {
@@ -89,20 +90,32 @@ public class ScrollViewController : MonoBehaviour
         LineSpacing(lineCnt);
     }
 
-    public void AddChangedMent(string str, bool compareMentBool, int lieORinfoErrorValue)
+    public void AddChangedMent(string str, bool compareMentBool, int lieORinfoErrorValue, bool currentClick)
     {
         var newUi = Instantiate(uiPrefab, scrollRect.content).GetComponent<RectTransform>();
-        //str = "안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요";
-        int lineCnt = 1;
         string resultStr = str;
 
         newUi.transform.GetChild(0).GetChild(0).GetComponent<TMP_Text>().text = resultStr;
         newUi.GetComponent<ChangeTextTexture>().mentTureORFalse = compareMentBool;
+        newUi.GetComponent<ChangeTextTexture>().afterClick = currentClick;
         newUi.GetComponent<ChangeTextTexture>().lieORinfoErrorValue = lieORinfoErrorValue;
         uiObjects.Add(newUi);
 
+        //위증 또는 정보오류 글씨 색 변경
+        if(currentClick==true && compareMentBool == false)
+        {
+            //newUi.transform.GetChild(0).GetComponent<Image>().color = new Color32(217, 66, 66, 255); //빨간배경
+            newUi.transform.gameObject.transform.GetChild(0).GetChild(0).GetComponent<TMP_Text>().color = new Color32(217, 66, 66, 255);
+        }
+        //잘못 클릭한 올바른 정보 글씨 색 변경
+        else if (currentClick == true && compareMentBool == true)
+        {
+            newUi.transform.GetChild(0).GetComponent<Image>().color = new Color32(239, 239, 239, 255); //회색배경
+        }
 
         LineSpacing(Regex.Matches(str,"\n").Count+1);
+
+        Debug.Log("클릭후? :" + newUi.GetComponent<ChangeTextTexture>().afterClick);
     }
 
     public void MakeMentList()
@@ -117,14 +130,14 @@ public class ScrollViewController : MonoBehaviour
         flag = true;
     }
 
-    public void MakeMentCangedList(List<string> currentList)
+    public void MakeMentCangedList(List<string> currentList, List<bool> currentClick)
     {
         string[] fixtext = { "이름 : ", "죄목 : ", "발생장소 : ", "경위 : " };
         height = 5f;
         for (int i = 0; i < 4; i++)
         {
             compareMentBool = attackerInfo.recordData.correctState[i].Equals(attackerInfo.recordData.currentState[i]) ? true : false;
-            AddChangedMent(currentList[i], compareMentBool, attackerInfo.recordData.lieORinfoErrorValue);
+            AddChangedMent(currentList[i], compareMentBool, attackerInfo.recordData.lieORinfoErrorValue, currentClick[i]);
         }
         flag = true;
     }
