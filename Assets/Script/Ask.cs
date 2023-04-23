@@ -6,11 +6,8 @@ using UnityEngine.UI;
 public class Ask : MonoBehaviour
 {
     [SerializeField] AttackerInfo attackerInfo;
-<<<<<<< HEAD:Assets/Script/Ask.cs
-=======
     bool isPossibleAsk, isActiveAsk;
     public static bool isFirst = true;
->>>>>>> MinsuDelveop:Assets/Script/Work/Ask.cs
 
     public void ActiveAsk()
     {
@@ -24,13 +21,6 @@ public class Ask : MonoBehaviour
         EventManager.instance.postNotification("activeAsk", this, null);
     }
 
-<<<<<<< HEAD:Assets/Script/Ask.cs
-    public void DisableAsk()
-    {
-        yes.gameObject.SetActive(false);
-        no.gameObject.SetActive(false);
-    }
-=======
     public void acceptAsk()
     {
         if (attackerInfo.recordData.attackerData.ContainsKey("ask") && attackerInfo.recordData.attackerData["ask"].Equals("1"))
@@ -43,5 +33,4 @@ public class Ask : MonoBehaviour
     {
         EventManager.instance.postNotification("dialogEvent", this, UnityEngine.Random.Range(41, 53));
     }
->>>>>>> MinsuDelveop:Assets/Script/Work/Ask.cs
 }

@@ -84,8 +84,6 @@ public class BossHand : MonoBehaviour, IListener
         }
     }
 
-<<<<<<< HEAD:Assets/Script/BossHand.cs
-=======
     IEnumerator badgeCount(float time, bool _last = false)
     {
         yield return new WaitForSecondsRealtime(time);
@@ -107,7 +105,6 @@ public class BossHand : MonoBehaviour, IListener
         }
     }
 
->>>>>>> MinsuDelveop:Assets/Script/Work/BossHand.cs
     public void OnEvent(string eventType, Component sender, object parameter = null)
     {
         switch (eventType)

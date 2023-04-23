@@ -207,8 +207,6 @@ public class HangingManager : MonoBehaviour, IListener
             case "amnesty":
                 Amnesty();
                 break;
-<<<<<<< HEAD
-=======
 
             case "todesstrafe":
                 Todesstrafe();
@@ -217,7 +215,6 @@ public class HangingManager : MonoBehaviour, IListener
             case "activeAsk":
                 isActiveAsk = true;
                 break;
->>>>>>> MinsuDelveop
         }
     }
 }
