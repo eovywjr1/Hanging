@@ -49,6 +49,18 @@ public class EventManager : MonoBehaviour
             listener.OnEvent(eventType, sender, parameter);
     }
 
+    public List<string> getPossibleEventTypeList()
+    {
+        List<string> possibleEventTypeList = new List<string>();
+        foreach(KeyValuePair< string, List<IListener>> listenersPair in listeners)
+        {
+            if (listenersPair.Key.Substring(0, 8).Equals("possible"))
+                possibleEventTypeList.Add(listenersPair.Key);
+        }
+
+        return possibleEventTypeList;
+    }
+
     public void RemoveEvent(string eventType)
     {
         listeners.Remove(eventType);
