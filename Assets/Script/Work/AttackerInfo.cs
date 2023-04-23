@@ -17,6 +17,7 @@ public class AttackerInfo : MonoBehaviour
     void Start()
     {
         recordData = new RecordData(tableManager);
+<<<<<<< HEAD:Assets/Script/AttackerInfo.cs
 
         if (recordData.attackerData.ContainsKey("ask") && recordData.attackerData["ask"].Equals("1")) ActiveAsk();
     }
@@ -24,6 +25,8 @@ public class AttackerInfo : MonoBehaviour
     void ActiveAsk()
     {
         ask.ActiveAsk();
+=======
+>>>>>>> MinsuDelveop:Assets/Script/Work/AttackerInfo.cs
     }
 
     public RecordData GetRecordData()

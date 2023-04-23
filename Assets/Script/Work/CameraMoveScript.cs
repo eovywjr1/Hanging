@@ -12,7 +12,7 @@ public class CameraMoveScript : MonoBehaviour, IListener
 
     private void Start()
     {
-        EventManager.instance.addListener("moveCameraToDesk", this);
+        EventManager.instance.addListener("possiblemoveCameraToDesk", this);
     }
 
     void Update()

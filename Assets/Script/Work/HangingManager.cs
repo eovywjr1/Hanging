@@ -15,7 +15,7 @@ public class HangingManager : MonoBehaviour, IListener
     public DialogWindowController dialogWindowController;
     [SerializeField] GameObject convertEffect, attackerPrefab;
 
-    public bool isTodesstrafe, isAmnesty;
+    public bool isTodesstrafe, isAmnesty, isActiveAsk;
     public static bool isCompulsoryEnd;
     int _attackerCount = 1;
     public int attackerCount
@@ -45,12 +45,29 @@ public class HangingManager : MonoBehaviour, IListener
             StartCoroutine(StartHoldOutHands());
             isCorrect = true;
         }
+
+        EventManager.instance.addListener("amnesty", this);
+        EventManager.instance.addListener("todesstrafe", this);
+        EventManager.instance.addListener("activeAsk", this);
     }
 
     public void EndTodesstrafe()
     {
         DestroyAllLineAndWindow();
         NextAttacker();
+
+        if(isActiveAsk && attackerInfo.recordData.attackerData["ask"].Equals("1") == false)
+        {
+            if (Ask.isFirst)
+            {
+                Ask.isFirst = false;
+                EventManager.instance.postNotification("dialogEvent", this, 63);
+            }
+            else
+            {
+                EventManager.instance.postNotification("dialogEvent", this, UnityEngine.Random.Range(64, 71));
+            }
+        }
     }
 
     public void Todesstrafe()
@@ -79,7 +96,7 @@ public class HangingManager : MonoBehaviour, IListener
 
     private bool DistinguishTodesstrafe(int mode)
     {
-        if (mode == attackerInfo.recordData.isHanging)
+        if (isCompulsoryEnd == false || mode == attackerInfo.recordData.isHanging)
         {
             Debug.Log(attackerInfo.recordData.isHanging);
             isCorrect = false;
@@ -138,6 +155,7 @@ public class HangingManager : MonoBehaviour, IListener
     {
         yield return new WaitForSecondsRealtime(1.25f);
         EventManager.instance.postNotification("badge", this, null);
+        EventManager.instance.postNotification("dialogEvent", this, UnityEngine.Random.Range(53, 58));
     }
 
     public IEnumerator StartStateWrong() //������ Ŭ�� Ʋ���� 
@@ -179,6 +197,7 @@ public class HangingManager : MonoBehaviour, IListener
 
         isTodesstrafe = false;
         isAmnesty = false;
+        isActiveAsk = false;
     }
 
     public void OnEvent(string eventType, Component sender, object parameter = null)
@@ -188,6 +207,17 @@ public class HangingManager : MonoBehaviour, IListener
             case "amnesty":
                 Amnesty();
                 break;
+<<<<<<< HEAD
+=======
+
+            case "todesstrafe":
+                Todesstrafe();
+                break;
+
+            case "activeAsk":
+                isActiveAsk = true;
+                break;
+>>>>>>> MinsuDelveop
         }
     }
 }

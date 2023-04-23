@@ -5,27 +5,43 @@ using UnityEngine.UI;
 
 public class Ask : MonoBehaviour
 {
-    [SerializeField] Button yes, no;
     [SerializeField] AttackerInfo attackerInfo;
+<<<<<<< HEAD:Assets/Script/Ask.cs
+=======
+    bool isPossibleAsk, isActiveAsk;
+    public static bool isFirst = true;
+>>>>>>> MinsuDelveop:Assets/Script/Work/Ask.cs
 
     public void ActiveAsk()
     {
-        yes.gameObject.SetActive(true);
-        no.gameObject.SetActive(true);
-    }
-
-    public void StartAsk()
-    {
         int accept = Random.Range(0, 2);
-        if (accept == 1) attackerInfo.recordData.isHanging = 1;
-        else attackerInfo.recordData.isHanging = 0;
+        if (accept == 0)
+            rejectAsk();
+        else
+            acceptAsk();
 
-        DisableAsk();
+        EventManager.instance.postNotification("dialogEvent", this, 29);
+        EventManager.instance.postNotification("activeAsk", this, null);
     }
 
+<<<<<<< HEAD:Assets/Script/Ask.cs
     public void DisableAsk()
     {
         yes.gameObject.SetActive(false);
         no.gameObject.SetActive(false);
     }
+=======
+    public void acceptAsk()
+    {
+        if (attackerInfo.recordData.attackerData.ContainsKey("ask") && attackerInfo.recordData.attackerData["ask"].Equals("1"))
+            attackerInfo.recordData.isHanging = 1;
+
+        EventManager.instance.postNotification("dialogEvent", this, UnityEngine.Random.Range(30, 41));
+    }
+
+    public void rejectAsk()
+    {
+        EventManager.instance.postNotification("dialogEvent", this, UnityEngine.Random.Range(41, 53));
+    }
+>>>>>>> MinsuDelveop:Assets/Script/Work/Ask.cs
 }

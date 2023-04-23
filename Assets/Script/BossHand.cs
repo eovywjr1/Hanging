@@ -84,6 +84,30 @@ public class BossHand : MonoBehaviour, IListener
         }
     }
 
+<<<<<<< HEAD:Assets/Script/BossHand.cs
+=======
+    IEnumerator badgeCount(float time, bool _last = false)
+    {
+        yield return new WaitForSecondsRealtime(time);
+
+        if (isSubmit == false)
+        {
+            if (time == 10f)
+                EventManager.instance.postNotification("dialogEvent", this, UnityEngine.Random.Range(58, 60));
+            else if (time == 2f)
+                EventManager.instance.postNotification("dialogEvent", this, 60);
+        }
+
+        if (_last)
+        {
+            if(isSubmit)
+                EventManager.instance.postNotification("dialogEvent", this, 61);
+            else
+                EventManager.instance.postNotification("dialogEvent", this, 62);
+        }
+    }
+
+>>>>>>> MinsuDelveop:Assets/Script/Work/BossHand.cs
     public void OnEvent(string eventType, Component sender, object parameter = null)
     {
         switch (eventType)

@@ -61,7 +61,10 @@ public class AttackerMouseMove : MonoBehaviour, IListener
         if (isPossibleClick || isPossibleTodesstrafe)
         {
             EventManager.instance.postNotification("dialogEvent", this, "clickAttacker");
+<<<<<<< HEAD
 
+=======
+>>>>>>> MinsuDelveop
             if (isCreateLine == false)
             {
                 lineManager.CreateLine();
@@ -121,12 +124,17 @@ public class AttackerMouseMove : MonoBehaviour, IListener
             if (collision.CompareTag("criteria"))
             {
                 isPossibleTodesstrafe = false;
+<<<<<<< HEAD
                 EventManager.instance.postNotification("dialogEvent", this, "todesstrafe");
                 hangingManager.Todesstrafe();
+=======
+                EventManager.instance.postNotification("todesstrafe", this, null);
+                EventManager.instance.postNotification("dialogEvent", this, "todesstrafe");
+>>>>>>> MinsuDelveop
             }
 
             if ((collision.CompareTag("middleCriteria")) && (isDescend == false))
-                EventManager.instance.postNotification("dialogEvent", this, "drawToMiddle");
+                EventManager.instance.postNotification("dialogEvent", this, UnityEngine.Random.Range(11, 21));
         }
     }
 

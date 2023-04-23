@@ -70,7 +70,11 @@ public class EventManager : MonoBehaviour
         listeners = newListeners;
     }
 
+<<<<<<< HEAD
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+=======
+    void OnSceneLoaded()
+>>>>>>> MinsuDelveop
     {
         RemoveRedundancies();
     }
