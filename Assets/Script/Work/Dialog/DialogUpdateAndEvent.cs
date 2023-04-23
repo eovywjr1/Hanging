@@ -33,8 +33,8 @@ public class DialogUpdateAndEvent : MonoBehaviour, IListener
     {
         EventManager.instance.addListener("dialogEvent", this);
         EventManager.instance.addListener("createAttacker", this);
-        EventManager.instance.addListener("badgeCountdownDialog", this);
-        
+        EventManager.instance.addListener("drawToMiddle", this);
+
         string id = HangingManager.day + "000";
         StartCoroutine(UpdateDialogCompulsory(id));
     }
@@ -83,7 +83,7 @@ public class DialogUpdateAndEvent : MonoBehaviour, IListener
                     conditionName = i[3];
                     yield return new WaitUntil(() =>
                     {
-                        EventManager.instance.postNotification("possible" + conditionName, this, null); //csv에서 possible 뒤 첫 글자는 무조건 lower
+                        EventManager.instance.postNotification(conditionName, this, null);
 
                         if (this.GetType().GetField(conditionName).GetValue(this).ConvertTo<bool>())
                             return true;
@@ -94,7 +94,9 @@ public class DialogUpdateAndEvent : MonoBehaviour, IListener
             }
 
             if ((i.Count > 4) && (i[4].Equals("") == false))
-                EventManager.instance.postNotification(i[4], this, null);
+            {
+                this.GetType().GetMethod(i[4]).Invoke(this, null);
+            }
         }
     }
 
@@ -127,6 +129,11 @@ public class DialogUpdateAndEvent : MonoBehaviour, IListener
         yield return new WaitForSecondsRealtime(time);
     }
 
+    public void SetValueByName(string name)
+    {
+        this.GetType().GetField(name).SetValue(this, true);
+    }
+
     void Initialize()
     {
         timeover = false;
@@ -142,45 +149,10 @@ public class DialogUpdateAndEvent : MonoBehaviour, IListener
         if (sender == this)
             return;
 
-        switch (parameter)
+        switch (parameter)  //필수 일차별 대사 관련 이벤트는 eventType 사용 x => resource 변수랑 같게 하기 위해서
         {
             case "clickAttacker":
                 clickAttacker = true;
-                break;
-
-            case "moveCameraToDesk":
-                moveCameraToDesk = true;
-                break;
-
-            case "drawToMiddle":
-                StartCoroutine(SetSituationDialog(UnityEngine.Random.Range(11, 21), 0));
-                break;
-
-            case "unSubmitBadgeForTenSec":
-                StartCoroutine(SetSituationDialog(UnityEngine.Random.Range(58, 60), 0));
-                break;
-
-            case "badgeCountdownDialog":
-                StartCoroutine(SetSituationDialog(60, 0));
-                break;
-
-            case "bossWarning":
-                StartCoroutine(SetSituationDialog(61, 0));
-                break;
-
-            case "bossAnger":
-                StartCoroutine(SetSituationDialog(62, 0));
-                break;
-        }
-
-        switch (eventType)
-        {
-            case "createAttacker":
-                StartCoroutine(SetSituationDialog(UnityEngine.Random.Range(1, 11), 3f));
-                break;
-
-            case "badge":
-                StartCoroutine(SetSituationDialog(UnityEngine.Random.Range(53, 58), 0));
                 break;
 
             case "todesstrafe":
@@ -192,8 +164,27 @@ public class DialogUpdateAndEvent : MonoBehaviour, IListener
                 StartCoroutine(SetSituationDialog(UnityEngine.Random.Range(21, 28), 0));
                 break;
 
-            case "badgeCountdownDialog":
-                StartCoroutine(SetSituationDialog(60, 0));
+            case "moveCameraToDesk":
+                moveCameraToDesk = true;
+                break;
+        }
+
+        switch (eventType)
+        {
+            case "createAttacker":
+                StartCoroutine(SetSituationDialog(UnityEngine.Random.Range(1, 11), 3f));
+                break;
+
+            case "drawToMiddle":
+                StartCoroutine(SetSituationDialog(UnityEngine.Random.Range(11, 21), 0));
+                break;
+
+            case "badge":
+                StartCoroutine(SetSituationDialog(UnityEngine.Random.Range(53, 58), 0));
+                break;
+
+            case "submitBadge":
+                submitBadge = true;
                 break;
         }
     }

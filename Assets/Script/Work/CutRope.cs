@@ -36,6 +36,7 @@ public class CutRope : MonoBehaviour, IListener
                     (initialMousePosition.x < ropePosition.x && currentMousePosition.x - initialMousePosition.x >= cutDistance && currentMousePosition.x > ropePosition.x))
                 {
                     isAmnesty = true;
+                    EventManager.instance.postNotification("dialogEvent", this, "amnesty");
                     EventManager.instance.postNotification("amnesty", this, null);
                 }
             }
@@ -47,7 +48,7 @@ public class CutRope : MonoBehaviour, IListener
     {
         switch (eventType)
         {
-            case "possibleamnesty":
+            case "amnesty":
                 isPossibleAmnesty = true;
                 break;
         }

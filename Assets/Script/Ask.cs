@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Ask : MonoBehaviour, IListener
+public class Ask : MonoBehaviour
 {
     [SerializeField] Button yes, no;
     [SerializeField] AttackerInfo attackerInfo;
-    bool isPossibleAsk;
 
     public void ActiveAsk()
     {
@@ -24,24 +23,9 @@ public class Ask : MonoBehaviour, IListener
         DisableAsk();
     }
 
-    public void StopAsk()
-    {
-        DisableAsk();
-    }
-
     public void DisableAsk()
     {
         yes.gameObject.SetActive(false);
         no.gameObject.SetActive(false);
-    }
-
-    public void OnEvent(string eventType, Component sender, object parameter = null)
-    {
-        switch (eventType)
-        {
-            case "activeAsk":
-                ActiveAsk();
-                break;
-        }
     }
 }

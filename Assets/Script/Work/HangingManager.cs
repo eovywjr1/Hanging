@@ -35,7 +35,6 @@ public class HangingManager : MonoBehaviour, IListener
         dialogWindowController = FindObjectOfType<DialogWindowController>();
         hangingTimer = FindObjectOfType<HangingTimer>();
         analogGlitch = FindObjectOfType<AnalogGlitch>();
-
         InitialAttacker();
     }
 
@@ -152,16 +151,13 @@ public class HangingManager : MonoBehaviour, IListener
 
     public void EndCompulsory()
     {
-        EventManager eventManager = EventManager.instance;
-
         isCompulsoryEnd = true;
 
-        eventManager.postNotification("dialogEvent", this, "createAttacker");
-
-        foreach(string eventType in EventManager.instance.getPossibleEventTypeList())
-            eventManager.postNotification(eventType, this, null);
+        EventManager.instance.postNotification("dialogEvent", this, "createAttacker");
 
         hangingTimer.SetTimer(true);
+        EventManager.instance.postNotification("moveCameraToDesk", this, null);
+        EventManager.instance.postNotification("todesstrafe", this, null);
         dialogWindowController.SetEnabled(true);
 
     }
@@ -177,8 +173,8 @@ public class HangingManager : MonoBehaviour, IListener
 
         if (isCompulsoryEnd)
         {
-            EventManager.instance.postNotification("possibletodesstrafe", this, null);
-            EventManager.instance.postNotification("possibleamnesty", this, null);
+            EventManager.instance.postNotification("todesstrafe", this, null);
+            EventManager.instance.postNotification("amnesty", this, null);
         }
 
         isTodesstrafe = false;
@@ -191,10 +187,6 @@ public class HangingManager : MonoBehaviour, IListener
         {
             case "amnesty":
                 Amnesty();
-                break;
-
-            case "todesstrafe":
-                Todesstrafe();
                 break;
         }
     }

@@ -40,7 +40,7 @@ public class CameraMoveScript : MonoBehaviour, IListener
     {
         switch (eventType)
         {
-            case "possiblemoveCameraToDesk":
+            case "moveCameraToDesk":
                 isPossibleMove = true;
                 break;
         }
