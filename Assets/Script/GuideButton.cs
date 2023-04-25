@@ -11,7 +11,7 @@ public class GuideButton : MonoBehaviour
     private void Awake()
     {
         //scrollRect = GetComponentInChildren<ScrollRect>();
-        scrollRect = GameObject.Find("GuideScrollRect").GetComponent<ScrollRect>();
+        scrollRect = GameObject.Find("GuideScrollView").GetComponent<ScrollRect>();
     }
 
     private void Start()
