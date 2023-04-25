@@ -19,14 +19,14 @@ public class NotClickOther : MonoBehaviour
     {
         if(EventSystem.current.IsPointerOverGameObject())
         {
-            attackerMouseMove.SetisPossibleTodesstrafe(false);
+            attackerMouseMove.SetPossibleTodesstrafe(false);
             Debug.Log("사형수 클릭 막기");
             rope.SetCutPossible(false);
             Debug.Log("로프 컷 막기");
         }
         else
         {
-            attackerMouseMove.SetisPossibleTodesstrafe(true);
+            attackerMouseMove.SetPossibleTodesstrafe(true);
             Debug.Log("사형수 클릭 풀기");
             rope.SetCutPossible(true);
             Debug.Log("로프 컷 풀기");
