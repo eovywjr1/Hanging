@@ -8,8 +8,6 @@ public class UiManager : MonoBehaviour
 
     private void Awake()
     {
-        GuideButton = FindObjectOfType<GuideButton>().gameObject;
-
         GuideButton.SetActive(false);
     }
 

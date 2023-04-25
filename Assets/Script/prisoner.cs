@@ -25,7 +25,7 @@ public class prisoner : MonoBehaviour
     {
         if(isLift)
         {
-            onHanging();
+            //onHanging();
         }
         else
         {
@@ -54,7 +54,7 @@ public class prisoner : MonoBehaviour
         }
     }
 
-    void onHanging()
+/*    void onHanging()
     {
         if(!isRunningAnim)
         {
@@ -62,5 +62,5 @@ public class prisoner : MonoBehaviour
             PrisonerAnimator.Play(liftAnimations[randomIndex].name);
             isRunningAnim = true;
         }
-    }
+    }*/
 }

@@ -17,6 +17,9 @@ public class Rope : MonoBehaviour
 
     private List<Segment> segments = new List<Segment>();
 
+    [SerializeField]
+    bool isCutPossible = true;
+
     private void Reset()
     {
         TryGetComponent(out lineRenderer);
@@ -42,20 +45,28 @@ public class Rope : MonoBehaviour
         DrawRope();
     }
 
+    public void SetCutPossible(bool _isCutPossible)
+    {
+        isCutPossible = _isCutPossible;
+    }
+
     private void Update()
     {
-        if (Input.GetMouseButtonDown(1))
+        if(isCutPossible)
         {
-            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            int closestSegmentIndex = FindClosestSegmentIndex(mousePos);
-            Debug.Log("눌린 세그먼트 인덱스 : " + closestSegmentIndex);
-
-            endTransform = null;
-            if (closestSegmentIndex != -1)
+            if (Input.GetMouseButtonDown(1))
             {
-                for (int i = closestSegmentIndex; i < segments.Count; i++)
+                Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                int closestSegmentIndex = FindClosestSegmentIndex(mousePos);
+                Debug.Log("눌린 세그먼트 인덱스 : " + closestSegmentIndex);
+
+                endTransform = null;
+                if (closestSegmentIndex != -1)
                 {
-                    segments.RemoveAt(i);
+                    for (int i = closestSegmentIndex; i < segments.Count; i++)
+                    {
+                        segments.RemoveAt(i);
+                    }
                 }
             }
         }
