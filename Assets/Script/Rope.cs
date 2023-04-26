@@ -12,7 +12,7 @@ public class Rope : MonoBehaviour
     public Vector2 gravity = new Vector2(0f, -9.81f);
 
     [Space(10f)]
-    public Transform startTransform;
+    Transform startTransform;
     public Transform endTransform;
 
     private List<Segment> segments = new List<Segment>();
@@ -27,6 +27,8 @@ public class Rope : MonoBehaviour
 
     private void Awake()
     {
+        startTransform = GameObject.Find("RopeStartPoint").transform;
+
         Vector2 segmentPos = startTransform.position;
         for(int i=0;i<segmentCnt;i++)
         {

@@ -12,7 +12,7 @@ public class NotClickOther : MonoBehaviour
 
     private void Awake()
     {
-        attackerMouseMove = GameObject.Find("Prisoner").GetComponent<AttackerMouseMove>();
+        attackerMouseMove = GameObject.FindGameObjectWithTag("prisoner").GetComponent<AttackerMouseMove>();
         rope = GameObject.Find("rope").GetComponent<Rope>();
     }
     void Update()
