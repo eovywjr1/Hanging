@@ -670,7 +670,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uBAA9\uCC28"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 729b9b9995b30d644b829a11225dab65, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1e0b687a15385ce4ea553f6e4452d01f, type: 2}
   m_sharedMaterial: {fileID: 0}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -1140,7 +1140,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   day: 2
   guideDB: {fileID: 11400000, guid: 4620c921ddb371748b83ca60a962bb47, type: 2}
-  font: {fileID: 11400000, guid: 729b9b9995b30d644b829a11225dab65, type: 2}
+  font: {fileID: 11400000, guid: 1e0b687a15385ce4ea553f6e4452d01f, type: 2}
   BasicFontSize: 5
   width: 100
   height: 10
@@ -1588,7 +1588,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2696586845578461405, guid: eb9383c62696a8342ab1744954e8dce2, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.0030766423
+      value: 0.0022344461
       objectReference: {fileID: 0}
     - target: {fileID: 2696586845809489345, guid: eb9383c62696a8342ab1744954e8dce2, type: 3}
       propertyPath: 
@@ -1621,19 +1621,19 @@ PrefabInstance:
     - target: {fileID: 7995845550891718017, guid: eb9383c62696a8342ab1744954e8dce2, type: 3}
       propertyPath: m_fontAsset
       value: 
-      objectReference: {fileID: 11400000, guid: 729b9b9995b30d644b829a11225dab65, type: 2}
+      objectReference: {fileID: 11400000, guid: 1e0b687a15385ce4ea553f6e4452d01f, type: 2}
     - target: {fileID: 7995845550891718017, guid: eb9383c62696a8342ab1744954e8dce2, type: 3}
       propertyPath: m_sharedMaterial
       value: 
-      objectReference: {fileID: 8475605346728879547, guid: 729b9b9995b30d644b829a11225dab65, type: 2}
+      objectReference: {fileID: 5207861096330110564, guid: 1e0b687a15385ce4ea553f6e4452d01f, type: 2}
     - target: {fileID: 8664499455993769534, guid: eb9383c62696a8342ab1744954e8dce2, type: 3}
       propertyPath: m_fontAsset
       value: 
-      objectReference: {fileID: 11400000, guid: 729b9b9995b30d644b829a11225dab65, type: 2}
+      objectReference: {fileID: 11400000, guid: 1e0b687a15385ce4ea553f6e4452d01f, type: 2}
     - target: {fileID: 8664499455993769534, guid: eb9383c62696a8342ab1744954e8dce2, type: 3}
       propertyPath: m_sharedMaterial
       value: 
-      objectReference: {fileID: 8475605346728879547, guid: 729b9b9995b30d644b829a11225dab65, type: 2}
+      objectReference: {fileID: 5207861096330110564, guid: 1e0b687a15385ce4ea553f6e4452d01f, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eb9383c62696a8342ab1744954e8dce2, type: 3}
 --- !u!1 &969775013

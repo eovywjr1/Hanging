@@ -18,9 +18,17 @@ public class UiManager : MonoBehaviour
 
     private void guideOn()
     {
-        if(Input.GetKeyDown(KeyCode.G))
+        if (Input.GetKeyDown(KeyCode.G))
         {
-            GuideButton.SetActive(true);
+            if (GuideButton.activeSelf == false)
+            {
+                GuideButton.SetActive(true);
+
+            }
+            else
+            {
+                GuideButton.SetActive(false);
+            }
         }
     }
 }
