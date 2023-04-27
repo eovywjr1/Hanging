@@ -671,7 +671,7 @@ MonoBehaviour:
   m_text: "\uBAA9\uCC28"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 729b9b9995b30d644b829a11225dab65, type: 2}
-  m_sharedMaterial: {fileID: -4956771786866699565, guid: 729b9b9995b30d644b829a11225dab65, type: 2}
+  m_sharedMaterial: {fileID: 0}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -734,7 +734,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &347007009
@@ -1588,7 +1588,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2696586845578461405, guid: eb9383c62696a8342ab1744954e8dce2, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.003117524
+      value: 0.0030766423
       objectReference: {fileID: 0}
     - target: {fileID: 2696586845809489345, guid: eb9383c62696a8342ab1744954e8dce2, type: 3}
       propertyPath: 
@@ -1618,6 +1618,22 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7995845550891718017, guid: eb9383c62696a8342ab1744954e8dce2, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 729b9b9995b30d644b829a11225dab65, type: 2}
+    - target: {fileID: 7995845550891718017, guid: eb9383c62696a8342ab1744954e8dce2, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 8475605346728879547, guid: 729b9b9995b30d644b829a11225dab65, type: 2}
+    - target: {fileID: 8664499455993769534, guid: eb9383c62696a8342ab1744954e8dce2, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 729b9b9995b30d644b829a11225dab65, type: 2}
+    - target: {fileID: 8664499455993769534, guid: eb9383c62696a8342ab1744954e8dce2, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 8475605346728879547, guid: 729b9b9995b30d644b829a11225dab65, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eb9383c62696a8342ab1744954e8dce2, type: 3}
 --- !u!1 &969775013
