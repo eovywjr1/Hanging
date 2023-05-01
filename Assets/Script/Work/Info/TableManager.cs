@@ -1,15 +1,15 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 public class TableManager : MonoBehaviour
 {
     CSVReader csvReader = new CSVReader();
-    private static List<Dictionary<string, List<string>>> nameT, fnameT, crimeT, detailT, jobT;
-    public static List<List<Dictionary<string, List<string>>>> judgeT = new List<List<Dictionary<string, List<string>>>>();
+    private static WorkProbabilityCSVRedaer workProbabilityCSVRedaer = new WorkProbabilityCSVRedaer();
+    private static JobInfoReader jobInfoReader = null;
 
+    private static List<Dictionary<string, List<string>>> nameT, fnameT, crimeT, detailT;
+    public static List<List<Dictionary<string, List<string>>>> judgeT = new List<List<Dictionary<string, List<string>>>>();
+    private static Dictionary<string, List<List<int>>> probabilityInfo;
 
     /// positionGrade = 신분(시민 등급)
     void Awake()
@@ -20,11 +20,12 @@ public class TableManager : MonoBehaviour
             fnameT = csvReader.Read("familyNameInfo");
             crimeT = csvReader.Read("crimeInfo");
             detailT = csvReader.Read("crimeReasonInfo");
-            jobT = csvReader.Read("jobInfo");
 
+            probabilityInfo = workProbabilityCSVRedaer.Read("WorkProbabilityInfo");
+            jobInfoReader = new JobInfoReader(Resources.Load("JobInfo") as TextAsset);
+
+            // 조민수 : 각 일차 별 테스트 할 때 사용하는 코드 //
             string fileName = "DayJudgeMentInfo";
-            //judgeT.Add(CSVReader.Read(fileName + HangingManager.day.ToString()));
-
             judgeT.Add(csvReader.Read("1" + fileName));
             judgeT.Add(csvReader.Read("2" + fileName));
             judgeT.Add(csvReader.Read("3" + fileName));
@@ -33,6 +34,10 @@ public class TableManager : MonoBehaviour
             judgeT.Add(csvReader.Read("6" + fileName));
             judgeT.Add(csvReader.Read("7" + fileName));
         }
+
+        // 조민수 : 정상적인 플레이에서는 각 해당 일차마다 추가
+        //string fileName = "DayJudgeMentInfo";
+        //judgeT.Add(CSVReader.Read(fileName + HangingManager.day.ToString()));
     }
 
     public Dictionary<string,string> GetData(string attackerFamilyName, string attackerName, ref Dictionary<string, List<string>> lieORInfoError)
@@ -48,9 +53,7 @@ public class TableManager : MonoBehaviour
             while (data["name"].Equals(attackerName) == false) 
                 GetName(nameT, data);
         }
-        
-        data["move"] = data["crimePlace"].Equals(data["familyGrade"]) ? "1" :"0";
-
+        GetCrimePlaceAndMove(data, attackerName);
 
         //통합 기록일 경우 가해자 data에만 넣음//
         if (attackerFamilyName == null)
@@ -63,6 +66,9 @@ public class TableManager : MonoBehaviour
             //위증여부//
             if(HangingManager.day >= 6) 
                 GetLieORInfoError(data, ref lieORInfoError);
+
+            //국가적 요구 허락OR거절
+            data["ask"] = getRandomValueByRange(probabilityInfo["askAccept"][0]).ToString();
         }
         else
         {
@@ -77,7 +83,7 @@ public class TableManager : MonoBehaviour
         while (true)
         {
             int valueid = Random.Range(0, crimeT.Count);
-            int crimeGrade = getRandomValueByRange(new int[] {15,25,30,20,10});
+            int crimeGrade = getRandomValueByRange(probabilityInfo["crimeGrade"][0]);
 
             string str = crimeT[valueid][crimeT[0]["header"][crimeGrade]][0];
             if (str.Equals("") == false){
@@ -89,21 +95,22 @@ public class TableManager : MonoBehaviour
         }
     }
 
-    void GetCrimePlace(Dictionary<string, string> data, string attackerName) 
+    void GetCrimePlaceAndMove(Dictionary<string, string> data, string attackerName) 
     {
+        int moveFlag = 0;
+
         if (HangingManager.day == 1)
         {
             data["crimePlace"] = data["familyGrade"];
         }
         else
         {
-            int moveRandomValue;    // 0:불법이동
             if (attackerName == null)
-                moveRandomValue = getRandomValueByRange(new int[] { 30, 70 });
+                moveFlag = getRandomValueByRange(probabilityInfo["attackerMove"][0]);
             else
-                moveRandomValue = getRandomValueByRange(new int[] { 20, 80 });
+                moveFlag = getRandomValueByRange(probabilityInfo["victimMove"][0]);
 
-            if (moveRandomValue == 0)
+            if (moveFlag == 1)
             {
                 do
                     data["crimePlace"] = Random.Range(0, 7).ToString();
@@ -115,16 +122,15 @@ public class TableManager : MonoBehaviour
             }
         }
 
-        data["crimePlaceText"] = GetCrimePlace(data["crimePlace"]);
+        data["crimePlaceText"] = GetCrimePlaceText(data["crimePlace"]);
+        data["move"] = (moveFlag == 1) ? "1" : "0";
     }
 
     void GetPositionGradeAndFamilyName(Dictionary<string, string> data)
     {
-        int positionGrade = getRandomValueByRange(new int[] { 5, 15, 30, 30, 20 });
+        int positionGrade = getRandomValueByRange(probabilityInfo["positionGrade"][0]);
         data["positionGrade"] = positionGrade.ToString();
         data["familyGrade"] = GetFamilyGrade(data["positionGrade"]);
-
-        
         data["familyName"] = fnameT[Random.Range(0, fnameT.Count)][fnameT[0]["header"][positionGrade]][0];
     }
 
@@ -166,7 +172,7 @@ public class TableManager : MonoBehaviour
         data["crimeReason"] = randomlist[valueid].ToString();
     }
 
-    private string GetCrimePlace(string grade)
+    private string GetCrimePlaceText(string grade)
     {
         switch (grade)
         {
@@ -213,43 +219,51 @@ public class TableManager : MonoBehaviour
     //person은 가해자, 피해자 구분
     string GetJob(Dictionary<string, string> data, string positionGrade, string person)
     {
-        List<string> jobPossibleList = new List<string>();
+        int specialJobFlag = 0;
+        int day = HangingManager.day;
+        string jobText = null;
 
-        foreach(var i in jobT)
+        if (person.Equals("attacker"))
+            specialJobFlag = getRandomValueByRange(probabilityInfo["attackerSpecialJob"][int.Parse(data["positionGrade"])]);
+        else
+            specialJobFlag = getRandomValueByRange(probabilityInfo["victimSpecialJob"][0]);
+
+        if (jobInfoReader._specialJobDictionary.ContainsKey(day))
         {
-            foreach(var j in i["성 등급"])
-            {
-                if (j.Equals(positionGrade))
-                {
-                    jobPossibleList.Add(i["직업"][0]);
-                    break;
-                }
-            }
+            if (specialJobFlag == 1)
+                jobText = jobInfoReader.getSpecialJob(day);
+            else
+                jobText = jobInfoReader.getNormalJob(day);
+        }
+        else
+        {
+            jobText = jobInfoReader.getJobByAllList();
         }
 
-        string job = jobPossibleList[Random.Range(0, jobPossibleList.Count)];
-        data["jobText"] = job;
-        Debug.Log("직업 : " + job);
-        switch (HangingManager.day)
+
+        //아래 내용을 데이터로 빼야 함
+        data["jobText"] = jobText;
+        Debug.Log("직업 : " + jobText);
+        switch (day)
         {
             case 3:
-                if (job.Equals("의사") || job.Equals("연구원") || job.Equals("기술자")) return "1";
+                if (jobText.Equals("의사") || jobText.Equals("연구원") || jobText.Equals("기술자")) return "1";
                 else return "0";
             case 4:
                 if (person.Equals("attacker"))
                 {
-                    if ((job.Equals("개발자") && data["positionGrade"].Equals("2")) || (job.Equals("교사") && int.Parse(data["positionGrade"]) >= 3)) return "2";
-                    else if (job.Equals("의사") || job.Equals("연구원") || job.Equals("기술자") || job.Equals("개발자") || job.Equals("교사")) return "1";
+                    if ((jobText.Equals("개발자") && data["positionGrade"].Equals("2")) || (jobText.Equals("교사") && int.Parse(data["positionGrade"]) >= 3)) return "2";
+                    else if (jobText.Equals("의사") || jobText.Equals("연구원") || jobText.Equals("기술자") || jobText.Equals("개발자") || jobText.Equals("교사")) return "1";
                     else return "0";
                 }
                 else
                 {
-                    if (job.Equals("의사") || job.Equals("연구원") || job.Equals("기술자") || job.Equals("개발자") || job.Equals("교사")) return "1";
+                    if (jobText.Equals("의사") || jobText.Equals("연구원") || jobText.Equals("기술자") || jobText.Equals("개발자") || jobText.Equals("교사")) return "1";
                     else return "0";
                 }
             case 5:
             case 6:
-                switch (job)
+                switch (jobText)
                 {
                     case "상담가": return "5";
                     case "교사": return "4";
@@ -262,7 +276,7 @@ public class TableManager : MonoBehaviour
                 }
                 return null;
             case 7:
-                switch (job)
+                switch (jobText)
                 {
                     case "농업기술자": return "6";
                     case "연구원":
@@ -289,22 +303,29 @@ public class TableManager : MonoBehaviour
     {
         if (HangingManager.day >= 4)
         {
-            data["crimeRecord"] = Random.Range(0, 6).ToString();
-            if (int.Parse(data["crimeRecord"]) == 0)
+            if(data["positionGrade"].Equals("0"))
+                data["crimeRecord"] = getRandomValueByRange(probabilityInfo["crimeRecordHighest"][0]).ToString();
+            else
+                data["crimeRecord"] = getRandomValueByRange(probabilityInfo["crimeRecordNotHighest"][0]).ToString();
+
+            if (int.Parse(data["crimeRecord"]) == probabilityInfo["crimeRecordHighest"][0].Count - 1)
             {
                 data["crimeRecordText"] = "없음";
-                return;
             }
-            while (true)
-            {
-                int valueid = Random.Range(0, crimeT.Count);
-                int headerId = int.Parse(data["crimeRecord"]) - 1;
-
-                string str = crimeT[valueid][crimeT[0]["header"][headerId]][0];
-                if (!str.Equals(""))
+            else
+            {   
+                // 비어있는거 저장안하게 바꿔야 됨.
+                while (true)
                 {
-                    data["crimeRecordText"] = str;
-                    return;
+                    int valueid = Random.Range(0, crimeT.Count);
+                    int headerId = int.Parse(data["crimeRecord"]);
+
+                    string str = crimeT[valueid][crimeT[0]["header"][headerId]][0];
+                    if (str.Equals("") == false)
+                    {
+                        data["crimeRecordText"] = str;
+                        return;
+                    }
                 }
             }
         }
@@ -312,48 +333,60 @@ public class TableManager : MonoBehaviour
 
     void GetLieORInfoError(Dictionary<string, string> data, ref Dictionary<string, List<string>> lieORInfoError)
     {
-        string[] strs = { "name", "crime", "crimePlace", "crimeResonText" };
-        bool crimePlaceFlag = false, lieFlag = false;
+        string[] errorList = { "fullName", "crime", "crimePlace", "crimeResonText" };
+        bool isFullNameError = false, isLie = false;
         int cnt = 0;
 
-        for (int i = 0; i < 4; i++)
-        {
-            int lieORInfoErrorPossibility = Random.Range(0, 5);
-            if (lieORInfoErrorPossibility != 0) continue;
-
-            if (i == 2) crimePlaceFlag = true;
-            cnt++;
-
-            int lieORInfoErrorDistinguishPossibility = Random.Range(0, 2);
-            //6일차 무조건 위증//
-            if (HangingManager.day == 6) lieORInfoErrorDistinguishPossibility = 0;
-            //위증//
-            if (lieORInfoErrorDistinguishPossibility == 0)
+        if (getRandomValueByRange(probabilityInfo["lieORInfoErrorAppear"][0]).Equals("1")){
+            int errorListLength = errorList.Length;
+            for (int i = 0; i < errorListLength; ++i)
             {
-                lieFlag = true;
-                if (!lieORInfoError.ContainsKey("lie")) lieORInfoError.Add("lie", new List<string>());
-                lieORInfoError["lie"].Add(strs[i]);
-            }
+                int lieORInfoErrorPossibility = Random.Range(0, 2);
+                if (lieORInfoErrorPossibility == 0) 
+                    continue;
 
-            //정보 오류//
-            else
-            {
-                if (HangingManager.day >= 7)
+                if (i == 0) 
+                    isFullNameError = true;
+
+                cnt++;
+
+                int lieORInfoErrorDistinguish = getRandomValueByRange(probabilityInfo["lieORInfoError"][0]);
+                //6일차 무조건 위증//
+                if (HangingManager.day == 6)
+                    lieORInfoErrorDistinguish = 0;
+
+                //위증//
+                if (lieORInfoErrorDistinguish == 0)
                 {
-                    if (!lieORInfoError.ContainsKey("infoError")) lieORInfoError.Add("infoError", new List<string>());
-                    lieORInfoError["infoError"].Add(strs[i]);
+                    isLie = true;
+                    if (!lieORInfoError.ContainsKey("lie")) lieORInfoError.Add("lie", new List<string>());
+                    lieORInfoError["lie"].Add(errorList[i]);
+                    data["lie"] = isLie ? "1" : "0";
+                }
+                //정보 오류//
+                else
+                {
+                    if (HangingManager.day >= 7)
+                    {
+                        if (!lieORInfoError.ContainsKey("infoError")) lieORInfoError.Add("infoError", new List<string>());
+                        lieORInfoError["infoError"].Add(errorList[i]);
+                    }
                 }
             }
         }
 
         if (cnt >= 3)
         {
-            if (crimePlaceFlag) data["infoError"] = "2";
-            else data["infoError"] = "0";
+            if (isFullNameError) 
+                data["infoError"] = "2";
+            else 
+                data["infoError"] = "0";
         }
-        else data["infoError"] = "1";
+        else
+        {
+            data["infoError"] = "1";
+        }
 
-        data["lie"] = lieFlag ? "0" : "1";
     }
     public string GetRandomStatement(string str)
     {
@@ -380,7 +413,7 @@ public class TableManager : MonoBehaviour
         }
         else if (str == "crimePlaceText")
         {
-            return GetCrimePlace(Random.Range(0, 7).ToString());
+            return GetCrimePlaceText(Random.Range(0, 7).ToString());
         }
         else //마지막 crimeReasonText
         {
@@ -391,20 +424,20 @@ public class TableManager : MonoBehaviour
         }
     }
 
-    int getRandomValueByRange(int[] randomValueRange)
+    int getRandomValueByRange(List<int> randomValueRange)
     {
         int sumRange = 0;
         int randomValue = Random.Range(1, 101);
 
-        int randomValueRangeSize = randomValueRange.Length;
-        for (int index = 0; index < randomValueRangeSize; ++index)
+        int randomValueRangeCount = randomValueRange.Count;
+        for (int index = 0; index < randomValueRangeCount; ++index)
         {
             sumRange += randomValueRange[index];
             if (randomValue <= sumRange)
                 return index;
         }
 
-        Debug.Log("확률 총합이 " + randomValue + "입니다. 수정이 필요합니다.");
+        Debug.LogWarning($" 확률 총합이 '{randomValue}' 입니다. 수정이 필요합니다.");
         return -1;
     }
 }

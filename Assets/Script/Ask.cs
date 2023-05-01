@@ -11,11 +11,10 @@ public class Ask : MonoBehaviour
 
     public void ActiveAsk()
     {
-        int accept = Random.Range(0, 2);
-        if (accept == 0)
-            rejectAsk();
-        else
+        if (attackerInfo.recordData.attackerData["ask"].Equals("1"))
             acceptAsk();
+        else
+            rejectAsk();
 
         EventManager.instance.postNotification("dialogEvent", this, 29);
         EventManager.instance.postNotification("activeAsk", this, null);
