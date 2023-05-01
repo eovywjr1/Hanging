@@ -74,4 +74,6 @@ public class EventManager : MonoBehaviour
     {
         RemoveRedundancies();
     }
+
+
 }
