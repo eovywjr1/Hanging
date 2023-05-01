@@ -27,7 +27,7 @@ public class HangingManager : MonoBehaviour, IListener
         }
     }
             
-    public static int day = 1;
+    public static int day = 6;
     static bool isCorrect = true;
 
     private void Awake()
