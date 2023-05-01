@@ -129,7 +129,7 @@ public class AttackerMouseMove : MonoBehaviour, IListener
     {
         if (isPossibleTodesstrafe)
         {
-            if (collision.CompareTag("criteria"))
+            if (collision.CompareTag("TodesstrafeCriteria"))
             {
                 isPossibleTodesstrafe = false;
                 EventManager.instance.postNotification("todesstrafe", this, null);
