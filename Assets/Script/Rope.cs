@@ -12,10 +12,13 @@ public class Rope : MonoBehaviour
     public Vector2 gravity = new Vector2(0f, -9.81f);
 
     [Space(10f)]
-    public Transform startTransform;
+    Transform startTransform;
     public Transform endTransform;
 
     private List<Segment> segments = new List<Segment>();
+
+    [SerializeField]
+    bool isCutPossible = true;
 
     private void Reset()
     {
@@ -24,6 +27,8 @@ public class Rope : MonoBehaviour
 
     private void Awake()
     {
+        startTransform = GameObject.Find("RopeStartPoint").transform;
+
         Vector2 segmentPos = startTransform.position;
         for(int i=0;i<segmentCnt;i++)
         {
@@ -42,20 +47,28 @@ public class Rope : MonoBehaviour
         DrawRope();
     }
 
+    public void SetCutPossible(bool _isCutPossible)
+    {
+        isCutPossible = _isCutPossible;
+    }
+
     private void Update()
     {
-        if (Input.GetMouseButtonDown(1))
+        if(isCutPossible)
         {
-            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            int closestSegmentIndex = FindClosestSegmentIndex(mousePos);
-            Debug.Log("´­¸° ¼¼±×¸ÕÆ® ÀÎµ¦½º : " + closestSegmentIndex);
-
-            endTransform = null;
-            if (closestSegmentIndex != -1)
+            if (Input.GetMouseButtonDown(1))
             {
-                for (int i = closestSegmentIndex; i < segments.Count; i++)
+                Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                int closestSegmentIndex = FindClosestSegmentIndex(mousePos);
+                Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½×¸ï¿½Æ® ï¿½Îµï¿½ï¿½ï¿½ : " + closestSegmentIndex);
+
+                endTransform = null;
+                if (closestSegmentIndex != -1)
                 {
-                    segments.RemoveAt(i);
+                    for (int i = closestSegmentIndex; i < segments.Count; i++)
+                    {
+                        segments.RemoveAt(i);
+                    }
                 }
             }
         }
@@ -110,7 +123,7 @@ public class Rope : MonoBehaviour
     {
         int lastIdx = segments.Count;
 
-        //¸Ç À§(Ã¹¹øÂ°) ¼¼±×¸ÕÆ®¸¸ °íÁ¤½ÃÅ´
+        //ï¿½ï¿½ ï¿½ï¿½(Ã¹ï¿½ï¿½Â°) ï¿½ï¿½ï¿½×¸ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å´
         segments[0].position = startTransform.position;
 
         if (endTransform)
@@ -127,7 +140,7 @@ public class Rope : MonoBehaviour
 
             Vector2 movement = dir * diff;
 
-            if (i == 0) //Ã¹¹øÂ° ¼¼±×¸ÕÆ® ¿òÁ÷ÀÌ¸é ¾ÈµÊ. µÎ¹øÂ° ¼¼±×¸ÕÆ®¸¸ ÀÌµ¿
+            if (i == 0) //Ã¹ï¿½ï¿½Â° ï¿½ï¿½ï¿½×¸ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½ ï¿½Èµï¿½. ï¿½Î¹ï¿½Â° ï¿½ï¿½ï¿½×¸ï¿½Æ®ï¿½ï¿½ ï¿½Ìµï¿½
             {
                 segments[i + 1].position += movement;
             }
@@ -145,7 +158,7 @@ public class Rope : MonoBehaviour
         public Vector2 position;
         public Vector2 velocity;
 
-        public Segment(Vector2 _position) //¸®¼Â
+        public Segment(Vector2 _position) //ï¿½ï¿½ï¿½ï¿½
         {
             previousPos = _position;
             position = _position;

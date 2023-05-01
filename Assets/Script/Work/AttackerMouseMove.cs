@@ -13,12 +13,14 @@ public class AttackerMouseMove : MonoBehaviour, IListener
     bool isPossibleTodesstrafe, isPossibleClick, isCreateLine, isDescend, isFirstClick = true;
     float descendSpeed = 2f;
     float initialMouseX;
-    [SerializeField] float minY; // ±¸Çö ¿Ï·á ÈÄ serial »èÁ¦
+    [SerializeField] float minY; // ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½ ï¿½ï¿½ serial ï¿½ï¿½ï¿½ï¿½
     RectTransform windowRectTransform;
     Line line;
     GameObject window;
     [SerializeField] GameObject criteria;
     Coroutine preChangeTransparency = null;
+
+    prisoner prisoner;
 
     void Awake()
     {
@@ -30,6 +32,9 @@ public class AttackerMouseMove : MonoBehaviour, IListener
     {
         EventManager.instance.addListener("clickAttacker", this);
         EventManager.instance.addListener("todesstrafe", this);
+        isPossibleTodesstrafe = true;
+
+        prisoner = GetComponentInChildren<prisoner>();
     }
 
     void Update()
@@ -76,7 +81,11 @@ public class AttackerMouseMove : MonoBehaviour, IListener
 
             Vector3 mousePosition = new Vector3(0, Input.mousePosition.y, 0);
             initialMouseX = Input.mousePosition.x;
-            preMousePosition = Camera.main.ScreenToWorldPoint(mousePosition);   //ÀÌ»óÇÑ À§Ä¡·Î ÀÌµ¿ ¹æÁöÇÏ±â À§ÇØ preMousePosition ÃÊ±âÈ­
+            preMousePosition = Camera.main.ScreenToWorldPoint(mousePosition);   //ï¿½Ì»ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ preMousePosition ï¿½Ê±ï¿½È­
+
+            LineChangeTransparency(-1);
+
+            prisoner.isLift = false;
         }
     }
 
@@ -97,6 +106,8 @@ public class AttackerMouseMove : MonoBehaviour, IListener
             if (transform == null || windowRectTransform == null)
                 return;
             line.MoveTo(windowRectTransform.position.x, windowRectTransform.position.y, transform.position.x, transform.position.y);
+
+            prisoner.isLift = true;
         }
     }
 
@@ -121,12 +132,12 @@ public class AttackerMouseMove : MonoBehaviour, IListener
             if (collision.CompareTag("criteria"))
             {
                 isPossibleTodesstrafe = false;
+                EventManager.instance.postNotification("todesstrafe", this, null);
                 EventManager.instance.postNotification("dialogEvent", this, "todesstrafe");
-                hangingManager.Todesstrafe();
             }
 
             if ((collision.CompareTag("middleCriteria")) && (isDescend == false))
-                EventManager.instance.postNotification("dialogEvent", this, "drawToMiddle");
+                EventManager.instance.postNotification("dialogEvent", this, UnityEngine.Random.Range(11, 21));
         }
     }
 
