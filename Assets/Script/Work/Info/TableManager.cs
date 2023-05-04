@@ -4,18 +4,13 @@ using UnityEngine;
 public class TableManager : MonoBehaviour
 {
     CSVReader csvReader = new CSVReader();
-<<<<<<< HEAD:Assets/Script/Work/Info/TableManager.cs
     private static WorkProbabilityCSVRedaer workProbabilityCSVRedaer = new WorkProbabilityCSVRedaer();
     private static JobInfoReader jobInfoReader = null;
 
     private static List<Dictionary<string, List<string>>> nameT, fnameT, crimeT, detailT;
     public static List<List<Dictionary<string, List<string>>>> judgeT = new List<List<Dictionary<string, List<string>>>>();
-    private static Dictionary<string, List<List<int>>> probabilityInfo;
-=======
-    private static List<Dictionary<string, List<string>>> nameT, fnameT, crimeT, detailT, jobT;
-    public static List<List<Dictionary<string, List<string>>>> judgeT = new List<List<Dictionary<string, List<string>>>>();
+    private static Dictionary<string, List<List<int>>> probabilityInfo = null;
     private AcceptCrimeInfoReader acceptCrimeInfoReader = null;
->>>>>>> MinsuDelveop:Assets/Script/Work/TableManager.cs
 
     /// positionGrade = 신분(시민 등급)
     void Awake()
@@ -27,15 +22,9 @@ public class TableManager : MonoBehaviour
             crimeT = csvReader.Read("crimeInfo");
             detailT = csvReader.Read("crimeReasonInfo");
 
-<<<<<<< HEAD:Assets/Script/Work/Info/TableManager.cs
             probabilityInfo = workProbabilityCSVRedaer.Read("WorkProbabilityInfo");
             jobInfoReader = new JobInfoReader(Resources.Load("JobInfo") as TextAsset);
-=======
             acceptCrimeInfoReader = new AcceptCrimeInfoReader(Resources.Load("AcceptCrimeInfoReader") as TextAsset);
-
-            string fileName = "DayJudgeMentInfo";
-            //judgeT.Add(CSVReader.Read(fileName + HangingManager.day.ToString()));
->>>>>>> MinsuDelveop:Assets/Script/Work/TableManager.cs
 
             // 조민수 : 각 일차 별 테스트 할 때 사용하는 코드 //
             string fileName = "DayJudgeMentInfo";
@@ -164,7 +153,7 @@ public class TableManager : MonoBehaviour
         List<int> acceptCrimeList = acceptCrimeInfoReader.getAccpetCrimeDictionary(HangingManager.day);
 
         if (acceptCrimeList != null)
-            isAcceptCrime = getRandomValueByRange(new int[] { 100 - acceptCrimeProbability, acceptCrimeProbability });
+            isAcceptCrime = getRandomValueByRange(new List<int> { 100 - acceptCrimeProbability, acceptCrimeProbability });
 
         if (isAcceptCrime == 1)
         {
