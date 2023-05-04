@@ -4,12 +4,18 @@ using UnityEngine;
 public class TableManager : MonoBehaviour
 {
     CSVReader csvReader = new CSVReader();
+<<<<<<< HEAD:Assets/Script/Work/Info/TableManager.cs
     private static WorkProbabilityCSVRedaer workProbabilityCSVRedaer = new WorkProbabilityCSVRedaer();
     private static JobInfoReader jobInfoReader = null;
 
     private static List<Dictionary<string, List<string>>> nameT, fnameT, crimeT, detailT;
     public static List<List<Dictionary<string, List<string>>>> judgeT = new List<List<Dictionary<string, List<string>>>>();
     private static Dictionary<string, List<List<int>>> probabilityInfo;
+=======
+    private static List<Dictionary<string, List<string>>> nameT, fnameT, crimeT, detailT, jobT;
+    public static List<List<Dictionary<string, List<string>>>> judgeT = new List<List<Dictionary<string, List<string>>>>();
+    private AcceptCrimeInfoReader acceptCrimeInfoReader = null;
+>>>>>>> MinsuDelveop:Assets/Script/Work/TableManager.cs
 
     /// positionGrade = 신분(시민 등급)
     void Awake()
@@ -21,8 +27,15 @@ public class TableManager : MonoBehaviour
             crimeT = csvReader.Read("crimeInfo");
             detailT = csvReader.Read("crimeReasonInfo");
 
+<<<<<<< HEAD:Assets/Script/Work/Info/TableManager.cs
             probabilityInfo = workProbabilityCSVRedaer.Read("WorkProbabilityInfo");
             jobInfoReader = new JobInfoReader(Resources.Load("JobInfo") as TextAsset);
+=======
+            acceptCrimeInfoReader = new AcceptCrimeInfoReader(Resources.Load("AcceptCrimeInfoReader") as TextAsset);
+
+            string fileName = "DayJudgeMentInfo";
+            //judgeT.Add(CSVReader.Read(fileName + HangingManager.day.ToString()));
+>>>>>>> MinsuDelveop:Assets/Script/Work/TableManager.cs
 
             // 조민수 : 각 일차 별 테스트 할 때 사용하는 코드 //
             string fileName = "DayJudgeMentInfo";
@@ -60,7 +73,7 @@ public class TableManager : MonoBehaviour
         {
             GetcrimeRecord(data);
             GetCrimeAndCrimeGrade(data);
-            GetCrimeReason(data, data["crime"]);
+            SetCrimeReason(data);
             data["job"] = GetJob(data, data["positionGrade"], "attacker"); Debug.Log("Job : " + data["job"]);
 
             //위증여부//
@@ -143,33 +156,42 @@ public class TableManager : MonoBehaviour
         data["name"] = list[valueid][list[0]["header"][headerid]][0];
     }
 
-    private void GetCrimeReason(Dictionary<string, string> data, string crime)
+    private void SetCrimeReason(Dictionary<string, string> data)
     {
-        string grade = data["crimeGrade"];
+        const int acceptCrimeProbability = 30;
+        const int maxCrimeReasonIndex = 4;
+        int isAcceptCrime = 0;
+        List<int> acceptCrimeList = acceptCrimeInfoReader.getAccpetCrimeDictionary(HangingManager.day);
 
-        List<int> randomlist = new List<int>();
-        for (int i = 0; i < detailT.Count; i++)
+        if (acceptCrimeList != null)
+            isAcceptCrime = getRandomValueByRange(new int[] { 100 - acceptCrimeProbability, acceptCrimeProbability });
+
+        if (isAcceptCrime == 1)
         {
-            string applyGrade = detailT[i][detailT[0]["header"][1]][0];
-            string detail = detailT[i][detailT[0]["header"][0]][0];
+            data["crimeReason"] = acceptCrimeList[UnityEngine.Random.Range(0, acceptCrimeList.Count)].ToString();
+        }
+        else
+        {
+            if(acceptCrimeList != null)
+            {
+                acceptCrimeList.Sort();
+                List<int> unAcceptList = new List<int>();
+                for (int crimeReasonIndex = 0, acceptCrimeListIndex = 0; crimeReasonIndex <= maxCrimeReasonIndex; ++crimeReasonIndex)
+                {
+                    if (acceptCrimeList[acceptCrimeListIndex] != crimeReasonIndex)
+                        unAcceptList.Add(crimeReasonIndex);
+                    else if (acceptCrimeList[acceptCrimeListIndex] <= crimeReasonIndex)
+                        ++acceptCrimeListIndex;
+                }
 
-            if (applyGrade.Equals("ALL")) randomlist.Add(i);
+                data["crimeReason"] = unAcceptList[UnityEngine.Random.Range(0, unAcceptList.Count)].ToString();
+            }
             else
             {
-                foreach (var v in detailT[i][detailT[0]["header"][1]])
-                {
-                    if (grade.Equals(v))
-                    {
-                        randomlist.Add(i);
-                        break;
-                    }
-                }
+                data["crimeReason"] = UnityEngine.Random.Range(0, maxCrimeReasonIndex).ToString();
             }
         }
-
-        int valueid = Random.Range(0,randomlist.Count);
-        data["crimeReasonText"] = detailT[randomlist[valueid]][detailT[0]["header"][0]][0];
-        data["crimeReason"] = randomlist[valueid].ToString();
+        data["crimeReasonText"] = detailT[int.Parse(data["crimeReason"])][detailT[0]["header"][0]][0];
     }
 
     private string GetCrimePlaceText(string grade)
