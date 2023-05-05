@@ -46,50 +46,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogWindow: {fileID: 0}
   dialogCanvas: {fileID: 0}
---- !u!1 &6667825833372616624
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8782790992431580035}
-  - component: {fileID: 4860459367638579538}
-  m_Layer: 0
-  m_Name: EventManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8782790992431580035
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6667825833372616624}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 9054927331474103976}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4860459367638579538
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6667825833372616624}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 472b5c727c48d0d48ad84d712623fc9d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &9054927330431540718
 GameObject:
   m_ObjectHideFlags: 0
@@ -167,7 +123,6 @@ Transform:
   - {fileID: 9054927330431540721}
   - {fileID: 9054927331776985511}
   - {fileID: 9064225772448756899}
-  - {fileID: 8782790992431580035}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -262,9 +217,9 @@ MonoBehaviour:
   attackerMouseMove: {fileID: 0}
   attackerInfo: {fileID: 0}
   bossHand: {fileID: 0}
-  cameraMoveScript: {fileID: 0}
   dialogWindowController: {fileID: 0}
   convertEffect: {fileID: 0}
   attackerPrefab: {fileID: 161126516914584281, guid: 6beec38e063e9b14eb2c6bf09c909fca, type: 3}
   isTodesstrafe: 0
   isAmnesty: 0
+  isActiveAsk: 0
