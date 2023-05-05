@@ -10,7 +10,8 @@ public class TableManager : MonoBehaviour
     private static List<Dictionary<string, List<string>>> nameT, fnameT, crimeT, detailT;
     public static List<List<Dictionary<string, List<string>>>> judgeT = new List<List<Dictionary<string, List<string>>>>();
     private static Dictionary<string, List<List<int>>> probabilityInfo = null;
-    private AcceptCrimeInfoReader acceptCrimeInfoReader = null;
+    private static AcceptCrimeInfoReader acceptCrimeInfoReader = null;
+    private static SpecialJobIndexInfoReader specialJobIndexInfoReader = null;
 
     /// positionGrade = 신분(시민 등급)
     void Awake()
@@ -24,7 +25,8 @@ public class TableManager : MonoBehaviour
 
             probabilityInfo = workProbabilityCSVRedaer.Read("WorkProbabilityInfo");
             jobInfoReader = new JobInfoReader(Resources.Load("JobInfo") as TextAsset);
-            acceptCrimeInfoReader = new AcceptCrimeInfoReader(Resources.Load("AcceptCrimeInfoReader") as TextAsset);
+            acceptCrimeInfoReader = new AcceptCrimeInfoReader(Resources.Load("AcceptCrimeInfo") as TextAsset);
+            specialJobIndexInfoReader = new SpecialJobIndexInfoReader(Resources.Load("AcceptCrimeInfo") as TextAsset);
 
             // 조민수 : 각 일차 별 테스트 할 때 사용하는 코드 //
             string fileName = "DayJudgeMentInfo";
@@ -35,9 +37,10 @@ public class TableManager : MonoBehaviour
             judgeT.Add(csvReader.Read("5" + fileName));
             judgeT.Add(csvReader.Read("6" + fileName));
             judgeT.Add(csvReader.Read("7" + fileName));
+            judgeT.Add(csvReader.Read("8" + fileName));
         }
 
-        // 조민수 : 정상적인 플레이에서는 각 해당 일차마다 추가
+        // 조민수 : 정상적인 플레이에서는 각 해당 일차마다 추가 //
         //string fileName = "DayJudgeMentInfo";
         //judgeT.Add(CSVReader.Read(fileName + HangingManager.day.ToString()));
     }
@@ -61,9 +64,10 @@ public class TableManager : MonoBehaviour
         if (attackerFamilyName == null)
         {
             GetcrimeRecord(data);
-            GetCrimeAndCrimeGrade(data);
+            SetCrimeAndCrimeGrade(data);
             SetCrimeReason(data);
-            data["job"] = GetJob(data, data["positionGrade"], "attacker"); Debug.Log("Job : " + data["job"]);
+            SetJob(data, data["positionGrade"], 1);
+            Debug.Log("Job : " + data["job"]);
 
             //위증여부//
             if(HangingManager.day >= 6) 
@@ -74,13 +78,14 @@ public class TableManager : MonoBehaviour
         }
         else
         {
-            data["job"] = GetJob(data, data["positionGrade"], "victim"); Debug.Log("Job : " + data["job"]);
+            SetJob(data, data["positionGrade"], 0); 
+            Debug.Log("Job : " + data["job"]);
         }
 
         return data;
     }
 
-    void GetCrimeAndCrimeGrade(Dictionary<string, string> data)
+    void SetCrimeAndCrimeGrade(Dictionary<string, string> data)
     {
         while (true)
         {
@@ -228,13 +233,13 @@ public class TableManager : MonoBehaviour
 
     //직업//
     //person은 가해자, 피해자 구분
-    string GetJob(Dictionary<string, string> data, string positionGrade, string person)
+    void SetJob(Dictionary<string, string> data, string positionGrade, int isAttacker)
     {
         int specialJobFlag = 0;
         int day = HangingManager.day;
         string jobText = null;
 
-        if (person.Equals("attacker"))
+        if (isAttacker == 1)
             specialJobFlag = getRandomValueByRange(probabilityInfo["attackerSpecialJob"][int.Parse(data["positionGrade"])]);
         else
             specialJobFlag = getRandomValueByRange(probabilityInfo["victimSpecialJob"][0]);
@@ -254,55 +259,9 @@ public class TableManager : MonoBehaviour
 
         //아래 내용을 데이터로 빼야 함
         data["jobText"] = jobText;
+        data["job"] = specialJobIndexInfoReader.getSpecialJobIndex(HangingManager.day, jobText, int.Parse(data["positionGrade"]), isAttacker).ToString();
+
         Debug.Log("직업 : " + jobText);
-        switch (day)
-        {
-            case 3:
-                if (jobText.Equals("의사") || jobText.Equals("연구원") || jobText.Equals("기술자")) return "1";
-                else return "0";
-            case 4:
-                if (person.Equals("attacker"))
-                {
-                    if ((jobText.Equals("개발자") && data["positionGrade"].Equals("2")) || (jobText.Equals("교사") && int.Parse(data["positionGrade"]) >= 3)) return "2";
-                    else if (jobText.Equals("의사") || jobText.Equals("연구원") || jobText.Equals("기술자") || jobText.Equals("개발자") || jobText.Equals("교사")) return "1";
-                    else return "0";
-                }
-                else
-                {
-                    if (jobText.Equals("의사") || jobText.Equals("연구원") || jobText.Equals("기술자") || jobText.Equals("개발자") || jobText.Equals("교사")) return "1";
-                    else return "0";
-                }
-            case 5:
-            case 6:
-                switch (jobText)
-                {
-                    case "상담가": return "5";
-                    case "교사": return "4";
-                    case "개발자":
-                        if(data["positionGrade"].Equals("2")) return "3";
-                        break;
-                    case "연구원": return "2";
-                    case "의사": return "1";
-                    default: return "0";
-                }
-                return null;
-            case 7:
-                switch (jobText)
-                {
-                    case "농업기술자": return "6";
-                    case "연구원":
-                        if (int.Parse(data["positionGrade"]) >= 3) return "5";
-                        break;
-                    case "기술자": return "4";
-                    case "교도관": return "3";
-                    case "의사": return "2";
-                    case "교사": return "1";
-                    default: return "0";
-                }
-                return null;
-            default:
-                return null;
-        }
     }
     
     string GetAge()
