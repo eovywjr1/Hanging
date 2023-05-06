@@ -30,8 +30,8 @@ public class AttackerMouseMove : MonoBehaviour, IListener
 
     private void Start()
     {
-        EventManager.instance.addListener("clickAttacker", this);
-        EventManager.instance.addListener("todesstrafe", this);
+        EventManager.instance.addListener("possibleclickAttacker", this);
+        EventManager.instance.addListener("possibletodesstrafe", this);
         isPossibleTodesstrafe = true;
 
         prisoner = GetComponentInChildren<prisoner>();
@@ -156,11 +156,11 @@ public class AttackerMouseMove : MonoBehaviour, IListener
     {
         switch (eventType)
         {
-            case "clickAttacker":
+            case "possibleclickAttacker":
                 isPossibleClick = true;
                 break;
 
-            case "todesstrafe":
+            case "possibletodesstrafe":
                 isPossibleTodesstrafe = true;
                 break;
         }

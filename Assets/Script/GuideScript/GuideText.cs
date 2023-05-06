@@ -19,9 +19,10 @@ public class GuideText : MonoBehaviour
     public GameObject scrollViewContent;
     public Button buttonPrefab;
 
-    private GuideButton guideButtonSC;
-
     public List<GameObject> guideObjectList;
+
+    private GuideButton guideButtonSC;
+    private bool isLoaded = false;
 
     private void Awake()
     {
@@ -49,6 +50,8 @@ public class GuideText : MonoBehaviour
                 }
             }
         }
+
+        isLoaded = true;
     }
 
     private void Update()
@@ -134,5 +137,10 @@ public class GuideText : MonoBehaviour
         guideTextInfo.day = guideDBEntity.day;
         guideTextInfo.number = guideDBEntity.number;
         guideTextInfo.type = guideDBEntity.type;
+    }
+
+    public bool checkLoaded()
+    {
+        return isLoaded;
     }
 }

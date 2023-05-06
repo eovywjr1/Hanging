@@ -36,13 +36,16 @@ public class CutRope : MonoBehaviour, IListener
                     (initialMousePosition.x < ropePosition.x && currentMousePosition.x - initialMousePosition.x >= cutDistance && currentMousePosition.x > ropePosition.x))
                 {
                     isAmnesty = true;
-                    EventManager.instance.postNotification("dialogEvent", this, "amnesty");
                     EventManager.instance.postNotification("amnesty", this, null);
                     EventManager.instance.postNotification("dialogEvent", this, UnityEngine.Random.Range(21, 28));
                     EventManager.instance.postNotification("dialogEvent", this, "amnesty");
+
                 }
             }
-            else if (Input.GetMouseButtonUp(0)) isCut = false;
+            else if (Input.GetMouseButtonUp(0))
+            {
+                isCut = false;
+            }
         }
     }
 
@@ -50,7 +53,7 @@ public class CutRope : MonoBehaviour, IListener
     {
         switch (eventType)
         {
-            case "amnesty":
+            case "possibleamnesty":
                 isPossibleAmnesty = true;
                 break;
         }

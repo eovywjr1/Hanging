@@ -14,7 +14,7 @@ public class DialogUpdateAndEvent : MonoBehaviour, IListener
     private Dictionary<string, List<List<string>>> compulsoryT, situationD;
 
     bool timeover;
-    public bool clickAttacker, todesstrafe, amnesty, moveCameraToDesk, submitBadge; // waituntil 위해서 public
+    public bool clickAttacker, todesstrafe, amnesty, moveCameraToDesk, submitBadge, activeGuide, deactiveGuide, clickBasicJudgementGuide; // waituntil 위해서 public
 
     string conditionName;
 
@@ -76,25 +76,22 @@ public class DialogUpdateAndEvent : MonoBehaviour, IListener
 
             if ((i.Count > 3) && (i[3].Equals("") == false))
             {
-                if (i[3] != "InputKeyG" && i[3] != "ClickBasicJudgementGuide")  // 임시 > 이벤트 연결 후 삭제
+                conditionName = i[3];
+                EventManager.instance.postNotification("possible" + conditionName, this, null);
+                yield return new WaitUntil(() =>
                 {
-                    conditionName = i[3];
-                    yield return new WaitUntil(() =>
+                    if (this.GetType().GetField(conditionName).GetValue(this).ConvertTo<bool>())
                     {
-                        EventManager.instance.postNotification(conditionName, this, null);
+                        this.GetType().GetField(conditionName).SetValue(this, false);
+                        return true;
+                    }
 
-                        if (this.GetType().GetField(conditionName).GetValue(this).ConvertTo<bool>())
-                            return true;
-
-                        return false;
-                    });
-                }
+                    return false;
+                });
             }
 
             if ((i.Count > 4) && (i[4].Equals("") == false))
-            {
-                this.GetType().GetMethod(i[4]).Invoke(this, null);
-            }
+                EventManager.instance.postNotification("dialogAuto" + i[4], this, null);
         }
     }
 
@@ -155,21 +152,26 @@ public class DialogUpdateAndEvent : MonoBehaviour, IListener
             case "clickAttacker":
                 clickAttacker = true;
                 break;
-
             case "moveCameraToDesk":
                 moveCameraToDesk = true;
                 break;
-
             case "createAttacker":
                 StartCoroutine(SetSituationDialog(UnityEngine.Random.Range(1, 11), 3f));
                 break;
-
             case "todesstrafe":
                 todesstrafe = true;
                 break;
-
             case "amnesty":
                 amnesty = true;
+                break;
+            case "activeGuide":
+                activeGuide = true;
+                break;
+            case "deactiveGuide":
+                deactiveGuide = true;
+                break;
+            case "clickBasicJudgementGuide":
+                clickBasicJudgementGuide = true;
                 break;
         }
     }

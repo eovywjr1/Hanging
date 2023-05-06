@@ -27,7 +27,7 @@ public class HangingManager : MonoBehaviour, IListener
         }
     }
             
-    public static int day = 1;
+    public static int day = 3;
     static bool isCorrect = true;
 
     private void Awake()
@@ -172,12 +172,10 @@ public class HangingManager : MonoBehaviour, IListener
         isCompulsoryEnd = true;
 
         EventManager.instance.postNotification("dialogEvent", this, "createAttacker");
+        EventManager.instance.postPossibleEvent();
 
         hangingTimer.SetTimer(true);
-        EventManager.instance.postNotification("moveCameraToDesk", this, null);
-        EventManager.instance.postNotification("todesstrafe", this, null);
         dialogWindowController.SetEnabled(true);
-
     }
 
     void InitialAttacker()
@@ -188,12 +186,6 @@ public class HangingManager : MonoBehaviour, IListener
         GameObject attacker = Instantiate(attackerPrefab);
         attackerMouseMove = attacker.GetComponent<AttackerMouseMove>();
         attackerInfo = attacker.GetComponent<AttackerInfo>();
-
-        if (isCompulsoryEnd)
-        {
-            EventManager.instance.postNotification("todesstrafe", this, null);
-            EventManager.instance.postNotification("amnesty", this, null);
-        }
 
         isTodesstrafe = false;
         isAmnesty = false;
