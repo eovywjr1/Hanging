@@ -16,7 +16,7 @@ public class RecordData
     {
         lieORInfoError = new Dictionary<string, List<string>>();
 
-        attackerData = tableManager.GetData(null, null, ref lieORInfoError);
+        attackerData = tableManager.GetData(null, null, ref lieORInfoError);    //유민) 이 부분이 prisonerInfo 넣는 부분
         victimData = tableManager.GetData(attackerData["familyName"], attackerData["name"], ref lieORInfoError);
         
         //Debug.Log("PositionGrade : " + attackerData["positionGrade"]);

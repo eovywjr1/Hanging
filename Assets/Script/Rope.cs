@@ -60,7 +60,6 @@ public class Rope : MonoBehaviour
             {
                 Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 int closestSegmentIndex = FindClosestSegmentIndex(mousePos);
-                Debug.Log("���� ���׸�Ʈ �ε��� : " + closestSegmentIndex);
 
                 endTransform = null;
                 if (closestSegmentIndex != -1)

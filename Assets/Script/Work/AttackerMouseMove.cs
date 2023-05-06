@@ -84,6 +84,8 @@ public class AttackerMouseMove : MonoBehaviour, IListener
             preMousePosition = Camera.main.ScreenToWorldPoint(mousePosition);   //�̻��� ��ġ�� �̵� �����ϱ� ���� preMousePosition �ʱ�ȭ
 
             LineChangeTransparency(-1);
+
+            prisoner.isLift = true;
         }
     }
 

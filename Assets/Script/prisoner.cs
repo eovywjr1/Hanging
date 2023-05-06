@@ -12,7 +12,9 @@ public class prisoner : MonoBehaviour
     public AnimationClip []liftAnimations;
 
     public bool isLift = false;
-    bool isRunningAnim = false;
+
+    private float delay = 2.25f;
+    private float timer;
 
     void Start()
     {
@@ -25,11 +27,19 @@ public class prisoner : MonoBehaviour
     {
         if(isLift)
         {
-            onLifting();
+            timer -= Time.deltaTime; 
+            if(timer<=0)
+            {
+                int randomIndex = Random.Range(0, 3);
+                PrisonerAnimator.Play(liftAnimations[randomIndex].name);
+
+                timer = delay;
+            }
+
         }
         else
         {
-            isRunningAnim = false; 
+            PrisonerAnimator.SetBool("idle", true);
         }
     }
 
@@ -51,16 +61,6 @@ public class prisoner : MonoBehaviour
             PrisonerAnimator.SetBool("cutRope", false);
             PrisonerAnimator.SetBool("idle", true);
             PrisonerRigidbody.gravityScale = 1f;
-        }
-    }
-
-   void onLifting()
-    {
-        if(!isRunningAnim)
-        {
-            int randomIndex = Random.Range(0, 3);
-            PrisonerAnimator.Play(liftAnimations[randomIndex].name);
-            isRunningAnim = true;
         }
     }
 }
