@@ -12,7 +12,7 @@ public class EventManager : MonoBehaviour
 {
     public static EventManager instance { get { return _instance; } }
     private static EventManager _instance = null;
-    private Dictionary<string,List<IListener>> listeners = new Dictionary<string,List<IListener>>();
+    private Dictionary<string,List<IListener>> _listeners = new Dictionary<string,List<IListener>>();
 
     private void Awake()
     {
@@ -28,7 +28,7 @@ public class EventManager : MonoBehaviour
     public void addListener(string eventType, IListener listener)
     {
         List<IListener> listenList = null;
-        if(listeners.TryGetValue(eventType, out listenList))
+        if(_listeners.TryGetValue(eventType, out listenList))
         {
             listenList.Add(listener);
             return;
@@ -36,13 +36,13 @@ public class EventManager : MonoBehaviour
 
         listenList = new List<IListener>();
         listenList.Add(listener);
-        listeners.Add(eventType, listenList);
+        _listeners.Add(eventType, listenList);
     }
 
     public void postNotification(string eventType, Component sender, object parameter = null)
     {
         List<IListener> listenList = null;
-        if (listeners.TryGetValue(eventType, out listenList) == false)
+        if (_listeners.TryGetValue(eventType, out listenList) == false)
             return;
 
         foreach(var listener in listenList)
@@ -51,14 +51,14 @@ public class EventManager : MonoBehaviour
 
     public void RemoveEvent(string eventType)
     {
-        listeners.Remove(eventType);
+        _listeners.Remove(eventType);
     }
 
     public void RemoveRedundancies()
     {
         Dictionary<string, List<IListener>> newListeners = new Dictionary<string, List<IListener>>();
 
-        foreach(KeyValuePair<string, List<IListener>> listener in listeners)
+        foreach(KeyValuePair<string, List<IListener>> listener in _listeners)
         {
             for (int index = listener.Value.Count - 1; index >= 0; index--)
                 listener.Value.RemoveAt(index);
@@ -67,7 +67,15 @@ public class EventManager : MonoBehaviour
                 newListeners.Add(listener.Key, listener.Value);
         }
 
-        listeners = newListeners;
+        _listeners = newListeners;
+    }
+
+    public void postPossibleEvent()
+    {
+        foreach(KeyValuePair<string, List<IListener>> pair in _listeners){
+            if (pair.Key.Contains("possible"))
+                postNotification(pair.Key, this, null);
+        }
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
