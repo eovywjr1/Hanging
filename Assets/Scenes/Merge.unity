@@ -551,7 +551,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2664066169320355061, guid: 895e5cf08af455846b4ec370616d7581, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2664066169320355061, guid: 895e5cf08af455846b4ec370616d7581, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1358,7 +1358,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1891429014119216530, guid: 8c3690a2111ea074e992904a731d9420, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1891429014119216530, guid: 8c3690a2111ea074e992904a731d9420, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1443,7 +1443,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2696586845479193392, guid: eb9383c62696a8342ab1744954e8dce2, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2696586845479193392, guid: eb9383c62696a8342ab1744954e8dce2, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1523,7 +1523,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2696586845479193396, guid: eb9383c62696a8342ab1744954e8dce2, type: 3}
       propertyPath: m_Name
-      value: Canvas (1)
+      value: WorldCanvas
       objectReference: {fileID: 0}
     - target: {fileID: 2696586845578461405, guid: eb9383c62696a8342ab1744954e8dce2, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -1531,7 +1531,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2696586845578461405, guid: eb9383c62696a8342ab1744954e8dce2, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.002803808
+      value: 0.3125261
       objectReference: {fileID: 0}
     - target: {fileID: 2696586845809489345, guid: eb9383c62696a8342ab1744954e8dce2, type: 3}
       propertyPath: 
@@ -1811,13 +1811,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 107823713, guid: 49384f57359b72a4a93d70114bbf4a7a, type: 3}
+      propertyPath: m_Name
+      value: UIManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 107823715, guid: 49384f57359b72a4a93d70114bbf4a7a, type: 3}
+      propertyPath: GuideButton
+      value: 
+      objectReference: {fileID: 1149136485}
     - target: {fileID: 4999154630629337975, guid: 49384f57359b72a4a93d70114bbf4a7a, type: 3}
       propertyPath: dialogWindow
       value: 
       objectReference: {fileID: 467566695}
     - target: {fileID: 9054927331474103976, guid: 49384f57359b72a4a93d70114bbf4a7a, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9054927331474103976, guid: 49384f57359b72a4a93d70114bbf4a7a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2401,7 +2409,7 @@ GameObject:
   - component: {fileID: 1238783010}
   - component: {fileID: 1238783009}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: ScreenCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2484,7 +2492,7 @@ RectTransform:
   - {fileID: 1149136486}
   - {fileID: 677523765}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
