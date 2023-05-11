@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 107823714}
   - component: {fileID: 107823715}
   m_Layer: 0
-  m_Name: uiManager
+  m_Name: UIManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,6 +45,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GuideButton: {fileID: 0}
+  statisticsImage: {fileID: 0}
+  dominantImage: {fileID: 0}
 --- !u!1 &6227643705250682742
 GameObject:
   m_ObjectHideFlags: 0
@@ -89,8 +91,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2ce1e2e676ce2547aef35a99d79ccd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogWindow: {fileID: 0}
   dialogCanvas: {fileID: 0}
+  dialogWindow: {fileID: 0}
 --- !u!1 &9054927330431540718
 GameObject:
   m_ObjectHideFlags: 0

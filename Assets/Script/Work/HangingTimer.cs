@@ -8,15 +8,15 @@ public class HangingTimer : MonoBehaviour
 {
     bool isTimer;
     [SerializeField] private float workTime = 0f;
-    const float workMaxTime = 100f;
+    const float workMaxTime = 10f;
     Slider timerSlider;
-    HangingManager hangingManager;
+    HangingManager _hangingManager;
 
     private void Awake()
     {
         workTime = workMaxTime;
         timerSlider = GetComponent<Slider>(); 
-        hangingManager = FindObjectOfType<HangingManager>();
+        _hangingManager = FindObjectOfType<HangingManager>();
     }
 
     private void Update()
@@ -25,13 +25,13 @@ public class HangingTimer : MonoBehaviour
         {
             workTime -= Time.deltaTime;
             timerSlider.value = workTime / workMaxTime;
-            if(workTime <= 0)
+
+            if (workTime <= 0)
             {
                 isTimer = false;
                 workTime = workMaxTime;
-                hangingManager.attackerMouseMove.SetPossibleTodesstrafe(false);
-                //hangingManager.ConvertScene();
-                Debug.Log("Game Over");
+
+                StartCoroutine(_hangingManager.endDay());
             }
         }
     }
