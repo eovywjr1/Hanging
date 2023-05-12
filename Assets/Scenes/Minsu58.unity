@@ -496,17 +496,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1238783012}
     m_Modifications:
-    - target: {fileID: 4839158642846974842, guid: 33fecf526f000ed4ebf4d3a1d9c53bea, type: 3}
-      propertyPath: m_text
-      value: "Username : \n\n"
-      objectReference: {fileID: 0}
     - target: {fileID: 4839158643419462946, guid: 33fecf526f000ed4ebf4d3a1d9c53bea, type: 3}
       propertyPath: m_Name
       value: DominentImage
-      objectReference: {fileID: 0}
-    - target: {fileID: 4839158643419462946, guid: 33fecf526f000ed4ebf4d3a1d9c53bea, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4839158643419462947, guid: 33fecf526f000ed4ebf4d3a1d9c53bea, type: 3}
       propertyPath: m_Pivot.x
@@ -591,10 +583,6 @@ PrefabInstance:
     - target: {fileID: 4839158643419462947, guid: 33fecf526f000ed4ebf4d3a1d9c53bea, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4839158644271112555, guid: 33fecf526f000ed4ebf4d3a1d9c53bea, type: 3}
-      propertyPath: m_text
-      value: Peter
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 33fecf526f000ed4ebf4d3a1d9c53bea, type: 3}
@@ -1722,7 +1710,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2696586845578461405, guid: eb9383c62696a8342ab1744954e8dce2, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.002529609
+      value: 0.0025457372
       objectReference: {fileID: 0}
     - target: {fileID: 2696586845809489345, guid: eb9383c62696a8342ab1744954e8dce2, type: 3}
       propertyPath: 
@@ -3360,10 +3348,6 @@ PrefabInstance:
     - target: {fileID: 8634485903277565980, guid: b4d24f9e65129124ea27c0515f013d3a, type: 3}
       propertyPath: m_Name
       value: StatisticsPage
-      objectReference: {fileID: 0}
-    - target: {fileID: 8634485903277565980, guid: b4d24f9e65129124ea27c0515f013d3a, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8634485903277565983, guid: b4d24f9e65129124ea27c0515f013d3a, type: 3}
       propertyPath: m_Pivot.x
