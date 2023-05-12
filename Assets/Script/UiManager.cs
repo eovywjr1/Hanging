@@ -5,12 +5,24 @@ using UnityEngine;
 public class UiManager : MonoBehaviour, IListener
 {
     public GameObject GuideButton;
+
+    [SerializeField] private GameObject statisticsImage;
+    [SerializeField] private GameObject dominantImage;
+
+    private HangingManager hangingManager;
     private bool isPossibleActiveGuide = false;
     private bool isPossibleDeactiveGuide = false;
+
+    [SerializeField] private Canvas _screenCanvas;
 
     private void Awake()
     {
         GuideButton.SetActive(false);
+        hangingManager = FindObjectOfType<HangingManager>();
+
+        Debug.Assert(statisticsImage != null, "statisticsImage를 넣으세요");
+        Debug.Assert(dominantImage != null, "dominentImage를 넣으세요");
+        Debug.Assert(_screenCanvas != null, "screenCanvas 넣으세요");
     }
 
     private void Start()
@@ -42,6 +54,28 @@ public class UiManager : MonoBehaviour, IListener
         }
     }
 
+    public void showDominantImage()
+    {
+        Destroy(FindObjectOfType<HangingTimer>().gameObject);
+        dominantImage.gameObject.SetActive(true);
+    }
+
+    public void showStatistics()
+    {
+        statisticsImage.SetActive(true);
+        FindObjectOfType<UIStatistics>().showStatistics(hangingManager.getHangingInfo());
+    }
+
+    public void showScreenCanvas()
+    {
+        _screenCanvas.enabled = true;
+    }
+
+    public void hideScreenCanvas()
+    {
+        _screenCanvas.enabled = false;
+    }
+
     public void OnEvent(string eventType, Component sender, object parameter = null)
     {
         switch (eventType)
@@ -49,7 +83,6 @@ public class UiManager : MonoBehaviour, IListener
             case "possibleactiveGuide":
                 isPossibleActiveGuide = true;
                 break;
-
             case "possibledeactiveGuide":
                 isPossibleDeactiveGuide = true;
                 break;
