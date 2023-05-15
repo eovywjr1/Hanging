@@ -28,24 +28,17 @@ public class DialogBubbleController : MonoBehaviour
     public void CreateDialogBubble( int id , string str )
     {
         if (dialogBubbleList == null)
-        {
             return;
-        }
 
-        if (dialogWindowController = null)
-        {
+        if (dialogWindowController == null)
             dialogWindowController.VisibleDialogWindow();
-        }
 
         if (id >= 0 && id <= 2)
-        {
             dialogBubbleList.Add(GetDialogBubble(id).transform.GetChild(0).gameObject);
-        }
+
         int bubbleIndex = dialogBubbleList.Count - 1;
         if (bubbleIndex >= 0)
-        {
             dialogBubbleRecttransformList.Add(dialogBubbleList[bubbleIndex].GetComponent<RectTransform>());
-        }
 
         //길면 줄바꿈 함수 삽입 자리//
         DialogTextShow( str, bubbleIndex);
@@ -88,6 +81,5 @@ public class DialogBubbleController : MonoBehaviour
         yield return new WaitForSecondsRealtime(Time.deltaTime); //생성 딜레이 후 set 적용
         SetPositionDialogBubble(id, index);
         SetScrollValue();
-
     }
 }

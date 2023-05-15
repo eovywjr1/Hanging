@@ -4,7 +4,6 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - criteria
   - floor
   - badge
   - buttonObj
@@ -12,6 +11,7 @@ TagManager:
   - prisoner
   - rope
   - middleCriteria
+  - TodesstrafeCriteria
   layers:
   - Default
   - TransparentFX

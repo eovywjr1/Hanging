@@ -1,35 +1,56 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DialogWindowController : MonoBehaviour
 {
-    [SerializeField] GameObject dialogWindow;
     public Canvas dialogCanvas;
+
+    [SerializeField] GameObject dialogWindow;
+
+    private Image dialogViewImage = null;
+    private Image dialogViewportImage = null;
+    private Image dialogScrollbarImage = null;
+    private Image dialogScrollbarHandleImage = null;
 
     bool isEnabled;
 
     private void Awake()
     {
-        dialogCanvas = dialogWindow.transform.parent.GetComponent<Canvas>();
+        Transform dialogTransform = dialogWindow.transform;
+        dialogCanvas = dialogTransform.parent.GetComponent<Canvas>();
+        dialogViewImage = dialogWindow.GetComponent<Image>();
+        dialogViewportImage = dialogTransform.GetChild(0).GetComponent<Image>();
+        dialogScrollbarImage = dialogTransform.GetChild(1).GetComponent<Image>();
+        dialogScrollbarHandleImage = dialogTransform.GetChild(1).GetChild(0).GetChild(0).GetComponent<Image>();
     }
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.T) && isEnabled)
         {
-            dialogCanvas.enabled = !dialogCanvas.enabled;
+            if (dialogViewImage.color.a == 0)
+                VisibleDialogWindow();
+            else
+                UnVisibleDialogWindow();
         }
     }
 
     public void VisibleDialogWindow()
     {
-        dialogWindow.gameObject.SetActive( true );
+        dialogViewImage.color = new Color(1, 1, 1, 0.5f);
+        dialogViewportImage.color = new Color(1, 1, 1, 1);
+        dialogScrollbarImage.color = new Color(1, 1, 1, 1);
+        dialogScrollbarHandleImage.color = new Color(1, 1, 1, 1);
     }
 
     public void UnVisibleDialogWindow()
     {
-        dialogWindow.gameObject.SetActive( false );
+        dialogViewImage.color = new Color(1, 1, 1, 0);
+        dialogViewportImage.color = new Color(1, 1, 1, 0);
+        dialogScrollbarImage.color = new Color(1, 1, 1, 0);
+        dialogScrollbarHandleImage.color = new Color(1, 1, 1, 0);
     }
 
     public void SetEnabled(bool _isEnabled)

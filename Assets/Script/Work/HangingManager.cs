@@ -13,6 +13,8 @@ public class HangingManager : MonoBehaviour, IListener
     [SerializeField] BossHand bossHand;
     HangingTimer hangingTimer;
     public DialogWindowController dialogWindowController;
+    private UiManager _uiManager;
+
     [SerializeField] GameObject convertEffect, attackerPrefab;
     public ScrollViewController scrollViewController;
 
@@ -21,15 +23,22 @@ public class HangingManager : MonoBehaviour, IListener
     public bool isStatementWrongProcess;
     int _attackerCount = 1;
     public int attackerCount
+
+
+    private int _judgeCount = 0;
+    public int judgeCount
     {
-        get { return _attackerCount; }
+        get { return _judgeCount; }
         set { 
-            _attackerCount = value;
-            EventManager.instance.postNotification("updateAttackerCountCCTV", this, _attackerCount);
+            _judgeCount = value;
+            EventManager.instance.postNotification("updateAttackerCountCCTV", this, _judgeCount + 1);
         }
     }
-            
-    public static int day =6;
+    private int _correctJudgeCount = 0;
+    private int _discorrectJudgeCount = 0;
+    private int _discorrectAndTodesstrafedPersonCount = 0;
+
+    public static int day = 3;
     static bool isCorrect = true;
 
     private void Awake()
@@ -37,9 +46,10 @@ public class HangingManager : MonoBehaviour, IListener
         dialogWindowController = FindObjectOfType<DialogWindowController>();
         hangingTimer = FindObjectOfType<HangingTimer>();
         analogGlitch = FindObjectOfType<AnalogGlitch>();
-        scrollViewController=FindObjectOfType<ScrollViewController>();
-        InitialAttacker();
+        _uiManager = FindObjectOfType<UiManager>();
 
+        createAttacker();
+        scrollViewController=FindObjectOfType<ScrollViewController>();
     }
 
     private void Start()
@@ -81,7 +91,7 @@ public class HangingManager : MonoBehaviour, IListener
         isTodesstrafe = true;
 
         //���� �Ǻ�//
-        if (DistinguishTodesstrafe(0)) Debug.Log("True");
+        if (checkTodesstrafe(0)) Debug.Log("True");
         else Debug.Log("False");
         Debug.Log("����");
 
@@ -93,14 +103,14 @@ public class HangingManager : MonoBehaviour, IListener
         isAmnesty = true;
 
         //���� �Ǻ�//
-        if (DistinguishTodesstrafe(1)) Debug.Log("True");
+        if (checkTodesstrafe(1)) Debug.Log("True");
         else Debug.Log("False");
         Debug.Log("����");
 
         EndTodesstrafe();
     }
 
-    private bool DistinguishTodesstrafe(int mode)
+    private bool checkTodesstrafe(int mode)
     {
         if (isCompulsoryEnd == false || mode == attackerInfo.recordData.isHanging)
         {
@@ -132,9 +142,11 @@ public class HangingManager : MonoBehaviour, IListener
 
     void NextAttacker()
     {
-        _attackerCount++;
+        judgeCount++;
 
         StartCoroutine(ConvertAttackerEffect());
+
+        createAttacker();
     }
 
     IEnumerator ConvertAttackerEffect()
@@ -144,18 +156,7 @@ public class HangingManager : MonoBehaviour, IListener
         yield return new WaitForSecondsRealtime(1.5f);
 
         convertEffect.SetActive(false);
-        InitialAttacker();
     }
-
-    IEnumerator StartGlitch()
-    {
-        analogGlitch._isGlitch = true;
-        yield return new WaitForSecondsRealtime(0.75f);
-        analogGlitch._isGlitch = false;
-
-        NextAttacker();
-    }
-
 
     IEnumerator StartHoldOutHands()
     {
@@ -182,15 +183,13 @@ public class HangingManager : MonoBehaviour, IListener
         isCompulsoryEnd = true;
 
         EventManager.instance.postNotification("dialogEvent", this, "createAttacker");
+        EventManager.instance.postPossibleEvent();
 
         hangingTimer.SetTimer(true);
-        EventManager.instance.postNotification("moveCameraToDesk", this, null);
-        EventManager.instance.postNotification("todesstrafe", this, null);
         dialogWindowController.SetEnabled(true);
-
     }
 
-    void InitialAttacker()
+    void createAttacker()
     {
         if (attackerMouseMove != null)
             Destroy(attackerMouseMove.gameObject);
@@ -213,6 +212,30 @@ public class HangingManager : MonoBehaviour, IListener
 
     }
 
+    public HangingInfoWrapper getHangingInfo()
+    {
+        return new HangingInfoWrapper(day, _judgeCount, _correctJudgeCount, _discorrectJudgeCount, _discorrectAndTodesstrafedPersonCount);
+    }
+
+    public IEnumerator endDay()
+    {
+        _uiManager.hideScreenCanvas();
+
+        yield return StartCoroutine(ConvertAttackerEffect());
+
+        _uiManager.showScreenCanvas();
+        _uiManager.showDominantImage();
+    }
+
+    public void convertSceneNextDay()
+    {
+        //퇴근길 로드로 변경해야 함
+        //퇴근길이 끝난 후에 day 증가하는 것으로 변경해야 함
+        day++;
+
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
     public void OnEvent(string eventType, Component sender, object parameter = null)
     {
         switch (eventType)
@@ -220,11 +243,9 @@ public class HangingManager : MonoBehaviour, IListener
             case "amnesty":
                 Amnesty();
                 break;
-
             case "todesstrafe":
                 Todesstrafe();
                 break;
-
             case "activeAsk":
                 isActiveAsk = true;
                 break;
