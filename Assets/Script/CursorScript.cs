@@ -12,6 +12,9 @@ public class CursorScript : MonoBehaviour
     [SerializeField] Texture2D changed;
     public TMP_Text lastMent; //지정 해주기
     public ScrollViewController scrollViewController;
+    public GameObject padStatement;
+    public GameObject penButton;
+    public GameObject padStatementText;
 
     public bool penCursor;
     
@@ -37,6 +40,23 @@ public class CursorScript : MonoBehaviour
             {
                 GameObject clickObj = hit.transform.gameObject;
                 Debug.Log(clickObj.name);
+
+                if (hit.transform.gameObject.name == "staButton")
+                {
+                    if (padStatement.activeSelf == false)
+                    { 
+                        padStatement.SetActive(true);
+                        penButton.SetActive(true);
+                        padStatementText.transform.position += new Vector3(0, 0, 10);
+
+                    }
+                    else
+                    { 
+                        padStatement.SetActive(false);
+                        penButton.SetActive(false); 
+                        padStatementText.transform.position += new Vector3(0, 0, -10);
+                    }
+                }
 
                 if (hit.transform.gameObject.name == "penButton")
                 {
@@ -72,11 +92,13 @@ public class CursorScript : MonoBehaviour
                     }
                     else
                     {
-                        Debug.Log("진술서 내용이 같음");
-                        StartCoroutine(hangingManager.StartStateWrong());
+                        if (hangingManager.isStatementWrongProcess == false)
+                        {
+                            Debug.Log("진술서 내용이 같음");
+                            StartCoroutine(hangingManager.StartStateWrong());
 
-                        hit.transform.gameObject.GetComponent<ChangeTextTexture>().afterClick = true;
-
+                            hit.transform.gameObject.GetComponent<ChangeTextTexture>().afterClick = true;
+                        }
                     }
                 }
             }

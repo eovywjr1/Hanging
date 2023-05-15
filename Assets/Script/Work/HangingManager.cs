@@ -14,9 +14,11 @@ public class HangingManager : MonoBehaviour, IListener
     HangingTimer hangingTimer;
     public DialogWindowController dialogWindowController;
     [SerializeField] GameObject convertEffect, attackerPrefab;
+    public ScrollViewController scrollViewController;
 
     public bool isTodesstrafe, isAmnesty, isActiveAsk;
     public static bool isCompulsoryEnd;
+    public bool isStatementWrongProcess;
     int _attackerCount = 1;
     public int attackerCount
     {
@@ -27,7 +29,7 @@ public class HangingManager : MonoBehaviour, IListener
         }
     }
             
-    public static int day = 6;
+    public static int day =6;
     static bool isCorrect = true;
 
     private void Awake()
@@ -35,7 +37,9 @@ public class HangingManager : MonoBehaviour, IListener
         dialogWindowController = FindObjectOfType<DialogWindowController>();
         hangingTimer = FindObjectOfType<HangingTimer>();
         analogGlitch = FindObjectOfType<AnalogGlitch>();
+        scrollViewController=FindObjectOfType<ScrollViewController>();
         InitialAttacker();
+
     }
 
     private void Start()
@@ -56,7 +60,7 @@ public class HangingManager : MonoBehaviour, IListener
         DestroyAllLineAndWindow();
         NextAttacker();
 
-        if(isActiveAsk && attackerInfo.recordData.attackerData["ask"].Equals("1") == false)
+        if (isActiveAsk && attackerInfo.recordData.attackerData["ask"].Equals("1") == false)
         {
             if (Ask.isFirst)
             {
@@ -68,6 +72,8 @@ public class HangingManager : MonoBehaviour, IListener
                 EventManager.instance.postNotification("dialogEvent", this, UnityEngine.Random.Range(64, 71));
             }
         }
+
+        Debug.Log("현재범죄는 뭘까용"+attackerInfo.recordData.currentState[2]);
     }
 
     public void Todesstrafe()
@@ -156,10 +162,14 @@ public class HangingManager : MonoBehaviour, IListener
         yield return new WaitForSecondsRealtime(1.25f);
         EventManager.instance.postNotification("badge", this, null);
         EventManager.instance.postNotification("dialogEvent", this, UnityEngine.Random.Range(53, 58));
+        yield return new WaitForSecondsRealtime(3.0f);
+        isStatementWrongProcess = false;
     }
 
-    public IEnumerator StartStateWrong() //������ Ŭ�� Ʋ���� 
+    public IEnumerator StartStateWrong() //진술서 오답일 경우 노이즈 출력 & 뱃지 회수 
     {
+        isStatementWrongProcess = true;
+
         analogGlitch._isGlitch = true;
         yield return new WaitForSecondsRealtime(0.75f);
         analogGlitch._isGlitch = false;
@@ -191,6 +201,7 @@ public class HangingManager : MonoBehaviour, IListener
 
         if (isCompulsoryEnd)
         {
+            Debug.Log("캐릭터 생성중?");
             EventManager.instance.postNotification("todesstrafe", this, null);
             EventManager.instance.postNotification("amnesty", this, null);
         }
@@ -198,6 +209,8 @@ public class HangingManager : MonoBehaviour, IListener
         isTodesstrafe = false;
         isAmnesty = false;
         isActiveAsk = false;
+
+
     }
 
     public void OnEvent(string eventType, Component sender, object parameter = null)
