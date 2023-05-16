@@ -117,7 +117,10 @@ public class AttackerMouseMove : MonoBehaviour, IListener
         {
             if (isFirstClick == false)
                 LineChangeTransparency(1);
-
+            else
+            {
+                Debug.Log("첫클릭");
+            }
             if (transform.position.y > minY)
                 isDescend = true;
 
