@@ -200,7 +200,6 @@ public class HangingManager : MonoBehaviour, IListener
 
         if (isCompulsoryEnd)
         {
-            Debug.Log("캐릭터 생성중?");
             EventManager.instance.postNotification("todesstrafe", this, null);
             EventManager.instance.postNotification("amnesty", this, null);
         }
