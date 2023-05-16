@@ -24,11 +24,8 @@ public class Swing : MonoBehaviour
     {
         runningTime += Time.deltaTime * objSpeed;
 
-        //var rad = Mathf.Deg2Rad * (runningTime);
         var x = circleR * Mathf.Sin(runningTime);
         var y = circleR * Mathf.Cos(runningTime);
-        Debug.Log("x:" + x);
-        Debug.Log("y:" + y);
         gameObject.transform.position = point.GetComponent<Transform>().position + new Vector3(x, y);
 
     }

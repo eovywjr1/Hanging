@@ -8,10 +8,12 @@ public class WindowMouseMove : MonoBehaviour
     private Vector3 preMousePosition;
     private Line line;
     private int lineIdx;
+    private HallucinogenicEffect hallucinogenicEffect;
 
     private void Start()
     {
-        for(int i = 0; i < Line.lineList.Count; i++)
+        hallucinogenicEffect = FindObjectOfType<HallucinogenicEffect>();
+        for (int i = 0; i < Line.lineList.Count; i++)
         {
             if(Line.lineList[i].windowObject == this.gameObject)
             {
@@ -24,6 +26,8 @@ public class WindowMouseMove : MonoBehaviour
         //int x = Random.Range(0.25f, 0.75f);
         //viewPos.x = Mathf.Clamp(viewPos.x, 0.25f, 0.75f);
         //viewPos.y = Mathf.Clamp(viewPos.y, 0.25f, 0.75f);
+
+
     }
 
     private void OnMouseDown()

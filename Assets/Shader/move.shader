@@ -7,7 +7,6 @@ Shader "Custom/move"
 		_Brightness("Brightness",Range(-1,1))=0
 		_Noise("Noise",Range(0,1))=1
 		_NoiseSpeed("NoiseSpeed",Range(0,10))=1
-		_MoveSpeed("MoveSpeed",Range(0,1))=1
     }
     SubShader
     {
@@ -28,12 +27,12 @@ Shader "Custom/move"
 		float _Brightness;
 		float _Noise;
 		float _NoiseSpeed;
-		float _MoveSpeed;
+
 
         void surf (Input IN, inout SurfaceOutputStandard o)
         {
 			float2 fPos=float2(0,-_Time.y*_NoiseSpeed);
-			float2 fMoveSpeed=float2(0,_Time.y*_MoveSpeed);
+
 
 			fixed d =tex2D(_MainTex2,IN.uv_MainTex2 + fPos);
             fixed4 c = tex2D (_MainTex, IN.uv_MainTex + d.r * _Noise);

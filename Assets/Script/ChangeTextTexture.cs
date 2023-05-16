@@ -15,7 +15,7 @@ public class ChangeTextTexture : MonoBehaviour
     private void Start()
     {
         cursorScript= FindObjectOfType<CursorScript>();
-        afterClick = false;
+
 
     }
     private void OnMouseEnter()

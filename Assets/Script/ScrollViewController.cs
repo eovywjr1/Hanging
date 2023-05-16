@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Text.RegularExpressions;
+using Unity.Burst.CompilerServices;
 
 public class ScrollViewController : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class ScrollViewController : MonoBehaviour
     public AttackerInfo attackerInfo;
     public TMP_Text txtALlTmp;
     public TMP_Text forWidth;
+    public GameObject content;
     private bool compareMentBool;
     private bool flag;
     private float height;
@@ -25,39 +27,18 @@ public class ScrollViewController : MonoBehaviour
         attackerInfo = FindObjectOfType<AttackerInfo>();
         scrollRect = GetComponent<ScrollRect>();
         flag = false;
-        //txtALlTmp=new TMP_Text();
-        //txtALlTmp = GetComponent<TMP_Text>();
-        //forWidth= GetComponent<TMP_Text>(); 
-        //ShowMent();
 
-    }
-    private void Update()
-    {
-        
-        if (flag == false)
-        {
-            string[] fixtext = { "이름 : ", "범죄 : ", "범행장소 : ", "범행동기 : " };
-            for (int i = 0; i < 4; i++)
-            {
-                compareMentBool = attackerInfo.recordData.correctState[i].Equals(attackerInfo.recordData.currentState[i]) ? true : false;
-                AddMent(fixtext[i] + attackerInfo.recordData.currentState[i], compareMentBool, attackerInfo.recordData.lieORinfoErrorValue);
-            }
-            flag = true;
-            //MakeMentList();
-            
-        }
-       
     }
     public void AddMent(string str, bool compareMentBool, int lieORinfoErrorValue)
     {
+        scrollRect = GetComponent<ScrollRect>();
         var newUi=Instantiate(uiPrefab,scrollRect.content).GetComponent<RectTransform>();
-        //str = "안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요";
         string txtAll =str;
         int lineCnt = 1;
         txtALlTmp.text = txtAll;
         string resultStr="";
 
-        Debug.Log("이 정보가 틀리냐 맞냐!!!! : "+compareMentBool);
+        Debug.Log("해당 정보가 틀린가?: "+compareMentBool);
 
         //대화창 가로폭보다 긴 텍스트는 줄내림//
         if (txtALlTmp.preferredWidth >= 300)  
@@ -67,7 +48,6 @@ public class ScrollViewController : MonoBehaviour
             if (compareMentBool == false)
             {
                 newUi.GetComponent<ChangeTextTexture>().lastMent = txtAll;
-                Debug.Log("마지막문장:"+txtAll);
             }
         }
         else//대화창 가로폭보다 짧은 텍스트는 그대로 출력//
@@ -77,7 +57,6 @@ public class ScrollViewController : MonoBehaviour
             if (compareMentBool == false)
             {
                 newUi.GetComponent<ChangeTextTexture>().lastMent = resultStr;
-                Debug.Log("마지막문장:" + resultStr);
             }
         }
 
@@ -89,24 +68,46 @@ public class ScrollViewController : MonoBehaviour
         LineSpacing(lineCnt);
     }
 
-    public void AddChangedMent(string str, bool compareMentBool, int lieORinfoErrorValue)
+    public void AddChangedMent(string str, bool compareMentBool, int lieORinfoErrorValue, bool currentClick)
     {
         var newUi = Instantiate(uiPrefab, scrollRect.content).GetComponent<RectTransform>();
-        //str = "안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요";
-        int lineCnt = 1;
         string resultStr = str;
 
         newUi.transform.GetChild(0).GetChild(0).GetComponent<TMP_Text>().text = resultStr;
         newUi.GetComponent<ChangeTextTexture>().mentTureORFalse = compareMentBool;
+        newUi.GetComponent<ChangeTextTexture>().afterClick = currentClick;
         newUi.GetComponent<ChangeTextTexture>().lieORinfoErrorValue = lieORinfoErrorValue;
         uiObjects.Add(newUi);
 
+        //위증 또는 정보오류 글씨 색 변경
+        if(currentClick==true && compareMentBool == false)
+        {
+            //newUi.transform.GetChild(0).GetComponent<Image>().color = new Color32(217, 66, 66, 255); //빨간배경
+            newUi.transform.gameObject.transform.GetChild(0).GetChild(0).GetComponent<TMP_Text>().color = new Color32(217, 66, 66, 255);
+        }
+        //잘못 클릭한 올바른 정보 글씨 색 변경
+        else if (currentClick == true && compareMentBool == true)
+        {
+            newUi.transform.GetChild(0).GetComponent<Image>().color = new Color32(239, 239, 239, 255); //회색배경
+        }
 
         LineSpacing(Regex.Matches(str,"\n").Count+1);
+
     }
 
     public void MakeMentList()
     {
+        //전 사람 진술서 데이터 삭제
+        if (uiObjects.Count != 0)
+        {
+            uiObjects.Clear();
+            foreach (Transform child in content.transform)
+            {
+                Destroy(child.gameObject);
+            }
+        }
+
+        attackerInfo = FindObjectOfType<AttackerInfo>();
         string[] fixtext = { "이름 : ", "죄목 : ", "발생장소 : ", "경위 : " };
         height = 5f;
         for (int i = 0; i < 4; i++)
@@ -117,14 +118,14 @@ public class ScrollViewController : MonoBehaviour
         flag = true;
     }
 
-    public void MakeMentCangedList(List<string> currentList)
+    public void MakeMentCangedList(List<string> currentList, List<bool> currentClick)
     {
         string[] fixtext = { "이름 : ", "죄목 : ", "발생장소 : ", "경위 : " };
         height = 5f;
         for (int i = 0; i < 4; i++)
         {
             compareMentBool = attackerInfo.recordData.correctState[i].Equals(attackerInfo.recordData.currentState[i]) ? true : false;
-            AddChangedMent(currentList[i], compareMentBool, attackerInfo.recordData.lieORinfoErrorValue);
+            AddChangedMent(currentList[i], compareMentBool, attackerInfo.recordData.lieORinfoErrorValue, currentClick[i]);
         }
         flag = true;
     }
