@@ -7,8 +7,9 @@ using TMPro;
 [AddComponentMenu("UI/DebugTextComponentName", 11)]
 public class GuideText : MonoBehaviour
 {
-    public int day;
-    public GuideDB guideDB;
+    [SerializeField]
+    private int day;
+    public GuideDBBase guideDBBase;
 
     public TMP_FontAsset font;
     public int BasicFontSize;
@@ -25,27 +26,33 @@ public class GuideText : MonoBehaviour
 
     private void Awake()
     {
+        day = HangingManager.day;
+
         guideButtonSC = GetComponent<GuideButton>();
+
+        guideDBBase = GetGuideDB();
     }
 
-    private void Start()
+    void Start()
     {
-        for (int i = 0; i < guideDB.Entities.Count; i++)
+        Debug.Log("GuideDBBase의 Entities Count!! = " + guideDBBase.Entities.Count);
+        for (int i = 0; i < guideDBBase.Entities.Count; i++)
         {
-            if (guideDB.Entities[i].day == day)
+            if (guideDBBase.Entities[i].day == day)
             {
-                if (guideDB.Entities[i].type == "목차" || guideDB.Entities[i].type == "소목차"
-                    || guideDB.Entities[i].type == "소소목차")
+                //Debug.Log("day : " + guideDBBase.Entities[i].day + ", type : " + guideDBBase.Entities[i].type + ", " + guideDBBase.Entities[i].contents);
+                if (guideDBBase.Entities[i].type == "목차" || guideDBBase.Entities[i].type == "소목차"
+                    || guideDBBase.Entities[i].type == "소소목차")
                 {
-                    createButton(guideDB.Entities[i]);
+                    createButton(guideDBBase.Entities[i]);
                 }
-                else if(guideDB.Entities[i].type == "제목")
+                else if(guideDBBase.Entities[i].type == "제목")
                 {
-                    createGuideText(guideDB.Entities[i], BasicFontSize, true, Color.black);
+                    createGuideText(guideDBBase.Entities[i], BasicFontSize, true, Color.black);
                 }
                 else
                 {
-                    createGuideText(guideDB.Entities[i], BasicFontSize, false, Color.gray);
+                    createGuideText(guideDBBase.Entities[i], BasicFontSize, false, Color.gray);
                 }
             }
         }
@@ -55,9 +62,15 @@ public class GuideText : MonoBehaviour
     {
     }
 
+    public GuideDBBase GetGuideDB()
+    {
+        return Resources.Load<GuideDB_day1>("GuideResources/GuideDB_day" + day);
+    }
+
     void createGuideText(GuideDBEntity guideDB, int fontSize, bool isBold, Color fontColor)
     {
         GameObject guideText;
+       
         if (guideDB.type == "제목")
             guideText = new GameObject("guide" + guideDB.number); //제목에 해당하는 것은 목차와 연결할 번호로 이름 지정
         else

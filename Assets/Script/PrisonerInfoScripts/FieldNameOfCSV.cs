@@ -11,13 +11,8 @@ public class FieldNameOfCSV : MonoBehaviour
     string fileName;
     int day = HangingManager.day;
 
-    ReadPrisonerInfo readPrisonerInfo;  //임시
-
     private void Awake()
     {
-        readPrisonerInfo = GetComponent<ReadPrisonerInfo>();    //임시
-        day = readPrisonerInfo.day; //임시
-
         char charValue = (char)(day + '0');
 
         fileName = "Prisoner_day";

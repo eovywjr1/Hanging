@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Rope : MonoBehaviour
 {
+    public prisoner prisoner;
+
     public LineRenderer lineRenderer;
     public int segmentCnt = 50;
     public int constraintLoop = 50;
@@ -69,6 +71,8 @@ public class Rope : MonoBehaviour
                         segments.RemoveAt(i);
                     }
                 }
+
+                prisoner.isCutRope = true;
             }
         }
     }

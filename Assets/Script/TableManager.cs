@@ -10,6 +10,8 @@ public class TableManager : MonoBehaviour
     private static List<Dictionary<string, List<string>>> nameT, fnameT, crimeT, detailT, jobT;
     public static List<List<Dictionary<string, List<string>>>> judgeT = new List<List<Dictionary<string, List<string>>>>();
 
+    ReadPrisonerInfo readPrisonerInfo;
+
     void Awake()
     {
         if (nameT == null)
@@ -31,6 +33,8 @@ public class TableManager : MonoBehaviour
             judgeT.Add(csvReader.Read(fileName + "6"));
             judgeT.Add(csvReader.Read(fileName + "7"));
         }
+
+        readPrisonerInfo = FindObjectOfType<ReadPrisonerInfo>();
     }
 
     public Dictionary<string,string> GetData(string familyName, string name, ref Dictionary<string, List<string>> lieORInfoError)
@@ -38,6 +42,15 @@ public class TableManager : MonoBehaviour
         Dictionary<string,string> data = new Dictionary<string,string>();
         Debug.Log("day : " + HangingManager.day);
         
+        if(familyName == null)
+        {
+            data["move"] = readPrisonerInfo.GetAttackerMove();
+        }
+        else
+        {
+            data["move"] = readPrisonerInfo.GetVictimMove();
+        }
+
         GetFamilyName(data);
         GetName(nameT, data);
         data["age"] = GetAge();
@@ -45,9 +58,11 @@ public class TableManager : MonoBehaviour
         {
             while (!data["name"].Equals(name)) GetName(nameT, data);
         }
-        
-        data["move"] = data["crimePlace"].Equals(data["familyGrade"]) ? "1" :"0";
 
+        if (data["move"] == null)
+        {
+            data["move"] = data["crimePlace"].Equals(data["familyGrade"]) ? "1" : "0";
+        }
 
         //통합 기록일 경우 가해자 data에만 넣음//
         if (familyName == null)
@@ -78,7 +93,16 @@ public class TableManager : MonoBehaviour
             string str = crimeT[valueid][crimeT[0]["header"][headerid]][0];
             if (!str.Equals("")){
                 data["crime"] = str;
-                data["crimeGrade"] = (int.Parse(crimeT[0]["header"][headerid][0].ToString()) - 1).ToString();
+
+                //유민 수정
+                data["crimeGrade"] = readPrisonerInfo.GetCrimeGrade();
+                if (data["crimeGrade"] != null) Debug.Log("쒣아님");
+                if (data["crimeGrade"] == null)
+                {
+                    data["crimeGrade"] = (int.Parse(crimeT[0]["header"][headerid][0].ToString()) - 1).ToString();
+                    Debug.Log("쒣");
+                }
+                /*data["crimeGrade"] = (int.Parse(crimeT[0]["header"][headerid][0].ToString()) - 1).ToString();*/
 
                 return;
             }
@@ -89,6 +113,7 @@ public class TableManager : MonoBehaviour
     {
         int valueid = Random.Range(0, fnameT.Count);
         int headerid = Random.Range(0, fnameT[0]["header"].Count);  //5
+
         int grade = Random.Range(0, 7);
 
         if (HangingManager.day == 1) {
@@ -138,7 +163,16 @@ public class TableManager : MonoBehaviour
             }
         }
 
-        int valueid = Random.Range(0,randomlist.Count);
+        int valueid;
+
+        if(readPrisonerInfo.GetCrimeReason() != null)
+        {
+            valueid = int.Parse(readPrisonerInfo.GetCrimeReason());
+        }
+        else
+        {
+            valueid = Random.Range(0, randomlist.Count);
+        }
         data["crimeReasonText"] = detailT[randomlist[valueid]][detailT[0]["header"][0]][0];
         data["crimeReason"] = randomlist[valueid].ToString();
     }
@@ -169,6 +203,11 @@ public class TableManager : MonoBehaviour
     //신분 등급//
     private string GetPositionGrade(string grade)
     {
+        if(readPrisonerInfo.GetGrade() != null)
+        {
+            return readPrisonerInfo.GetGrade();
+        }
+
         switch (grade)
         {
             case "0":
@@ -206,7 +245,21 @@ public class TableManager : MonoBehaviour
             }
         }
 
-        string job = jobPossibleList[Random.Range(0, jobPossibleList.Count)];
+        int jobIdx;
+        if(person.Equals("attacker") && readPrisonerInfo.GetAttackerJob() != null)
+        {
+            jobIdx = int.Parse(readPrisonerInfo.GetAttackerJob());
+        }
+        else if(person.Equals("victim") && readPrisonerInfo.GetVictimJob() != null)
+        {
+            jobIdx = int.Parse(readPrisonerInfo.GetVictimJob());
+        }
+        else
+        {
+            jobIdx = Random.Range(0, jobPossibleList.Count);
+        }
+
+        string job = jobPossibleList[jobIdx];
         data["jobText"] = job;
         Debug.Log("직업 : " + job);
         switch (HangingManager.day)
@@ -268,6 +321,14 @@ public class TableManager : MonoBehaviour
     {
         if (HangingManager.day >= 4)
         {
+            if (readPrisonerInfo.GetCrimeRecord() != null) //유민 수정
+            {
+                data["crimeRecord"] = readPrisonerInfo.GetCrimeRecord();
+            }
+            else
+            {
+                data["crimeRecord"] = Random.Range(0, 6).ToString();
+            }
             data["crimeRecord"] = Random.Range(0, 6).ToString();
             if (int.Parse(data["crimeRecord"]) == 0)
             {
@@ -325,14 +386,25 @@ public class TableManager : MonoBehaviour
             }
         }
 
-        if (cnt >= 3)
+        if (readPrisonerInfo.GetInfoError() != null)
+        {
+            data["infoError"] = readPrisonerInfo.GetInfoError();
+        }
+        else if (cnt >= 3)
         {
             if (crimePlaceFlag) data["infoError"] = "2";
             else data["infoError"] = "0";
         }
         else data["infoError"] = "1";
 
-        data["lie"] = lieFlag ? "0" : "1";
+        if(readPrisonerInfo.GetLie() != null)
+        {
+            data["lie"] = readPrisonerInfo.GetLie();
+        }
+        else
+        {
+            data["lie"] = lieFlag ? "0" : "1";
+        }
     }
     public string GetRandomStatement(string str)
     {

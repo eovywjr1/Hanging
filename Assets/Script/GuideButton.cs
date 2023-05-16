@@ -14,9 +14,12 @@ public class GuideButton : MonoBehaviour
         scrollRect = GameObject.Find("GuideScrollView").GetComponent<ScrollRect>();
     }
 
-    private void Start()
+    private void OnEnable()
     {
-        scrollRect.verticalNormalizedPosition = 1f;
+        if (scrollRect != null)
+        {
+            scrollRect.verticalNormalizedPosition = 1f;
+        }
     }
 
     //가이드창 닫기

@@ -1,0 +1,237 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 8
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cc8c3ce0af626d45931cfc0cf18bb02, type: 3}
+  m_Name: GuideDB_day5
+  m_EditorClassIdentifier: 
+  Entities:
+  - day: 5
+    type: "\uBAA9\uCC28"
+    contents: "1.  \uC2DC\uBBFC \uB4F1\uAE09 \uBD84\uB958"
+    number: 1
+    note: 
+  - day: 5
+    type: "\uC18C\uBAA9\uCC28"
+    contents: "A.  \uC131\uC5D0 \uB530\uB978 \uC2DC\uBBFC \uB4F1\uAE09 \uBD84\uB958"
+    number: 1_A
+    note: 
+  - day: 5
+    type: "\uBAA9\uCC28"
+    contents: "2.  \uBC94\uC8C4 \uB4F1\uAE09 \uBD84\uB958"
+    number: 2
+    note: 
+  - day: 5
+    type: "\uBAA9\uCC28"
+    contents: "3.   \uBC94\uC8C4 \uACBD\uC704 \uBD84\uB958"
+    number: 3
+    note: 
+  - day: 5
+    type: "\uC18C\uBAA9\uCC28"
+    contents: "A.  \uBC94\uC8C4 \uACBD\uC704\uC5D0 \uB530\uB978 \uC0AC\uBA74  (\uC218\uC815\uB428)"
+    number: 3_A
+    note: 
+  - day: 5
+    type: "\uBAA9\uCC28"
+    contents: "4.  \uC804\uACFC \uAE30\uB85D"
+    number: 4
+    note: 
+  - day: 5
+    type: "\uC18C\uBAA9\uCC28"
+    contents: "A.  \uC804\uACFC \uAE30\uB85D\uC5D0 \uB530\uB978 \uD310\uACB0  (\uC218\uC815\uB428)"
+    number: 4_A
+    note: 
+  - day: 5
+    type: "\uBAA9\uCC28"
+    contents: "5.  \uAE30\uBCF8 \uD310\uACB0 \uAC00\uC774\uB4DC"
+    number: 5
+    note: 
+  - day: 5
+    type: "\uC18C\uBAA9\uCC28"
+    contents: "A.  \uBC94\uC8C4 \uB4F1\uAE09 \uAC00\uC911  (\uC218\uC815\uB428)"
+    number: 5_A
+    note: 
+  - day: 5
+    type: "\uBAA9\uCC28"
+    contents: "6.  \uCD94\uAC00 \uBCC0\uB3D9 \uC0AC\uD56D"
+    number: 6
+    note: 
+  - day: 5
+    type: "\uC18C\uBAA9\uCC28"
+    contents: "A.  \uAD6D\uAC00 \uC7AC\uAC74 \uD504\uB85C\uC81D\uD2B8"
+    number: 6_A
+    note: 
+  - day: 5
+    type: "\uC18C\uC18C\uBAA9\uCC28"
+    contents: "i.  \uD2B9\uC774 \uC9C1\uC5C5  (\uC218\uC815\uB428)"
+    number: 6_A_1
+    note: 
+  - day: 5
+    type: "\uC18C\uC18C\uBAA9\uCC28"
+    contents: "ii.  \uAD6D\uAC00\uC801 \uC694\uAD6C  (\uC218\uC815\uB428)"
+    number: 6_A_2
+    note: 
+  - day: 5
+    type: "\uC81C\uBAA9"
+    contents: "1.  \uC2DC\uBBFC \uB4F1\uAE09 \uBD84\uB958"
+    number: 1
+    note: 
+  - day: 5
+    type: "\uB0B4\uC6A9"
+    contents: "\uCD5C\uC0C1\uAE09(A), \uC0C1\uAE09(B), \uC911\uAE09(C~D), \uD558\uAE09(E~F),
+      \uCD5C\uD558\uAE09(G)"
+    number: 
+    note: 
+  - day: 5
+    type: "\uC81C\uBAA9"
+    contents: "1-A.  \uC131\uC5D0 \uB530\uB978 \uC2DC\uBBFC \uB4F1\uAE09 \uBD84\uB958"
+    number: 1_A
+    note: 
+  - day: 5
+    type: "\uB0B4\uC6A9"
+    contents: "<\uCD5C\uC0C1\uAE09 \uC2DC\uBBFC>\n\uB9C8\uB974\uD2F0\uB124\uC988,
+      \uD5E4\uB974\uB09C\uB370\uC988, \uB85C\uD398\uC988, \uC0B0\uCCB4\uC2A4, \uB9AC\uBCA0\uB77C,
+      \uB7EC\uC140, \uB9AC\uCC98\uC988, \uBA58\uB370\uC988, \uD5E4\uC77C\n\n<\uC0C1\uAE09
+      \uC2DC\uBBFC>\n\uAC00\uB974\uC2DC\uC544, \uB8E8\uC774\uC2A4, \uB12C\uC2A8,
+      \uC5D0\uB4DC\uC6CC\uC988, \uD544\uB9BD\uC2A4, \uBC18\uC988, \uC81C\uC774\uCF65\uC2A4,
+      \uD06C\uB85C\uC2A4, \uD504\uB85C\uC774\uB4DC\n\n<\uC911\uAE09 \uC2DC\uBBFC>\uD14C\uC77C\uB7EC,
+      \uD654\uC774\uD2B8, \uC7AD\uC2A8, \uC564\uB354\uC2A8, \uB85C\uB4DC\uB9AC\uAC8C\uC988,
+      \uC54C\uB80C, \uCF5C\uB9B0\uC2A4, \uB85C\uC800\uC2A4, \uB808\uC774\uB180\uC988,
+      \uBCF4\uC774\uB4DC, \uD574\uB9AC\uC2A8, \uB77C\uBAA8\uC2A4, \uAC00\uB81B, \uBA54\uB514\uB098,
+      \uB2E4\uB2C8\uC5D8, \uB378\uAC00\uB3C4, \uC624\uB974\uD14C\uAC00, \uBB34\uB514\n\n<\uD558\uAE09
+      \uC2DC\uBBFC>\n\uC2A4\uBBF8\uC2A4, \uB370\uC774\uBE44\uC2A4, \uB9C8\uD2F4,
+      \uADF8\uB9B0, \uD398\uB808\uC988, \uD558\uC6CC\uB4DC, \uC54C\uB809\uC0B0\uB354,
+      \uB9C8\uC774\uC5B4\uC2A4, \uB514\uC544\uC988, \uC2A4\uD2F0\uBE10\uC2A4, \uB77C\uC77C\uB9AC,
+      \uB8E8\uC774\uC988, \uB77C\uC774\uC5B8, \uBA54\uC774\uC5B4, \uC0B0\uD2F0\uC544,
+      \uC288\uB098\uC774\uB354, \uBAA8\uB780, \uD558\uBAAC\n\n<\uCD5C\uD558\uAE09
+      \uC2DC\uBBFC>\n\uBE0C\uB77C\uC6B4, \uADF8\uB808\uC774, \uC820\uD0A8\uC2A4,
+      \uC653\uC2A8, \uC624\uD2F0\uC988, \uB85C\uC988, \uD398\uB974\uB09C\uB370\uC988,
+      \uC624\uBE0C\uB77C\uC774\uC5B8, \uD504\uB79C\uC2DC\uC2A4"
+    number: 
+    note: 
+  - day: 5
+    type: "\uC81C\uBAA9"
+    contents: "2.  \uBC94\uC8C4 \uB4F1\uAE09 \uBD84\uB958"
+    number: 2
+    note: 
+  - day: 5
+    type: "\uB0B4\uC6A9"
+    contents: "1\uAE09: \uC0B4\uC778 / 2\uAE09: \uC0C1\uD574, \uD3ED\uD589, \uAC15\uB3C4
+      / 3\uAE09: \uAC15\uAC04, \uAC15\uC81C \uCD94\uD589 / 4\uAE09: \uD611\uBC15,
+      \uACF5\uAC08, \uC0AC\uAE30 / 5\uAE09: \uBAA8\uC695"
+    number: 
+    note: 
+  - day: 5
+    type: "\uC81C\uBAA9"
+    contents: "3.  \uBC94\uC8C4 \uACBD\uC704 \uBD84\uB958"
+    number: 3
+    note: 
+  - day: 5
+    type: "\uB0B4\uC6A9"
+    contents: "\uC6B0\uBC1C, \uAE08\uC804, \uAC04\uD1B5, \uCE58\uC815, \uBCF4\uBCF5"
+    number: 
+    note: 
+  - day: 5
+    type: "\uC81C\uBAA9"
+    contents: "3-A.  \uBC94\uC8C4 \uACBD\uC704\uC5D0 \uB530\uB978 \uC0AC\uBA74"
+    number: 3_A
+    note: 
+  - day: 5
+    type: "\uB0B4\uC6A9"
+    contents: "\uAE08\uC804: 2, 4, 5\uAE09\n\uC6B0\uBC1C: 4, 5\uAE09\n\n<\uC608\uC678>\n 
+      1)  \uD53C\uD574\uC790\uAC00 \uCD5C\uC0C1\uAE09 \uC2DC\uBBFC\uC77C \uACBD\uC6B0"
+    number: 
+    note: 
+  - day: 5
+    type: "\uC81C\uBAA9"
+    contents: "4.  \uC804\uACFC \uAE30\uB85D"
+    number: 4
+    note: 
+  - day: 5
+    type: "\uB0B4\uC6A9"
+    contents: "1\uAE09: \uC0B4\uC778 / 2\uAE09: \uC0C1\uD574, \uD3ED\uD589, \uAC15\uB3C4
+      / 3\uAE09: \uAC15\uAC04, \uAC15\uC81C \uCD94\uD589 / 4\uAE09: \uD611\uBC15,
+      \uACF5\uAC08, \uC0AC\uAE30 / 5\uAE09: \uBAA8\uC695"
+    number: 
+    note: 
+  - day: 5
+    type: "\uC81C\uBAA9"
+    contents: "4-A.  \uC804\uACFC \uAE30\uB85D\uC5D0 \uB530\uB978 \uD310\uACB0"
+    number: 4_A
+    note: 
+  - day: 5
+    type: "\uB0B4\uC6A9"
+    contents: "\uC911\uAE09: 1\uAE09 \uBC94\uC8C4 \uC804\uACFC\uAC00 \uC788\uC744
+      \uB54C \uBC94\uC8C4 \uB4F1\uAE09 1 \uAC00\uC911\n\uD558, \uCD5C\uD558\uAE09:
+      1\uAE09 \uBC94\uC8C4 \uC804\uACFC\uAC00 \uC788\uC744 \uB54C \uBB34\uC870\uAC74
+      \uC0AC\uD615"
+    number: 
+    note: 
+  - day: 5
+    type: "\uC81C\uBAA9"
+    contents: "5.  \uAE30\uBCF8 \uD310\uACB0 \uAC00\uC774\uB4DC"
+    number: 5
+    note: 
+  - day: 5
+    type: "\uB0B4\uC6A9"
+    contents: "\uCD5C\uC0C1\uAE09: \uC5C6\uC74C\n\uC0C1\uAE09: 1\uAE09 (\uD53C\uD574\uC790\uAC00
+      \uC0C1\uAE09 \uC774\uC0C1\uC77C \uACBD\uC6B0)\n\uC911\uAE09: 1, 2\uAE09\n\uD558\uAE09:
+      1, 2, 3\uAE09\n\uCD5C\uD558\uAE09: 1, 2, 3\uAE09"
+    number: 
+    note: 
+  - day: 5
+    type: "\uC81C\uBAA9"
+    contents: "5_A.  \uBC94\uC8C4 \uB4F1\uAE09 \uAC00\uC911"
+    number: 5_A
+    note: 
+  - day: 5
+    type: "\uB0B4\uC6A9"
+    contents: "\uD2B9\uC815 \uC9C1\uC5C5\uC774 \uD53C\uD574\uC790\uC77C \uACBD\uC6B0
+      \uBC94\uC8C4 \uB4F1\uAE09\uC774 1 \uAC00\uC911\uB41C\uB2E4."
+    number: 
+    note: 
+  - day: 5
+    type: "\uC81C\uBAA9"
+    contents: "6.  \uCD94\uAC00 \uBCC0\uB3D9 \uC0AC\uD56D"
+    number: 6
+    note: 
+  - day: 5
+    type: "\uC81C\uBAA9"
+    contents: "6_A.  \uAD6D\uAC00 \uC7AC\uAC74 \uD504\uB85C\uC81D\uD2B8"
+    number: 6_A
+    note: 
+  - day: 5
+    type: "\uC81C\uBAA9"
+    contents: "6_A_i.  \uD2B9\uC774 \uC9C1\uC5C5"
+    number: 6_A_1
+    note: 
+  - day: 5
+    type: "\uB0B4\uC6A9"
+    contents: "\uC758\uC0AC, \uC5F0\uAD6C\uC6D0, \uAC1C\uBC1C\uC790(\uC911\uAE09
+      \uC774\uC0C1), \uAD50\uC0AC, \uC0C1\uB2F4\uAC00\uB97C \uD2B9\uC774 \uC9C1\uC5C5\uC73C\uB85C
+      \uC9C0\uC815\uD55C\uB2E4."
+    number: 
+    note: 
+  - day: 5
+    type: "\uC81C\uBAA9"
+    contents: "6_A_ii.  \uAD6D\uAC00\uC801 \uC694\uAD6C"
+    number: 6_A_2
+    note: 
+  - day: 5
+    type: "\uB0B4\uC6A9"
+    contents: "\uAC00\uD574\uC790\uAC00 \uD2B9\uC774 \uC9C1\uC5C5\uC77C \uACBD\uC6B0,
+      \uAD6D\uAC00\uC801 \uC694\uAD6C\uB97C \uD1B5\uD574 \uC0AC\uBA74\uD560 \uC218
+      \uC788\uB2E4.\n\uB2E8, \uD53C\uD574\uC790\uAC00 \uCD5C\uC0C1\uAE09 \uC2DC\uBBFC\uC77C
+      \uACBD\uC6B0 \uC9C4\uD589\uD558\uC9C0 \uC54A\uB294\uB2E4.\n\n\uC758\uC0AC,
+      \uC5F0\uAD6C\uC6D0, \uC0C1\uB2F4\uAC00: 2\uAE09\uAE4C\uC9C0 \uC0AC\uBA74 \uAC00\uB2A5\n\uAC1C\uBC1C\uC790(\uC911\uAE09
+      \uC774\uC0C1), \uAD50\uC0AC(\uD558\uAE09 \uC774\uC0C1): 3\uAE09\uAE4C\uC9C0
+      \uC0AC\uBA74 \uAC00\uB2A5"
+    number: 
+    note: 

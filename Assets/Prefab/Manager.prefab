@@ -180,6 +180,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9054927331776985511}
+  - component: {fileID: 6547888125881961068}
+  - component: {fileID: 7615818871925291487}
   - component: {fileID: 9054927331776985510}
   m_Layer: 0
   m_Name: TableManager
@@ -203,6 +205,34 @@ Transform:
   m_Father: {fileID: 9054927331474103976}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6547888125881961068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9054927331776985508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 903c94aaa955d1d42ae0447c32224988, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fieldNames: []
+  fileName: 
+--- !u!114 &7615818871925291487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9054927331776985508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c15bd7daeace1194fb59e7cecee70686, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  order: 0
+  fieldNameOfCSV: {fileID: 0}
 --- !u!114 &9054927331776985510
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -262,9 +292,9 @@ MonoBehaviour:
   attackerMouseMove: {fileID: 0}
   attackerInfo: {fileID: 0}
   bossHand: {fileID: 0}
-  cameraMoveScript: {fileID: 0}
   dialogWindowController: {fileID: 0}
   convertEffect: {fileID: 0}
   attackerPrefab: {fileID: 161126516914584281, guid: 6beec38e063e9b14eb2c6bf09c909fca, type: 3}
   isTodesstrafe: 0
   isAmnesty: 0
+  isActiveAsk: 0

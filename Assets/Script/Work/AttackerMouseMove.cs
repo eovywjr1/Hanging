@@ -10,6 +10,7 @@ public class AttackerMouseMove : MonoBehaviour, IListener
     LineManager lineManager;
 
     Vector3 preMousePosition;
+    [SerializeField]
     bool isPossibleTodesstrafe, isPossibleClick, isCreateLine, isDescend, isFirstClick = true;
     float descendSpeed = 2f;
     float initialMouseX;

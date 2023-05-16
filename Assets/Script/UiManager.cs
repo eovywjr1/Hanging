@@ -4,30 +4,40 @@ using UnityEngine;
 
 public class UiManager : MonoBehaviour
 {
-    public GameObject GuideButton;
+    public GameObject GuideWindow;
+
+    [SerializeField]
+    private AttackerMouseMove attackerMouseMove;
+    [SerializeField]
+    private Rope rope;
 
     private void Awake()
     {
-        GuideButton.SetActive(false);
+        GuideWindow.SetActive(false);
+
+        attackerMouseMove = GameObject.FindGameObjectWithTag("prisoner").GetComponent<AttackerMouseMove>();
+        rope = GameObject.Find("rope").GetComponent<Rope>();
     }
 
     private void Update()
     {
-        guideOn();
-    }
-
-    private void guideOn()
-    {
         if (Input.GetKeyDown(KeyCode.G))
         {
-            if (GuideButton.activeSelf == false)
+            if (GuideWindow.activeSelf == false)
             {
-                GuideButton.SetActive(true);
+                GuideWindow.SetActive(true);
 
             }
             else
             {
-                GuideButton.SetActive(false);
+                if (GuideWindow.activeSelf == true)
+                {
+                    GuideWindow.SetActive(false);
+                    attackerMouseMove.SetPossibleTodesstrafe(true);
+                    //Debug.Log("사형수 클릭 풀기");
+                    rope.SetCutPossible(true);
+                    //Debug.Log("로프 컷 풀기");
+                }
             }
         }
     }
