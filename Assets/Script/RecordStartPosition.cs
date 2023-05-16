@@ -7,10 +7,12 @@ public class RecordStartPosition : MonoBehaviour
     private bool isAttackOverlap = false;
     public bool isPrepare = false;
     [SerializeField] float limitX = 3.2f, limitY = 1.5f;
-    
+    private HallucinogenicEffect hallucinogenicEffect;
 
     void Start()
     {
+        hallucinogenicEffect = FindObjectOfType<HallucinogenicEffect>();
+
         StartCoroutine(RandomPosition());
     }
 
@@ -37,6 +39,8 @@ public class RecordStartPosition : MonoBehaviour
                     Mathf.Abs(firstRecord.transform.position.y - transform.position.y) <= transform.localScale.y / 2)
                     isRecordOverlap = true;
             }
+
+            hallucinogenicEffect.StartObstructionWindow(gameObject);
 
             if (!isAttackOverlap && !isRecordOverlap) break;
 
