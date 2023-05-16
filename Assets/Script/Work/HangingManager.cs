@@ -22,7 +22,7 @@ public class HangingManager : MonoBehaviour, IListener
     public static bool isCompulsoryEnd;
     public bool isStatementWrongProcess;
     int _attackerCount = 1;
-    public int attackerCount
+    public int attackerCount;
 
 
     private int _judgeCount = 0;
