@@ -12,12 +12,15 @@ public class ManageGuideWindow : MonoBehaviour
     [SerializeField]
     private Rope rope;
 
+    GameObject prisoner;
+
     public RectTransform targetRectTransform;
 
-    void Start()
+    void Awake()
     {
-        attackerMouseMove = GameObject.FindGameObjectWithTag("prisoner").GetComponent<AttackerMouseMove>();
-        rope = GameObject.Find("rope").GetComponent<Rope>();
+        prisoner = GameObject.Find("Prisoner(Clone)");
+        attackerMouseMove = prisoner.GetComponent<AttackerMouseMove>();
+        rope = prisoner.GetComponentInChildren<Rope>();
     }
 
     void FixedUpdate()

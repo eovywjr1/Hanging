@@ -15,8 +15,8 @@ public class UiManager : MonoBehaviour
     {
         GuideWindow.SetActive(false);
 
-        attackerMouseMove = GameObject.FindGameObjectWithTag("prisoner").GetComponent<AttackerMouseMove>();
         rope = GameObject.Find("rope").GetComponent<Rope>();
+        attackerMouseMove = GameObject.Find("Prisoner(Clone)").GetComponent<AttackerMouseMove>();
     }
 
     private void Update()
