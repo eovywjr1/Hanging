@@ -21,8 +21,6 @@ public class HangingManager : MonoBehaviour, IListener
     public bool isTodesstrafe, isAmnesty, isActiveAsk;
     public static bool isCompulsoryEnd;
     public bool isStatementWrongProcess;
-    int _attackerCount = 1;
-    public int attackerCount;
 
 
     private int _judgeCount = 0;

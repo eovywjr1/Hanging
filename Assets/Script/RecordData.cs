@@ -33,16 +33,17 @@ public class RecordData
         //Debug.Log("Lie : " + attackerData["lie"]);
         //Debug.Log("InfoError : " + attackerData["infoError"]);
 
-        Judgement(readPrisonerInfo);
+        Judgement();
         lieORinfoErrorValue = 0; // 0으로 초기화
         MakeStatement(tableManager);  
     }
+
     //사형 판별//
-    void Judgement(ReadPrisonerInfo readPrisonerInfo)
+    void Judgement()
     {
         List<List<Dictionary<string, List<string>>>> judgeList = TableManager.judgeT;
 
-        isHanging = readPrisonerInfo.getAnswer();
+        isHanging = 1;
 
         Debug.Log("사형판결 " + isHanging);
 
@@ -102,14 +103,7 @@ public class RecordData
                     isHanging = int.Parse(judgeList[i][j]["judgement"][0]);
                     if (judgeList[i][j].ContainsKey("ask"))
                     {
-                        if(readPrisonerInfo.GetAsk() != null)
-                        {
-                            attackerData["ask"] = readPrisonerInfo.GetAsk();
-                        }
-                        else
-                        {
-                            attackerData["ask"] = judgeList[i][j]["ask"][0];
-                        }
+                        attackerData["ask"] = judgeList[i][j]["ask"][0];
                         Debug.Log(attackerData["ask"]);
                     }
                     Debug.Log(i + ",," + j);
