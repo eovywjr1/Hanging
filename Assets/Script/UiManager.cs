@@ -49,7 +49,7 @@ public class UiManager : MonoBehaviour, IListener
                 EventManager.instance.postNotification("dialogEvent", this, "activeGuide");
 
             }
-            else if (GuideButton.activeSelf && isPossibleDeactiveGuide)
+            else if (GuideWindow.activeSelf && isPossibleDeactiveGuide)
             {
                 GuideWindow.SetActive(false);
                 EventManager.instance.postNotification("dialogEvent", this, "deactiveGuide");

@@ -13,6 +13,8 @@ public class TableManager : MonoBehaviour
     private static AcceptCrimeInfoReader acceptCrimeInfoReader = null;
     private static SpecialJobIndexInfoReader specialJobIndexInfoReader = null;
 
+    ReadPrisonerInfo readPrisonerInfo;
+
     /// positionGrade = 신분(시민 등급)
     void Awake()
     {
@@ -43,12 +45,23 @@ public class TableManager : MonoBehaviour
         // 조민수 : 정상적인 플레이에서는 각 해당 일차마다 추가 //
         //string fileName = "DayJudgeMentInfo";
         //judgeT.Add(CSVReader.Read(fileName + HangingManager.day.ToString()));
+
+        readPrisonerInfo = FindObjectOfType<ReadPrisonerInfo>();
     }
 
     public Dictionary<string,string> GetData(string attackerFamilyName, string attackerName, ref Dictionary<string, List<string>> lieORInfoError)
     {
         Dictionary<string,string> data = new Dictionary<string,string>();
         Debug.Log("day : " + HangingManager.day);
+
+        if (attackerFamilyName == null)
+        {
+            data["move"] = readPrisonerInfo.GetAttackerMove();
+        }
+        else
+        {
+            data["move"] = readPrisonerInfo.GetVictimMove();
+        }
 
         GetPositionGradeAndFamilyName(data);
         GetName(nameT, data);
@@ -95,7 +108,16 @@ public class TableManager : MonoBehaviour
             string str = crimeT[valueid][crimeT[0]["header"][crimeGrade]][0];
             if (str.Equals("") == false){
                 data["crime"] = str;
-                data["crimeGrade"] = (int.Parse(crimeT[0]["header"][crimeGrade][0].ToString()) - 1).ToString();
+
+                data["crimeGrade"] = readPrisonerInfo.GetCrimeGrade();
+                if (data["crimeGrade"] != null) Debug.Log("쒣아님");
+                if (data["crimeGrade"] == null)
+                {
+                    data["crimeGrade"] = (int.Parse(crimeT[0]["header"][crimeGrade][0].ToString()) - 1).ToString();
+                }
+                /*data["crimeGrade"] = (int.Parse(crimeT[0]["header"][headerid][0].ToString()) - 1).ToString();*/
+
+                //data["crimeGrade"] = (int.Parse(crimeT[0]["header"][crimeGrade][0].ToString()) - 1).ToString();
 
                 return;
             }

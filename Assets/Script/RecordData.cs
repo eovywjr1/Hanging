@@ -27,8 +27,8 @@ public class RecordData
         Debug.Log("CrimeGrade : " + attackerData["crimeGrade"]);
         Debug.Log("CrimeReason : " + attackerData["crimeReason"]);
         Debug.Log("AttackerJob : " + attackerData["job"]);
-        Debug.Log("AttackerMove : " + attackerData["move"]);
-        Debug.Log("VictimMove : " + victimData["move"]);
+        Debug.Log("이거확인!! AttackerMove : " + attackerData["move"]);
+        Debug.Log("이거확인!!VictimMove : " + victimData["move"]);
         //Debug.Log("CrimeRecord : " + attackerData["crimeRecord"]);
         //Debug.Log("Lie : " + attackerData["lie"]);
         //Debug.Log("InfoError : " + attackerData["infoError"]);
@@ -43,6 +43,7 @@ public class RecordData
         List<List<Dictionary<string, List<string>>>> judgeList = TableManager.judgeT;
 
         isHanging = readPrisonerInfo.getAnswer();
+
         Debug.Log("사형판결 " + isHanging);
 
         for (int i= HangingManager.day - 1; i >= 0; i--)
