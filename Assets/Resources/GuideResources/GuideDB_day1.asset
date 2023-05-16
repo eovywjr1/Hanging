@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 8
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30b13a5eeb777b84096a9e35a8d2c97d, type: 3}
+  m_Name: GuideDB_day1
+  m_EditorClassIdentifier: 
+  Entities:
+  - day: 1
+    type: "\uBAA9\uCC28"
+    contents: "1.  \uC2DC\uBBFC \uB4F1\uAE09 \uBD84\uB958"
+    number: 1
+    note: 
+  - day: 1
+    type: "\uBAA9\uCC28"
+    contents: "2.  \uBC94\uC8C4 \uB4F1\uAE09 \uBD84\uB958"
+    number: 2
+    note: 
+  - day: 1
+    type: "\uBAA9\uCC28"
+    contents: "3.  \uAE30\uBCF8 \uD310\uACB0 \uAC00\uC774\uB4DC"
+    number: 3
+    note: 
+  - day: 1
+    type: "\uC81C\uBAA9"
+    contents: "1.  \uC2DC\uBBFC \uB4F1\uAE09 \uBD84\uB958"
+    number: 1
+    note: 
+  - day: 1
+    type: "\uB0B4\uC6A9"
+    contents: "\uCD5C\uC0C1\uAE09(A), \uC0C1\uAE09(B), \uC911\uAE09(C~D), \uD558\uAE09(E~F),
+      \uCD5C\uD558\uAE09(G)"
+    number: 
+    note: 
+  - day: 1
+    type: "\uC81C\uBAA9"
+    contents: "2.  \uBC94\uC8C4 \uB4F1\uAE09 \uBD84\uB958"
+    number: 2
+    note: 
+  - day: 1
+    type: "\uB0B4\uC6A9"
+    contents: "1\uAE09: \uC0B4\uC778 / 2\uAE09: \uC0C1\uD574, \uD3ED\uD589, \uAC15\uB3C4
+      / 3\uAE09: \uAC15\uAC04, \uAC15\uC81C \uCD94\uD589 / 4\uAE09: \uD611\uBC15,
+      \uACF5\uAC08, \uC0AC\uAE30 / 5\uAE09: \uBAA8\uC695"
+    number: 
+    note: 
+  - day: 1
+    type: "\uC81C\uBAA9"
+    contents: "3.  \uAE30\uBCF8 \uD310\uACB0 \uAC00\uC774\uB4DC"
+    number: 3
+    note: 
+  - day: 1
+    type: "\uB0B4\uC6A9"
+    contents: "\uCD5C\uC0C1\uAE09: \uC5C6\uC74C\n\uC0C1\uAE09: 1\uAE09\n\uC911\uAE09:
+      1\uAE09\n\uD558\uAE09: 1, 2\uAE09\n\uCD5C\uD558\uAE09: 1, 2, 3\uAE09"
+    number: 
+    note: 

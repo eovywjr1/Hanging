@@ -4,7 +4,12 @@ using UnityEngine;
 
 public class UiManager : MonoBehaviour, IListener
 {
-    public GameObject GuideButton;
+    public GameObject GuideWindow;
+
+    [SerializeField]
+    private AttackerMouseMove attackerMouseMove;
+    [SerializeField]
+    private Rope rope;
 
     [SerializeField] private GameObject statisticsImage;
     [SerializeField] private GameObject dominantImage;
@@ -17,39 +22,45 @@ public class UiManager : MonoBehaviour, IListener
 
     private void Awake()
     {
-        GuideButton.SetActive(false);
+        GuideWindow.SetActive(false);
         hangingManager = FindObjectOfType<HangingManager>();
 
-        Debug.Assert(statisticsImage != null, "statisticsImage¸¦ ³ÖÀ¸¼¼¿ä");
-        Debug.Assert(dominantImage != null, "dominentImage¸¦ ³ÖÀ¸¼¼¿ä");
-        Debug.Assert(_screenCanvas != null, "screenCanvas ³ÖÀ¸¼¼¿ä");
+        Debug.Assert(statisticsImage != null, "statisticsImageï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+        Debug.Assert(dominantImage != null, "dominentImageï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+        Debug.Assert(_screenCanvas != null, "screenCanvas ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
     }
 
     private void Start()
     {
         EventManager.instance.addListener("possibleactiveGuide", this);
         EventManager.instance.addListener("possibledeactiveGuide", this);
+
+        rope = GameObject.Find("rope").GetComponent<Rope>();
+        attackerMouseMove = GameObject.Find("Prisoner(Clone)").GetComponent<AttackerMouseMove>();
     }
 
     private void Update()
     {
-        guideOn();
-    }
-
-    private void guideOn()
-    {
         if (Input.GetKeyDown(KeyCode.G))
         {
-            if ((GuideButton.activeSelf == false) && (isPossibleActiveGuide))
+            if ((GuideWindow.activeSelf == false) && (isPossibleActiveGuide))
             {
-                GuideButton.SetActive(true);
+                GuideWindow.SetActive(true);
                 EventManager.instance.postNotification("dialogEvent", this, "activeGuide");
 
             }
             else if (GuideButton.activeSelf && isPossibleDeactiveGuide)
             {
-                GuideButton.SetActive(false);
+                GuideWindow.SetActive(false);
                 EventManager.instance.postNotification("dialogEvent", this, "deactiveGuide");
+                if (GuideWindow.activeSelf == true)
+                {
+                    GuideWindow.SetActive(false);
+                    attackerMouseMove.SetPossibleTodesstrafe(true);
+                    //Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ Ç®ï¿½ï¿½");
+                    rope.SetCutPossible(true);
+                    //Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Ç®ï¿½ï¿½");
+                }
             }
         }
     }

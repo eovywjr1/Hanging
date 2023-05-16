@@ -5,42 +5,45 @@ using UnityEngine;
 public class RecordData
 {
     public Dictionary<string, string> attackerData { get; private set; }
+    //public Dictionary<string, string> attackerData { get; set; }    //임시
     public Dictionary<string, string> victimData { get; private set; }
+    /*public Dictionary<string, string> victimData { get; set; }  //임시 */
+
     public Dictionary<string, List<string>> lieORInfoError;
     public int isHanging;
     public string[] correctState { get; private set; }
     public string[] currentState { get; private set; }
     public int lieORinfoErrorValue; //0-> 아무것도 아님, 1->lie, 2->infoError
 
-    public RecordData(TableManager tableManager)
+     public RecordData(TableManager tableManager, ReadPrisonerInfo readPrisonerInfo)
     {
         lieORInfoError = new Dictionary<string, List<string>>();
 
-        attackerData = tableManager.GetData(null, null, ref lieORInfoError);
+        attackerData = tableManager.GetData(null, null, ref lieORInfoError);    //유민) 이 부분이 prisonerInfo 넣는 부분
         victimData = tableManager.GetData(attackerData["familyName"], attackerData["name"], ref lieORInfoError);
-        
-        //Debug.Log("PositionGrade : " + attackerData["positionGrade"]);
-        //Debug.Log("FamilyGrade : " + attackerData["familyGrade"]);
-        //Debug.Log("CrimeGrade : " + attackerData["crimeGrade"]);
-        //Debug.Log("CrimeReason : " + attackerData["crimeReason"]);
-        //Debug.Log("AttackerJob : " + attackerData["job"]);
-        //Debug.Log("AttackerMove : " + attackerData["move"]);
-        //Debug.Log("VictimMove : " + victimData["move"]);
+
+        Debug.Log("PositionGrade : " + attackerData["positionGrade"]);
+        Debug.Log("FamilyGrade : " + attackerData["familyGrade"]);
+        Debug.Log("CrimeGrade : " + attackerData["crimeGrade"]);
+        Debug.Log("CrimeReason : " + attackerData["crimeReason"]);
+        Debug.Log("AttackerJob : " + attackerData["job"]);
+        Debug.Log("AttackerMove : " + attackerData["move"]);
+        Debug.Log("VictimMove : " + victimData["move"]);
         //Debug.Log("CrimeRecord : " + attackerData["crimeRecord"]);
         //Debug.Log("Lie : " + attackerData["lie"]);
         //Debug.Log("InfoError : " + attackerData["infoError"]);
 
-        Judgement();
+        Judgement(readPrisonerInfo);
         lieORinfoErrorValue = 0; // 0으로 초기화
         MakeStatement(tableManager);  
     }
-
     //사형 판별//
-    void Judgement()
+    void Judgement(ReadPrisonerInfo readPrisonerInfo)
     {
         List<List<Dictionary<string, List<string>>>> judgeList = TableManager.judgeT;
-        
-        isHanging = 1;
+
+        isHanging = readPrisonerInfo.getAnswer();
+        Debug.Log("사형판결 " + isHanging);
 
         for (int i= HangingManager.day - 1; i >= 0; i--)
         {
@@ -96,7 +99,14 @@ public class RecordData
                     isHanging = int.Parse(judgeList[i][j]["judgement"][0]);
                     if (judgeList[i][j].ContainsKey("ask"))
                     {
-                        attackerData["ask"] = judgeList[i][j]["ask"][0];
+                        if(readPrisonerInfo.GetAsk() != null)
+                        {
+                            attackerData["ask"] = readPrisonerInfo.GetAsk();
+                        }
+                        else
+                        {
+                            attackerData["ask"] = judgeList[i][j]["ask"][0];
+                        }
                         Debug.Log(attackerData["ask"]);
                     }
                     Debug.Log(i + ",," + j);

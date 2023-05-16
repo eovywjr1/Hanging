@@ -16,30 +16,30 @@ public class GuideButton : MonoBehaviour, IListener
         guideText = FindObjectOfType<GuideText>();
     }
 
-    private void Start()
+    private void OnEnable()
     {
         scrollRect.verticalNormalizedPosition = 1f;
 
         EventManager.instance.addListener("dialogAutoshowIllegalMoveGuide", this);
     }
 
-    //°¡ÀÌµåÃ¢ ´Ý±â
+    //ï¿½ï¿½ï¿½Ìµï¿½Ã¢ ï¿½Ý±ï¿½
     public void close()
     {
         this.gameObject.SetActive(false);
     }
 
-    //½ºÅ©·Ñ ¸Ç À§·Î ¿Ã¸®±â
+    //ï¿½ï¿½Å©ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã¸ï¿½ï¿½ï¿½
     public void upToTop()
     {
         //Debug.Log("Guide Scroll : UpToTop!! ");
         scrollRect.verticalNormalizedPosition = 1f;
     }
 
-    //½ºÅ©·ÑÀ» ÇØ´ç À§Ä¡·Î
+    //ï¿½ï¿½Å©ï¿½ï¿½ï¿½ï¿½ ï¿½Ø´ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½
     public void goToLoc()
     {
-        //ÇØ´ç ¹öÆ°ÀÇ Á¤º¸ °¡Á®¿À±â
+        //ï¿½Ø´ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         GuideTextInfo guideTextInfo = this.GetComponent<GuideTextInfo>();
 
         GameObject content = GameObject.Find("guide" + guideTextInfo.number);

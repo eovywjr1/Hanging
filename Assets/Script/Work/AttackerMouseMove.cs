@@ -10,6 +10,7 @@ public class AttackerMouseMove : MonoBehaviour, IListener
     LineManager lineManager;
 
     Vector3 preMousePosition;
+    [SerializeField]
     bool isPossibleTodesstrafe, isPossibleClick, isCreateLine, isDescend, isFirstClick = true;
     float descendSpeed = 2f;
     float initialMouseX;
@@ -85,7 +86,7 @@ public class AttackerMouseMove : MonoBehaviour, IListener
 
             LineChangeTransparency(-1);
 
-            prisoner.isLift = false;
+            prisoner.isLift = true;
         }
     }
 
@@ -122,6 +123,8 @@ public class AttackerMouseMove : MonoBehaviour, IListener
                 isDescend = true;
 
             isFirstClick = false;
+
+            prisoner.isLift = false;
         }
     }
 
