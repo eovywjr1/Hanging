@@ -54,14 +54,6 @@ public class TableManager : MonoBehaviour
         Dictionary<string,string> data = new Dictionary<string,string>();
         Debug.Log("day : " + HangingManager.day);
 
-        if (attackerFamilyName == null)
-        {
-            data["move"] = readPrisonerInfo.GetAttackerMove();
-        }
-        else
-        {
-            data["move"] = readPrisonerInfo.GetVictimMove();
-        }
 
         GetPositionGradeAndFamilyName(data);
         GetName(nameT, data);

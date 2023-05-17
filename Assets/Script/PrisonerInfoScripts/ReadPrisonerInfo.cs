@@ -10,7 +10,7 @@ public class ReadPrisonerInfo : MonoBehaviour
     //public int tmpDay;
 
     List<Dictionary<string, object>> data;
-    Dictionary<string, object> currentPrisonerInfo = new Dictionary<string, object>();   //사형수 정보에 대한 딕셔너리
+    public Dictionary<string, string> currentPrisonerInfo = new Dictionary<string, string>();   //사형수 정보에 대한 딕셔너리
 
     /*
         1. currentPrisonerInfo 가져가기 전 각 사형수에 대한 order 배정 필요.
@@ -21,6 +21,7 @@ public class ReadPrisonerInfo : MonoBehaviour
 
     public FieldNameOfCSV fieldNameOfCSV;
     TableManager tableManager;
+    HangingManager hangingManager;
 
     private void Awake()
     {
@@ -33,6 +34,9 @@ public class ReadPrisonerInfo : MonoBehaviour
 
         fieldNameOfCSV = GetComponent<FieldNameOfCSV>();
         tableManager = FindObjectOfType<TableManager>();
+        hangingManager = FindObjectOfType<HangingManager>();
+
+        order = hangingManager.judgeCount;
     }
 
     private void Start()
@@ -52,16 +56,6 @@ public class ReadPrisonerInfo : MonoBehaviour
         }
 
         setCurrentPrisonerInfo(order);
-/*        for (int i = 1; i < fieldNameOfCSV.fieldNames.Count; i++)
-        {
-            Debug.Log("currentPrisonerInfo.ContainsKey(" + fieldNameOfCSV.fieldNames[i] + "): " + currentPrisonerInfo.ContainsKey(fieldNameOfCSV.fieldNames[i]));
-        }
-
-        for (int i = 1; i < fieldNameOfCSV.fieldNames.Count; i++)
-        {
-            Debug.Log(fieldNameOfCSV.fieldNames[i] + "의 값은 " + currentPrisonerInfo[fieldNameOfCSV.fieldNames[i]]);
-        }*/
-
     }
 
     void SetRandomValue(int order, string fieldName)
@@ -78,7 +72,7 @@ public class ReadPrisonerInfo : MonoBehaviour
         for (int i = 1; i < fieldNameOfCSV.fieldNames.Count; i++)
         {
             string fieldName = fieldNameOfCSV.fieldNames[i];
-            currentPrisonerInfo.Add(fieldName, data[currentOrder][fieldName]);
+            currentPrisonerInfo.Add(fieldName, data[currentOrder][fieldName].ToString()) ;
         }
     }
 
@@ -86,7 +80,7 @@ public class ReadPrisonerInfo : MonoBehaviour
     {
         if (currentPrisonerInfo.ContainsKey("Grade"))
         {
-            return currentPrisonerInfo["Grade"].ToString();
+            return currentPrisonerInfo["Grade"];
         }
         else return null;
     }
@@ -95,7 +89,7 @@ public class ReadPrisonerInfo : MonoBehaviour
     {
         if (currentPrisonerInfo.ContainsKey("CrimeGrade"))
         {
-            return currentPrisonerInfo["CrimeGrade"].ToString();
+            return currentPrisonerInfo["CrimeGrade"];
         }
         else return null;
     }
@@ -104,7 +98,7 @@ public class ReadPrisonerInfo : MonoBehaviour
     {
         if(currentPrisonerInfo.ContainsKey("CrimeReason"))
         {
-            return currentPrisonerInfo["CrimeReason"].ToString();
+            return currentPrisonerInfo["CrimeReason"];
         }
         return null;
     }
@@ -113,7 +107,7 @@ public class ReadPrisonerInfo : MonoBehaviour
     {
         if (currentPrisonerInfo.ContainsKey("AttackerMove"))
         {
-            return currentPrisonerInfo["AttackerMove"].ToString();
+            return currentPrisonerInfo["AttackerMove"];
         }
         return null;
     }
@@ -122,7 +116,7 @@ public class ReadPrisonerInfo : MonoBehaviour
     {
         if (currentPrisonerInfo.ContainsKey("VictimMove"))
         {
-            return currentPrisonerInfo["VictimMove"].ToString();
+            return currentPrisonerInfo["VictimMove"];
         }
         return null;
     }
@@ -131,7 +125,7 @@ public class ReadPrisonerInfo : MonoBehaviour
     {
         if (currentPrisonerInfo.ContainsKey("AttackerJob"))
         {
-            return currentPrisonerInfo["AttackerJob"].ToString();
+            return currentPrisonerInfo["AttackerJob"];
         }
         return null;
     }
@@ -140,7 +134,7 @@ public class ReadPrisonerInfo : MonoBehaviour
     {
         if (currentPrisonerInfo.ContainsKey("VictimJob"))
         {
-            return currentPrisonerInfo["VictimJob"].ToString();
+            return currentPrisonerInfo["VictimJob"];
         }
         return null;
     }
@@ -149,7 +143,7 @@ public class ReadPrisonerInfo : MonoBehaviour
     {
         if (currentPrisonerInfo.ContainsKey("VictimGrade"))
         {
-            return currentPrisonerInfo["VictimGrade"].ToString();
+            return currentPrisonerInfo["VictimGrade"];
         }
         return null;
     }
@@ -158,7 +152,7 @@ public class ReadPrisonerInfo : MonoBehaviour
     {
         if (currentPrisonerInfo.ContainsKey("CrimeRecord"))
         {
-            return currentPrisonerInfo["CrimeRecord"].ToString();
+            return currentPrisonerInfo["CrimeRecord"];
         }
         else return null;
     }
@@ -167,7 +161,7 @@ public class ReadPrisonerInfo : MonoBehaviour
     {
         if (currentPrisonerInfo.ContainsKey("Lie"))
         {
-            return currentPrisonerInfo["Lie"].ToString();
+            return currentPrisonerInfo["Lie"];
         }
         return null;
     }
@@ -176,7 +170,7 @@ public class ReadPrisonerInfo : MonoBehaviour
     {
         if (currentPrisonerInfo.ContainsKey("InfoError"))
         {
-            return currentPrisonerInfo["InfoError"].ToString();
+            return currentPrisonerInfo["InfoError"];
         }
         return null;
     }
@@ -185,7 +179,7 @@ public class ReadPrisonerInfo : MonoBehaviour
     {
         if (currentPrisonerInfo.ContainsKey("Ask"))
         {
-            return currentPrisonerInfo["Ask"].ToString();
+            return currentPrisonerInfo["Ask"];
         }
         else return null;
     }
@@ -195,7 +189,7 @@ public class ReadPrisonerInfo : MonoBehaviour
         int answer = 1;
         if (currentPrisonerInfo.ContainsKey("Answer"))
         {
-            answer = int.Parse(currentPrisonerInfo["Answer"].ToString());
+            answer = int.Parse(currentPrisonerInfo["Answer"]);
         }
         return answer;
     }

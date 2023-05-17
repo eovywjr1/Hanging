@@ -45,8 +45,6 @@ public class RecordData
 
         isHanging = 1;
 
-        Debug.Log("사형판결 " + isHanging);
-
         for (int i= HangingManager.day - 1; i >= 0; i--)
         {
             for (int j = 0; j < judgeList[i].Count; j++)

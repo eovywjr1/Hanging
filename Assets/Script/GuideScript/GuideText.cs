@@ -67,7 +67,7 @@ public class GuideText : MonoBehaviour
 
     public GuideDBBase GetGuideDB()
     {
-        return Resources.Load<GuideDB_day1>("GuideResources/GuideDB_day" + day);
+        return Resources.Load<GuideDBBase>("GuideResources/GuideDB_day" + day);
     }
 
     void createGuideText(GuideDBEntity guideDB, int fontSize, bool isBold, Color fontColor)

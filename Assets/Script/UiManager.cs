@@ -4,13 +4,12 @@ using UnityEngine;
 
 public class UiManager : MonoBehaviour, IListener
 {
-    public GameObject GuideWindow;
-
     [SerializeField]
     private AttackerMouseMove attackerMouseMove;
     [SerializeField]
     private Rope rope;
 
+    [SerializeField] private GameObject GuideWindow;
     [SerializeField] private GameObject statisticsImage;
     [SerializeField] private GameObject dominantImage;
 
