@@ -5,9 +5,7 @@ using UnityEngine;
 public class RecordData
 {
     public Dictionary<string, string> attackerData { get; private set; }
-    //public Dictionary<string, string> attackerData { get; set; }    //임시
     public Dictionary<string, string> victimData { get; private set; }
-    /*public Dictionary<string, string> victimData { get; set; }  //임시 */
 
     public Dictionary<string, List<string>> lieORInfoError;
     public int isHanging;
@@ -27,8 +25,8 @@ public class RecordData
         Debug.Log("CrimeGrade : " + attackerData["crimeGrade"]);
         Debug.Log("CrimeReason : " + attackerData["crimeReason"]);
         Debug.Log("AttackerJob : " + attackerData["job"]);
-        Debug.Log("이거확인!! AttackerMove : " + attackerData["move"]);
-        Debug.Log("이거확인!!VictimMove : " + victimData["move"]);
+        Debug.Log("AttackerMove : " + attackerData["move"]);
+        Debug.Log("VictimMove : " + victimData["move"]);
         //Debug.Log("CrimeRecord : " + attackerData["crimeRecord"]);
         //Debug.Log("Lie : " + attackerData["lie"]);
         //Debug.Log("InfoError : " + attackerData["infoError"]);
@@ -99,6 +97,9 @@ public class RecordData
                 {
                     Debug.Log("검색이 완료 되어는지?");
                     isHanging = int.Parse(judgeList[i][j]["judgement"][0]);
+                    
+                    //유민) 
+
                     if (judgeList[i][j].ContainsKey("ask"))
                     {
                         attackerData["ask"] = judgeList[i][j]["ask"][0];

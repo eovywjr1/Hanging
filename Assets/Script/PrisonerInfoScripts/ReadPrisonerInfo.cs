@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// 1~7일차 사형수 정보 데이터 관리
+
 public class ReadPrisonerInfo : MonoBehaviour
 {
     public int order;   //사형수 번호(순서) 관리하는 스크립트에서 order 가져와 사용하도록 변경 필요
@@ -76,67 +78,67 @@ public class ReadPrisonerInfo : MonoBehaviour
         }
     }
 
-    public string GetGrade()
+    public int GetGrade()
     {
         if (currentPrisonerInfo.ContainsKey("Grade"))
         {
-            return currentPrisonerInfo["Grade"];
+            return int.Parse(currentPrisonerInfo["Grade"]);
         }
-        else return null;
+        else return -1;
     }
 
-    public string GetCrimeGrade()
+    public int GetCrimeGrade()
     {
         if (currentPrisonerInfo.ContainsKey("CrimeGrade"))
         {
-            return currentPrisonerInfo["CrimeGrade"];
+            return int.Parse(currentPrisonerInfo["CrimeGrade"]);
         }
-        else return null;
+        else return -1;
     }
 
-    public string GetCrimeReason()
+    public int GetCrimeReason()
     {
         if(currentPrisonerInfo.ContainsKey("CrimeReason"))
         {
-            return currentPrisonerInfo["CrimeReason"];
+            return int.Parse(currentPrisonerInfo["CrimeReason"]);
         }
-        return null;
+        return -1;
     }
 
-    public string GetAttackerMove()
+    public int GetAttackerMove()
     {
         if (currentPrisonerInfo.ContainsKey("AttackerMove"))
         {
-            return currentPrisonerInfo["AttackerMove"];
+            return int.Parse(currentPrisonerInfo["AttackerMove"]);
         }
-        return null;
+        return -1;
     }
 
-    public string GetVictimMove()
+    public int GetVictimMove()
     {
         if (currentPrisonerInfo.ContainsKey("VictimMove"))
         {
-            return currentPrisonerInfo["VictimMove"];
+            return int.Parse(currentPrisonerInfo["VictimMove"]);
         }
-        return null;
+        return -1;
     }
 
-    public string GetAttackerJob()
+    public int GetAttackerJob()
     {
         if (currentPrisonerInfo.ContainsKey("AttackerJob"))
         {
-            return currentPrisonerInfo["AttackerJob"];
+            return int.Parse(currentPrisonerInfo["AttackerJob"]);
         }
-        return null;
+        return -1;
     }
 
-    public string GetVictimJob()
+    public int GetVictimJob()
     {
         if (currentPrisonerInfo.ContainsKey("VictimJob"))
         {
-            return currentPrisonerInfo["VictimJob"];
+            return int.Parse(currentPrisonerInfo["VictimJob"]);
         }
-        return null;
+        return -1;
     }
 
     public string GetVictimGrade()
@@ -148,31 +150,31 @@ public class ReadPrisonerInfo : MonoBehaviour
         return null;
     }
 
-    public string GetCrimeRecord()
+    public int GetCrimeRecord()
     {
         if (currentPrisonerInfo.ContainsKey("CrimeRecord"))
         {
-            return currentPrisonerInfo["CrimeRecord"];
+            return int.Parse(currentPrisonerInfo["CrimeRecord"]);
         }
-        else return null;
+        else return -1;
     }
 
-    public string GetLie()
+    public int GetLie()
     {
         if (currentPrisonerInfo.ContainsKey("Lie"))
         {
-            return currentPrisonerInfo["Lie"];
+            return int.Parse(currentPrisonerInfo["Lie"]);
         }
-        return null;
+        return -1;
     }
 
-    public string GetInfoError()
+    public int GetInfoError()
     {
         if (currentPrisonerInfo.ContainsKey("InfoError"))
         {
-            return currentPrisonerInfo["InfoError"];
+            return int.Parse(currentPrisonerInfo["InfoError"]);
         }
-        return null;
+        return -1;
     }
 
     public string GetAsk()
