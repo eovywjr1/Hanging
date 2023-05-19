@@ -8,12 +8,12 @@ public class UiManager : MonoBehaviour, IListener
     private AttackerMouseMove attackerMouseMove;
     [SerializeField]
     private Rope rope;
+    private HangingManager hangingManager;
 
-    [SerializeField] private GameObject GuideWindow;
+    private GameObject GuideWindow;
     [SerializeField] private GameObject statisticsImage;
     [SerializeField] private GameObject dominantImage;
 
-    private HangingManager hangingManager;
     private bool isPossibleActiveGuide = false;
     private bool isPossibleDeactiveGuide = false;
 
@@ -21,6 +21,9 @@ public class UiManager : MonoBehaviour, IListener
 
     private void Awake()
     {
+        GuideWindow = GameObject.Find("ScreenCanvas").transform.Find("GuideScrollView").gameObject;
+        Debug.Assert(GuideWindow != null, "GuideScrollView인 Object가 없습니다.");
+
         GuideWindow.SetActive(false);
         hangingManager = FindObjectOfType<HangingManager>();
 

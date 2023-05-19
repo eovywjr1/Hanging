@@ -41,7 +41,6 @@ public class MakeStamement : MonoBehaviour
         //txtALlTmp=new tmp
         txtALlTmp.text = txtAll;
 
-        int a = 0;
         string resultStr = "";
         string addStr = "";
 
