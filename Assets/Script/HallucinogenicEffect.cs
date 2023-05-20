@@ -10,7 +10,6 @@ public class HallucinogenicEffect : MonoBehaviour
     public GameObject borderImage;
     public GameObject borderImage2;
     public GameObject borderImage3;
-    public GameObject eyeImage;
 
     public GameObject prefab_eye;
     public GameObject prefab_spin;
