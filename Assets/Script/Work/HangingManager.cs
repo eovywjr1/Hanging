@@ -80,8 +80,6 @@ public class HangingManager : MonoBehaviour, IListener
                 EventManager.instance.postNotification("dialogEvent", this, UnityEngine.Random.Range(64, 71));
             }
         }
-
-        Debug.Log("현재범죄는 뭘까용"+attackerInfo.recordData.currentState[2]);
     }
 
     public void Todesstrafe()

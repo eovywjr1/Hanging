@@ -45,7 +45,7 @@ public class GuideButton : MonoBehaviour, IListener
         GameObject content = GameObject.Find("guide" + guideTextInfo.number);
         Debug.Log(content.name);
 
-        string BasicJudgementGuideNumber = "4";
+        string BasicJudgementGuideNumber = "3";
         if (guideTextInfo.number.Equals(BasicJudgementGuideNumber))
             EventManager.instance.postNotification("dialogEvent", this, "clickBasicJudgementGuide");
 
