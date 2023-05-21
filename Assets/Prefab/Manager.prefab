@@ -44,9 +44,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03429b4ac9558844f8b057a9116c16d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GuideButton: {fileID: 0}
+  attackerMouseMove: {fileID: 0}
+  rope: {fileID: 0}
   statisticsImage: {fileID: 0}
   dominantImage: {fileID: 0}
+  _screenCanvas: {fileID: 0}
+--- !u!1 &491071538
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 491071539}
+  m_Layer: 0
+  m_Name: EffectManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &491071539
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 491071538}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9054927331474103976}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6227643705250682742
 GameObject:
   m_ObjectHideFlags: 0
@@ -171,6 +204,7 @@ Transform:
   - {fileID: 9054927331776985511}
   - {fileID: 9064225772448756899}
   - {fileID: 107823714}
+  - {fileID: 491071539}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -234,7 +268,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c15bd7daeace1194fb59e7cecee70686, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  order: 0
+  order: 4
   fieldNameOfCSV: {fileID: 0}
 --- !u!114 &9054927331776985510
 MonoBehaviour:
@@ -298,6 +332,8 @@ MonoBehaviour:
   dialogWindowController: {fileID: 0}
   convertEffect: {fileID: 0}
   attackerPrefab: {fileID: 161126516914584281, guid: 6beec38e063e9b14eb2c6bf09c909fca, type: 3}
+  scrollViewController: {fileID: 0}
   isTodesstrafe: 0
   isAmnesty: 0
   isActiveAsk: 0
+  isStatementWrongProcess: 0
