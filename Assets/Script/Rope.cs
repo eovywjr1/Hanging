@@ -5,6 +5,7 @@ using UnityEngine;
 public class Rope : MonoBehaviour
 {
     public prisoner prisoner;
+    private Rigidbody2D prisonerRigidbody;
 
     public LineRenderer lineRenderer;
     public int segmentCnt = 50;
@@ -29,6 +30,7 @@ public class Rope : MonoBehaviour
 
     private void Awake()
     {
+        prisonerRigidbody = prisoner.GetComponent<Rigidbody2D>();
         startTransform = GameObject.Find("RopeStartPoint").transform;
 
         Vector2 segmentPos = startTransform.position;
@@ -73,6 +75,8 @@ public class Rope : MonoBehaviour
                 }
 
                 prisoner.isCutRope = true;
+
+                prisonerRigidbody.bodyType = RigidbodyType2D.Dynamic;
             }
         }
     }
