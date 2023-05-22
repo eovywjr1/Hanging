@@ -19,15 +19,12 @@ public class ScrollViewController : MonoBehaviour
     public TMP_Text forWidth;
     public GameObject content;
     private bool compareMentBool;
-    private bool flag;
     private float height;
     // Start is called before the first frame update
     void Start()
     {
         attackerInfo = FindObjectOfType<AttackerInfo>();
         scrollRect = GetComponent<ScrollRect>();
-        flag = false;
-
     }
     public void AddMent(string str, bool compareMentBool, int lieORinfoErrorValue)
     {
@@ -110,24 +107,60 @@ public class ScrollViewController : MonoBehaviour
         attackerInfo = FindObjectOfType<AttackerInfo>();
         string[] fixtext = { "이름 : ", "죄목 : ", "발생장소 : ", "경위 : " };
         height = 5f;
+        bool isNameTrue=false;
+        /*
         for (int i = 0; i < 4; i++)
         {
             compareMentBool = attackerInfo.recordData.correctState[i].Equals(attackerInfo.recordData.currentState[i]) ? true : false;
             AddMent(fixtext[i] + attackerInfo.recordData.currentState[i], compareMentBool, attackerInfo.recordData.lieORinfoErrorValue);
         }
-        flag = true;
+        */
+        for (int i = 0; i < 5; i++)
+        {
+            if(i==0)
+            {
+                isNameTrue = attackerInfo.recordData.correctState[i].Equals(attackerInfo.recordData.currentState[i]) ? true : false;
+
+            }
+            else if (i==1)
+            {
+                compareMentBool = attackerInfo.recordData.correctState[i].Equals(attackerInfo.recordData.currentState[i]) ? true : false;
+                if(isNameTrue==true && compareMentBool == true)
+                {
+                    AddMent(fixtext[i-1] + attackerInfo.recordData.currentState[i-1] +" "+  attackerInfo.recordData.currentState[i], true, attackerInfo.recordData.lieORinfoErrorValue);
+                }
+                else
+                {
+                    AddMent(fixtext[i - 1] + attackerInfo.recordData.currentState[i - 1] + " " + attackerInfo.recordData.currentState[i], false, attackerInfo.recordData.lieORinfoErrorValue);
+                }
+            }
+            else
+            {
+                compareMentBool = attackerInfo.recordData.correctState[i].Equals(attackerInfo.recordData.currentState[i]) ? true : false;
+                AddMent(fixtext[i-1] + attackerInfo.recordData.currentState[i], compareMentBool, attackerInfo.recordData.lieORinfoErrorValue);
+            }
+            
+        }
+       
     }
 
-    public void MakeMentCangedList(List<string> currentList, List<bool> currentClick)
+    public void MakeMentCangedList(List<string> currentList, List<bool> currentClick, List<bool> compareMentBoolList)
     {
         string[] fixtext = { "이름 : ", "죄목 : ", "발생장소 : ", "경위 : " };
         height = 5f;
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 5; i++)
         {
-            compareMentBool = attackerInfo.recordData.correctState[i].Equals(attackerInfo.recordData.currentState[i]) ? true : false;
-            AddChangedMent(currentList[i], compareMentBool, attackerInfo.recordData.lieORinfoErrorValue, currentClick[i]);
+            if (i == 0)
+            {
+                AddChangedMent(currentList[i] + " " + currentList[i+1], compareMentBoolList[i], attackerInfo.recordData.lieORinfoErrorValue, currentClick[i]);
+            }
+            else if (i ==2 || i==3 || i == 4)
+            {
+                AddChangedMent(currentList[i], compareMentBoolList[i-1], attackerInfo.recordData.lieORinfoErrorValue, currentClick[i-1]);
+            }
+            //compareMentBool = attackerInfo.recordData.correctState[i].Equals(attackerInfo.recordData.currentState[i]) ? true : false;
+            
         }
-        flag = true;
     }
 
     (string,string,int) LineCut(string str)

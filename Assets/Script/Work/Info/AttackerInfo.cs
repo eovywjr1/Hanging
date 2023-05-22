@@ -22,6 +22,9 @@ public class AttackerInfo : MonoBehaviour
 
         recordData = new RecordData(tableManager, readPrisonerInfo);
 
+        scrollViewController = FindObjectOfType<ScrollViewController>();
+        scrollViewController.MakeMentList();
+
 /*        recordData = new RecordData(tableManager);
         Debug.Log("정보생성완료");
         scrollViewController = FindObjectOfType<ScrollViewController>();

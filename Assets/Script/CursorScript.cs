@@ -20,6 +20,7 @@ public class CursorScript : MonoBehaviour
     
     public List<string> currentList= new List<string>();
     public List<bool> currentClick= new List<bool>();
+    public List<bool> compareMentBoolLIst= new List<bool>();
 
     void Start()
     {
@@ -27,6 +28,10 @@ public class CursorScript : MonoBehaviour
         hangingManager = FindObjectOfType<HangingManager>();
         penCursor = false;
         scrollViewController=FindObjectOfType<ScrollViewController>();
+
+        padStatement.SetActive(false);
+        penButton.SetActive(false);
+        padStatementText.transform.position += new Vector3(0, 0, -11);
     }
 
     void Update()
@@ -47,14 +52,15 @@ public class CursorScript : MonoBehaviour
                     { 
                         padStatement.SetActive(true);
                         penButton.SetActive(true);
-                        padStatementText.transform.position += new Vector3(0, 0, 10);
+                        padStatementText.transform.position += new Vector3(0, 0, 11);
 
                     }
                     else
                     { 
                         padStatement.SetActive(false);
-                        penButton.SetActive(false); 
-                        padStatementText.transform.position += new Vector3(0, 0, -10);
+                        penButton.SetActive(false);
+                        penCursor = false;
+                        padStatementText.transform.position += new Vector3(0, 0, -11);
                     }
                 }
 
@@ -88,7 +94,7 @@ public class CursorScript : MonoBehaviour
 
                         RemoveTextObject(hit.transform.gameObject); //클릭 전의 텍스트 오브젝트는 이제 필요 없으므로 삭제
 
-                        scrollViewController.MakeMentCangedList(currentList, currentClick); //새로운 텍스트 오브젝트 생성
+                        scrollViewController.MakeMentCangedList(currentList, currentClick, compareMentBoolLIst); //새로운 텍스트 오브젝트 생성
                     }
                     else
                     {
@@ -140,6 +146,7 @@ public class CursorScript : MonoBehaviour
         {
             currentList.Add(contentParent.transform.GetChild(i).GetChild(0).GetChild(0).GetComponent<TMP_Text>().text);
             currentClick.Add(contentParent.transform.GetChild(i).GetComponent<ChangeTextTexture>().afterClick);
+            compareMentBoolLIst.Add(contentParent.transform.GetChild(i).GetComponent<ChangeTextTexture>().mentTureORFalse);
         }
     }
 
