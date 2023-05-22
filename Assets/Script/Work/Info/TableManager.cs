@@ -47,6 +47,7 @@ public class TableManager : MonoBehaviour
             judgeT.Add(csvReader.Read("6" + fileName));
             judgeT.Add(csvReader.Read("7" + fileName));
             judgeT.Add(csvReader.Read("8" + fileName));
+            judgeT.Add(csvReader.Read("10" + fileName));
         }
 
         // 조민수 : 정상적인 플레이에서는 각 해당 일차마다 추가 //
@@ -96,6 +97,9 @@ public class TableManager : MonoBehaviour
             SetJob(data, data["positionGrade"], 0); 
             Debug.Log("Job : " + data["job"]);
         }
+
+        //복제인간 여부
+        GetHumanClone(data);
 
         return data;
     }
@@ -481,5 +485,17 @@ public class TableManager : MonoBehaviour
 
         Debug.LogWarning($" 확률 총합이 '{randomValue}' 입니다. 수정이 필요합니다.");
         return -1;
+    }
+
+    void GetHumanClone(Dictionary<string, string> data)
+    {
+        int isClone = 0;
+
+        //10일차엔 복제인간 없는건가??
+
+        //랜덤으로 복제인간 정하는거라면
+        isClone = Random.Range(0, 2);
+
+        data["humanClone"] = isClone.ToString();
     }
 }
