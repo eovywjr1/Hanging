@@ -37,7 +37,6 @@ public class HangingManager : MonoBehaviour, IListener
     private int _discorrectAndTodesstrafedPersonCount = 0;
 
     public static int day = 1;
-    static bool isCorrect = true;
 
     private void Awake()
     {
@@ -46,17 +45,14 @@ public class HangingManager : MonoBehaviour, IListener
         analogGlitch = FindObjectOfType<AnalogGlitch>();
         _uiManager = FindObjectOfType<UiManager>();
 
-        createAttacker();
         scrollViewController=FindObjectOfType<ScrollViewController>();
+
+        createAttacker();
     }
 
     private void Start()
     {
-        if (!isCorrect)
-        {
-            StartCoroutine(StartHoldOutHands());
-            isCorrect = true;
-        }
+        createAttacker();
 
         EventManager.instance.addListener("amnesty", this);
         EventManager.instance.addListener("todesstrafe", this);
@@ -87,8 +83,9 @@ public class HangingManager : MonoBehaviour, IListener
         isTodesstrafe = true;
 
         //���� �Ǻ�//
-        if (checkTodesstrafe(0)) Debug.Log("True");
-        else Debug.Log("False");
+        if (checkCorrectTodesstrafe(0)) 
+            Debug.Log("True");
+
         Debug.Log("����");
 
         EndTodesstrafe();
@@ -99,27 +96,28 @@ public class HangingManager : MonoBehaviour, IListener
         isAmnesty = true;
 
         //���� �Ǻ�//
-        if (checkTodesstrafe(1)) Debug.Log("True");
-        else Debug.Log("False");
+        if (checkCorrectTodesstrafe(1)) 
+            Debug.Log("True");
+
         Debug.Log("����");
 
         EndTodesstrafe();
     }
 
-    private bool checkTodesstrafe(int mode)
+    private bool checkCorrectTodesstrafe(int mode)
     {
         if (isCompulsoryEnd == false || mode == attackerInfo.recordData.isHanging)
         {
             Debug.Log(attackerInfo.recordData.isHanging);
-            isCorrect = false;
 
             return true;
         }
         else
         {
             Debug.Log(attackerInfo.recordData.isHanging);
-            isCorrect = false;
+
             StartCoroutine(StartStateWrong());
+            StartCoroutine(StartHoldOutHands());
 
             return false;
         }
@@ -195,16 +193,11 @@ public class HangingManager : MonoBehaviour, IListener
         attackerInfo = attacker.GetComponent<AttackerInfo>();
 
         if (isCompulsoryEnd)
-        {
-            EventManager.instance.postNotification("todesstrafe", this, null);
-            EventManager.instance.postNotification("amnesty", this, null);
-        }
+            EventManager.instance.postPossibleEvent();
 
         isTodesstrafe = false;
         isAmnesty = false;
         isActiveAsk = false;
-
-
     }
 
     public HangingInfoWrapper getHangingInfo()

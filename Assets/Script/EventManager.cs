@@ -39,14 +39,37 @@ public class EventManager : MonoBehaviour
         _listeners.Add(eventType, listenList);
     }
 
+    public void removeListener(IListener listener)
+    {
+        foreach(var listen in _listeners)
+        {
+            int listenerListCount = listen.Value.Count;
+            for(int index =0; index<listenerListCount; ++index)
+            {
+                if (listen.Value[index] == listener)
+                    listen.Value.RemoveAt(index);
+            }
+        }
+    }
+
     public void postNotification(string eventType, Component sender, object parameter = null)
     {
         List<IListener> listenList = null;
         if (_listeners.TryGetValue(eventType, out listenList) == false)
             return;
 
-        foreach(var listener in listenList)
+        int listenListIndex = 0;
+        foreach (var listener in listenList)
+        {
+            if(listener == null)
+            {
+                listenList.RemoveAt(listenListIndex);
+                continue;
+            }
+
             listener.OnEvent(eventType, sender, parameter);
+            ++listenListIndex;
+        }
     }
 
     public void RemoveEvent(string eventType)

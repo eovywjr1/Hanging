@@ -30,7 +30,7 @@ public class UIStatistics : MonoBehaviour
         Debug.Assert(_discorrectAndTodesstrafedPersonCount != null, "discorrectAndTodesstrafedPersonCount인 오브젝트가 없습니다.");
     }
 
-    public void showStatistics(HangingInfoWrapper hangingInfo)
+    public void setStatistics(HangingInfoWrapper hangingInfo)
     {
         _date.text = System.Convert.ToDateTime("2132/2/1").AddDays(hangingInfo._day - 1).ToString("yy-mm-dd");
         _judgeCount.text = hangingInfo._judgeCount.ToString();
