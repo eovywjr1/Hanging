@@ -83,7 +83,7 @@ public class TableManager : MonoBehaviour
             Debug.Log("Job : " + data["job"]);
 
             //위증여부//
-            if(HangingManager.day >= 6) 
+            if (HangingManager.day >= 6)
                 GetLieORInfoError(data, ref lieORInfoError);
 
             //국가적 요구 허락OR거절     //유민 수정
@@ -91,15 +91,19 @@ public class TableManager : MonoBehaviour
                 data["ask"] = readPrisonerInfo.GetAsk();
             else
                 data["ask"] = getRandomValueByRange(probabilityInfo["askAccept"][0]).ToString();
+
+            //복제인간 여부
+            if (HangingManager.day >= 10)
+            {
+                GetHumanClone(data);
+            }
+
         }
         else
         {
             SetJob(data, data["positionGrade"], 0); 
             Debug.Log("Job : " + data["job"]);
         }
-
-        //복제인간 여부
-        GetHumanClone(data);
 
         return data;
     }

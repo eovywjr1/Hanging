@@ -30,6 +30,10 @@ public class RecordData
         //Debug.Log("CrimeRecord : " + attackerData["crimeRecord"]);
         //Debug.Log("Lie : " + attackerData["lie"]);
         //Debug.Log("InfoError : " + attackerData["infoError"]);
+        if (HangingManager.day >= 10)
+        {
+            Debug.Log("HumanClone : " + attackerData["humanClone"]);
+        }
 
         Judgement();
         lieORinfoErrorValue = 0; // 0으로 초기화
