@@ -116,7 +116,6 @@ public class HangingManager : MonoBehaviour, IListener
         {
             Debug.Log(attackerInfo.recordData.isHanging);
 
-            StartCoroutine(StartStateWrong());
             StartCoroutine(StartHoldOutHands());
 
             return false;
