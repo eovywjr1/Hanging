@@ -70,13 +70,14 @@ public class UiManager : MonoBehaviour, IListener
     public void showDominantImage()
     {
         Destroy(FindObjectOfType<HangingTimer>().gameObject);
+
         dominantImage.gameObject.SetActive(true);
     }
 
     public void showStatistics()
     {
         statisticsImage.SetActive(true);
-        FindObjectOfType<UIStatistics>().showStatistics(hangingManager.getHangingInfo());
+        FindObjectOfType<UIStatistics>().setStatistics(hangingManager.getHangingInfo());
     }
 
     public void showScreenCanvas()

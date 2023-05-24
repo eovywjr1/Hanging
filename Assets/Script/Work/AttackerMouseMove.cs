@@ -32,7 +32,6 @@ public class AttackerMouseMove : MonoBehaviour, IListener
     {
         EventManager.instance.addListener("possibleclickAttacker", this);
         EventManager.instance.addListener("possibletodesstrafe", this);
-        isPossibleTodesstrafe = true;
 
         prisoner = GetComponentInChildren<prisoner>();
     }
