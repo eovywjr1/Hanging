@@ -119,8 +119,7 @@ public class HangingManager : MonoBehaviour, IListener
         {
             Debug.Log(attackerInfo.recordData.isHanging);
             isCorrect = false;
-            StartCoroutine(StartStateWrong());
-
+            
             return false;
         }
     }
