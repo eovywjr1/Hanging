@@ -648,7 +648,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &2696586845479193397
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -912,9 +912,12 @@ MonoBehaviour:
   changed: {fileID: 2800000, guid: 93013b578f8526f41800556eb8ec76ed, type: 3}
   lastMent: {fileID: 0}
   scrollViewController: {fileID: 0}
+  padStatement: {fileID: 0}
+  padStatementText: {fileID: 0}
   penCursor: 0
   currentList: []
   currentClick: 
+  compareMentBoolLIst: 
 --- !u!1 &8528106049903653633
 GameObject:
   m_ObjectHideFlags: 0
