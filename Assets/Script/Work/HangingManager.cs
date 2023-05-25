@@ -15,7 +15,7 @@ public class HangingManager : MonoBehaviour, IListener
     public DialogWindowController dialogWindowController;
     private UiManager _uiManager;
 
-    [SerializeField] GameObject convertEffect, attackerPrefab;
+    [SerializeField] GameObject convertEffect, nextDayEffect,attackerPrefab;
     public ScrollViewController scrollViewController;
 
     public bool isTodesstrafe, isAmnesty, isActiveAsk;
@@ -151,6 +151,15 @@ public class HangingManager : MonoBehaviour, IListener
         convertEffect.SetActive(false);
     }
 
+    IEnumerator EndDayEffect()
+    {
+        nextDayEffect.SetActive(true);
+
+        yield return new WaitForSecondsRealtime(2.2f);
+
+        nextDayEffect.SetActive(false);
+    }
+
     IEnumerator StartHoldOutHands()
     {
         yield return new WaitForSecondsRealtime(1.25f);
@@ -208,7 +217,7 @@ public class HangingManager : MonoBehaviour, IListener
     {
         _uiManager.hideScreenCanvas();
 
-        yield return StartCoroutine(ConvertAttackerEffect());
+        yield return StartCoroutine(EndDayEffect());
 
         _uiManager.showScreenCanvas();
         _uiManager.showDominantImage();

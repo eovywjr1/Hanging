@@ -13,7 +13,7 @@ public class CursorScript : MonoBehaviour
     public TMP_Text lastMent; //지정 해주기
     public ScrollViewController scrollViewController;
     public GameObject padStatement;
-    public GameObject penButton;
+    //public GameObject penButton;
     public GameObject padStatementText;
 
     public bool penCursor;
@@ -30,7 +30,7 @@ public class CursorScript : MonoBehaviour
         scrollViewController=FindObjectOfType<ScrollViewController>();
 
         padStatement.SetActive(false);
-        penButton.SetActive(false);
+        //penButton.SetActive(false);
         padStatementText.transform.position += new Vector3(0, 0, -11);
     }
 
@@ -51,27 +51,22 @@ public class CursorScript : MonoBehaviour
                     if (padStatement.activeSelf == false)
                     { 
                         padStatement.SetActive(true);
-                        penButton.SetActive(true);
+                        penCursor = true;
+                        //penButton.SetActive(true);
                         padStatementText.transform.position += new Vector3(0, 0, 11);
 
                     }
                     else
                     { 
                         padStatement.SetActive(false);
-                        penButton.SetActive(false);
+                        //penButton.SetActive(false);
                         penCursor = false;
                         padStatementText.transform.position += new Vector3(0, 0, -11);
                     }
                 }
 
-                if (hit.transform.gameObject.name == "penButton")
-                {
-                    if (!penCursor)
-                        penCursor = true;
-                    else
-                        penCursor = false;
-                }
-                if (hit.transform.gameObject.CompareTag("statement") && penCursor==true && hit.transform.gameObject.GetComponent<ChangeTextTexture>().afterClick == false)
+               
+                if (hit.transform.gameObject.CompareTag("statement") && penCursor == true && hit.transform.gameObject.GetComponent<ChangeTextTexture>().afterClick == false)
                 {
                     if (!hit.transform.gameObject.GetComponent<ChangeTextTexture>().mentTureORFalse)
                     {
@@ -113,11 +108,7 @@ public class CursorScript : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        if (penCursor)
-        {
             Cursor.SetCursor(changed, Vector2.zero, CursorMode.Auto);
-        }
-        
     }
 
     private void OnMouseExit()
