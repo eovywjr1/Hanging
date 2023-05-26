@@ -21,7 +21,7 @@ public class UiManager : MonoBehaviour, IListener
 
     private void Awake()
     {
-        GuideWindow = GameObject.Find("ScreenCanvas").transform.Find("GuideScrollView").gameObject;
+        GuideWindow = GameObject.Find("CctvCanvas").transform.Find("GuideScrollView").gameObject;
         Debug.Assert(GuideWindow != null, "GuideScrollView인 Object가 없습니다.");
 
         GuideWindow.SetActive(false);
