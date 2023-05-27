@@ -200,6 +200,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &407570156529493199
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5660886376084048379}
+  m_Layer: 0
+  m_Name: RopeEndPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5660886376084048379
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 407570156529493199}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6983270502946211703}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2289433916004163321
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -214,7 +245,7 @@ PrefabInstance:
     - target: {fileID: 2076108095126952184, guid: ee39c750dbaadb947af1d1b5a95a9e91, type: 3}
       propertyPath: endTransform
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 5660886376084048379}
     - target: {fileID: 2076108095126952184, guid: ee39c750dbaadb947af1d1b5a95a9e91, type: 3}
       propertyPath: constraintLoop
       value: 40
@@ -623,6 +654,11 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.9054966, y: 0.182194}
   m_EdgeRadius: 0
+--- !u!4 &6983270502946211703 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -7694217771748202108, guid: 41a0a3b42b57b714b8eed521c2597628, type: 3}
+  m_PrefabInstance: {fileID: 8489613183061978867}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7133416206625937197 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -7552582706839291426, guid: 41a0a3b42b57b714b8eed521c2597628, type: 3}

@@ -11,7 +11,6 @@ public class DragUiWindow : MonoBehaviour, IDragHandler
     private RectTransform rectTransform;
     [SerializeField] private Canvas canvas;
 
-
     private void Awake()
     {
         clickArea = this.gameObject;
@@ -24,12 +23,5 @@ public class DragUiWindow : MonoBehaviour, IDragHandler
     public void OnDrag(PointerEventData eventData)
     {
         rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
-
-        //ClampPosition();
-    }
-
-
-    private void ClampPosition()
-    {
     }
 }
