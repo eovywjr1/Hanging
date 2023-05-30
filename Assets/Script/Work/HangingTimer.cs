@@ -8,7 +8,7 @@ public class HangingTimer : MonoBehaviour
 {
     bool isTimer;
     [SerializeField] private float workTime = 0f;
-    const float workMaxTime = 210f;
+    const float workMaxTime = 10f;
     Slider timerSlider;
     HangingManager _hangingManager;
 
