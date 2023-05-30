@@ -25,6 +25,11 @@ public class EventManager : MonoBehaviour
         DestroyImmediate(gameObject);
     }
 
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
     public void addListener(string eventType, IListener listener)
     {
         List<IListener> listenList = null;
@@ -83,10 +88,14 @@ public class EventManager : MonoBehaviour
 
         foreach(KeyValuePair<string, List<IListener>> listener in _listeners)
         {
-            for (int index = listener.Value.Count - 1; index >= 0; index--)
-                listener.Value.RemoveAt(index);
+            List<IListener> listnerList = listener.Value;
+            for (int index = listnerList.Count - 1; index >= 0; index--)
+            {
+                if (listnerList[index].Equals(null))
+                    listnerList.RemoveAt(index);
+            }
 
-            if(listener.Value.Count > 0)
+            if(listnerList.Count > 0)
                 newListeners.Add(listener.Key, listener.Value);
         }
 

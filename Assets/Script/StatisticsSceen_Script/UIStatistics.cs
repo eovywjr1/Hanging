@@ -32,7 +32,7 @@ public class UIStatistics : MonoBehaviour
 
     public void setStatistics(HangingInfoWrapper hangingInfo)
     {
-        _date.text = System.Convert.ToDateTime("2132/2/1").AddDays(hangingInfo._day - 1).ToString("yy-mm-dd");
+        _date.text = System.Convert.ToDateTime("2132/2/1").AddDays(hangingInfo._day - 1).ToString("yy-MM-dd");
         _judgeCount.text = hangingInfo._judgeCount.ToString();
         _correctJudgeCount.text = hangingInfo._correctJudgeCount.ToString();
         _discorrectJudgeCount.text = hangingInfo._discorrectJudgeCount.ToString();
