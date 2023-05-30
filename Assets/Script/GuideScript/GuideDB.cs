@@ -6,5 +6,6 @@ using UnityEngine;
 [ExcelAsset]
 public class GuideDB : ScriptableObject
 {
-	public List<GuideDBEntity> Entities; // Replace 'EntityType' to an actual type that is serializable.
+	public List<GuideDBEntity> Entities;
+
 }

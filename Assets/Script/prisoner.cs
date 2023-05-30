@@ -4,63 +4,77 @@ using UnityEngine;
 
 public class prisoner : MonoBehaviour
 {
+    public BoxCollider2D prisonerCollider;
+    public BoxCollider2D parentsCollider;
+    public BoxCollider2D footCollider;
+    private Rigidbody2D prisonerRigidbody;
+    private Animator animator;
 
-    public CapsuleCollider2D PrisonerCollider;
-    private Rigidbody2D PrisonerRigidbody;
-    private Animator PrisonerAnimator;
-
-    public AnimationClip []liftAnimations;
+    public AnimationClip[] liftAnimations;
 
     public bool isLift = false;
-    bool isRunningAnim = false;
+    public bool isCutRope = false;
+    private bool isBeingDragged = false;
+    private bool isCollidingWithGround = false;
 
     void Start()
     {
-        PrisonerCollider = GetComponentInChildren<CapsuleCollider2D>();
-        PrisonerRigidbody = GetComponent<Rigidbody2D>();
-        PrisonerAnimator = GetComponent<Animator>();
+        prisonerRigidbody = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+    }
+
+    private void FixedUpdate()
+    {
+        if (isCollidingWithGround)
+        {
+            //prisonerRigidbody.constraints = RigidbodyConstraints2D.FreezePositionY;
+        }
+        else
+        {
+            //prisonerRigidbody.constraints = RigidbodyConstraints2D.None;
+        }
     }
 
     private void Update()
     {
-        if(isLift)
+        if (isLift && !isBeingDragged)
         {
-            //onHanging();
+            isBeingDragged = true;
+            int randomIndex = Random.Range(0, 3);
+            animator.Play(liftAnimations[randomIndex].name);
+            animator.SetBool("idle", false);
         }
-        else
+        else if (!isLift && isBeingDragged)
         {
-            isRunningAnim = false; 
+            isBeingDragged = false;
+            animator.SetBool("idle", true);
+        }
+
+        if (isCutRope)
+        {
+            parentsCollider.enabled = false;
+            footCollider.enabled = false;
+            prisonerCollider.enabled = true;
+
+            prisonerRigidbody.constraints = RigidbodyConstraints2D.None;
+
+            animator.SetBool("cutRope", true);
         }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.tag == "floor")
+        if (collision.gameObject.CompareTag("floor"))
         {
-            PrisonerAnimator.SetBool("cutRope", true);
-            PrisonerAnimator.SetBool("idle", false);
-            PrisonerRigidbody.velocity = Vector3.zero;
-            Debug.Log("cutRope!");
+            isCollidingWithGround = true;
         }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if(collision.gameObject.tag=="floor")
+        if (collision.gameObject.CompareTag("floor"))
         {
-            PrisonerAnimator.SetBool("cutRope", false);
-            PrisonerAnimator.SetBool("idle", true);
-            PrisonerRigidbody.gravityScale = 1f;
+            isCollidingWithGround = false;
         }
     }
-
-/*    void onHanging()
-    {
-        if(!isRunningAnim)
-        {
-            int randomIndex = Random.Range(0, 3);
-            PrisonerAnimator.Play(liftAnimations[randomIndex].name);
-            isRunningAnim = true;
-        }
-    }*/
 }

@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Net;
-using UnityEditor.Tilemaps;
 
 public class AttackerMouseMove : MonoBehaviour, IListener
 {
@@ -10,6 +9,7 @@ public class AttackerMouseMove : MonoBehaviour, IListener
     LineManager lineManager;
 
     Vector3 preMousePosition;
+    [SerializeField]
     bool isPossibleTodesstrafe, isPossibleClick, isCreateLine, isDescend, isFirstClick = true;
     float descendSpeed = 2f;
     float initialMouseX;
@@ -32,7 +32,6 @@ public class AttackerMouseMove : MonoBehaviour, IListener
     {
         EventManager.instance.addListener("possibleclickAttacker", this);
         EventManager.instance.addListener("possibletodesstrafe", this);
-        isPossibleTodesstrafe = true;
 
         prisoner = GetComponentInChildren<prisoner>();
     }
@@ -85,7 +84,7 @@ public class AttackerMouseMove : MonoBehaviour, IListener
 
             LineChangeTransparency(-1);
 
-            prisoner.isLift = false;
+            prisoner.isLift = true;
         }
     }
 
@@ -117,11 +116,16 @@ public class AttackerMouseMove : MonoBehaviour, IListener
         {
             if (isFirstClick == false)
                 LineChangeTransparency(1);
-
+            else
+            {
+                Debug.Log("첫클릭");
+            }
             if (transform.position.y > minY)
                 isDescend = true;
 
             isFirstClick = false;
+
+            prisoner.isLift = false;
         }
     }
 

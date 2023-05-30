@@ -15,10 +15,12 @@ public class HangingManager : MonoBehaviour, IListener
     public DialogWindowController dialogWindowController;
     private UiManager _uiManager;
 
-    [SerializeField] GameObject convertEffect, attackerPrefab;
+    [SerializeField] GameObject convertEffect, nextDayEffect,attackerPrefab;
+    public ScrollViewController scrollViewController;
 
     public bool isTodesstrafe, isAmnesty, isActiveAsk;
     public static bool isCompulsoryEnd;
+    public bool isStatementWrongProcess;
 
 
     private int _judgeCount = 0;
@@ -34,8 +36,7 @@ public class HangingManager : MonoBehaviour, IListener
     private int _discorrectJudgeCount = 0;
     private int _discorrectAndTodesstrafedPersonCount = 0;
 
-    public static int day = 3;
-    static bool isCorrect = true;
+    public static int day = 1;
 
     private void Awake()
     {
@@ -44,16 +45,14 @@ public class HangingManager : MonoBehaviour, IListener
         analogGlitch = FindObjectOfType<AnalogGlitch>();
         _uiManager = FindObjectOfType<UiManager>();
 
+        scrollViewController=FindObjectOfType<ScrollViewController>();
+
         createAttacker();
     }
 
     private void Start()
     {
-        if (!isCorrect)
-        {
-            StartCoroutine(StartHoldOutHands());
-            isCorrect = true;
-        }
+        createAttacker();
 
         EventManager.instance.addListener("amnesty", this);
         EventManager.instance.addListener("todesstrafe", this);
@@ -65,7 +64,7 @@ public class HangingManager : MonoBehaviour, IListener
         DestroyAllLineAndWindow();
         NextAttacker();
 
-        if(isActiveAsk && attackerInfo.recordData.attackerData["ask"].Equals("1") == false)
+        if (isActiveAsk && attackerInfo.recordData.attackerData["ask"].Equals("1") == false)
         {
             if (Ask.isFirst)
             {
@@ -84,8 +83,9 @@ public class HangingManager : MonoBehaviour, IListener
         isTodesstrafe = true;
 
         //���� �Ǻ�//
-        if (checkTodesstrafe(0)) Debug.Log("True");
-        else Debug.Log("False");
+        if (checkCorrectTodesstrafe(0)) 
+            Debug.Log("True");
+
         Debug.Log("����");
 
         EndTodesstrafe();
@@ -96,27 +96,27 @@ public class HangingManager : MonoBehaviour, IListener
         isAmnesty = true;
 
         //���� �Ǻ�//
-        if (checkTodesstrafe(1)) Debug.Log("True");
-        else Debug.Log("False");
+        if (checkCorrectTodesstrafe(1)) 
+            Debug.Log("True");
+
         Debug.Log("����");
 
         EndTodesstrafe();
     }
 
-    private bool checkTodesstrafe(int mode)
+    private bool checkCorrectTodesstrafe(int mode)
     {
         if (isCompulsoryEnd == false || mode == attackerInfo.recordData.isHanging)
         {
             Debug.Log(attackerInfo.recordData.isHanging);
-            isCorrect = false;
 
             return true;
         }
         else
         {
             Debug.Log(attackerInfo.recordData.isHanging);
-            isCorrect = false;
-            StartCoroutine(StartStateWrong());
+
+            StartCoroutine(StartHoldOutHands());
 
             return false;
         }
@@ -151,15 +151,28 @@ public class HangingManager : MonoBehaviour, IListener
         convertEffect.SetActive(false);
     }
 
+    IEnumerator EndDayEffect()
+    {
+        nextDayEffect.SetActive(true);
+
+        yield return new WaitForSecondsRealtime(2.2f);
+
+        nextDayEffect.SetActive(false);
+    }
+
     IEnumerator StartHoldOutHands()
     {
         yield return new WaitForSecondsRealtime(1.25f);
         EventManager.instance.postNotification("badge", this, null);
         EventManager.instance.postNotification("dialogEvent", this, UnityEngine.Random.Range(53, 58));
+        yield return new WaitForSecondsRealtime(3.0f);
+        isStatementWrongProcess = false;
     }
 
-    public IEnumerator StartStateWrong() //������ Ŭ�� Ʋ���� 
+    public IEnumerator StartStateWrong() //진술서 오답일 경우 노이즈 출력 & 뱃지 회수 
     {
+        isStatementWrongProcess = true;
+
         analogGlitch._isGlitch = true;
         yield return new WaitForSecondsRealtime(0.75f);
         analogGlitch._isGlitch = false;
@@ -187,6 +200,9 @@ public class HangingManager : MonoBehaviour, IListener
         attackerMouseMove = attacker.GetComponent<AttackerMouseMove>();
         attackerInfo = attacker.GetComponent<AttackerInfo>();
 
+        if (isCompulsoryEnd)
+            EventManager.instance.postPossibleEvent();
+
         isTodesstrafe = false;
         isAmnesty = false;
         isActiveAsk = false;
@@ -201,7 +217,7 @@ public class HangingManager : MonoBehaviour, IListener
     {
         _uiManager.hideScreenCanvas();
 
-        yield return StartCoroutine(ConvertAttackerEffect());
+        yield return StartCoroutine(EndDayEffect());
 
         _uiManager.showScreenCanvas();
         _uiManager.showDominantImage();

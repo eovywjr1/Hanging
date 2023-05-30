@@ -6,26 +6,27 @@ public class RecordData
 {
     public Dictionary<string, string> attackerData { get; private set; }
     public Dictionary<string, string> victimData { get; private set; }
+
     public Dictionary<string, List<string>> lieORInfoError;
     public int isHanging;
     public string[] correctState { get; private set; }
     public string[] currentState { get; private set; }
     public int lieORinfoErrorValue; //0-> 아무것도 아님, 1->lie, 2->infoError
 
-    public RecordData(TableManager tableManager)
+     public RecordData(TableManager tableManager, ReadPrisonerInfo readPrisonerInfo)
     {
         lieORInfoError = new Dictionary<string, List<string>>();
 
-        attackerData = tableManager.GetData(null, null, ref lieORInfoError);
+        attackerData = tableManager.GetData(null, null, ref lieORInfoError);    //유민) 이 부분이 prisonerInfo 넣는 부분
         victimData = tableManager.GetData(attackerData["familyName"], attackerData["name"], ref lieORInfoError);
-        
-        //Debug.Log("PositionGrade : " + attackerData["positionGrade"]);
-        //Debug.Log("FamilyGrade : " + attackerData["familyGrade"]);
-        //Debug.Log("CrimeGrade : " + attackerData["crimeGrade"]);
-        //Debug.Log("CrimeReason : " + attackerData["crimeReason"]);
-        //Debug.Log("AttackerJob : " + attackerData["job"]);
-        //Debug.Log("AttackerMove : " + attackerData["move"]);
-        //Debug.Log("VictimMove : " + victimData["move"]);
+
+        Debug.Log("PositionGrade : " + attackerData["positionGrade"]);
+        Debug.Log("FamilyGrade : " + attackerData["familyGrade"]);
+        Debug.Log("CrimeGrade : " + attackerData["crimeGrade"]);
+        Debug.Log("CrimeReason : " + attackerData["crimeReason"]);
+        Debug.Log("AttackerJob : " + attackerData["job"]);
+        Debug.Log("AttackerMove : " + attackerData["move"]);
+        Debug.Log("VictimMove : " + victimData["move"]);
         //Debug.Log("CrimeRecord : " + attackerData["crimeRecord"]);
         //Debug.Log("Lie : " + attackerData["lie"]);
         //Debug.Log("InfoError : " + attackerData["infoError"]);
@@ -39,7 +40,7 @@ public class RecordData
     void Judgement()
     {
         List<List<Dictionary<string, List<string>>>> judgeList = TableManager.judgeT;
-        
+
         isHanging = 1;
 
         for (int i= HangingManager.day - 1; i >= 0; i--)
@@ -90,17 +91,22 @@ public class RecordData
                     }
                 }
 
+                Debug.Log("돌아가는지?");
                 //검색 완료//
                 if (isMatch)
                 {
+                    Debug.Log("검색이 완료 되어는지?");
                     isHanging = int.Parse(judgeList[i][j]["judgement"][0]);
+                    
+                    //유민) 
+
                     if (judgeList[i][j].ContainsKey("ask"))
                     {
                         attackerData["ask"] = judgeList[i][j]["ask"][0];
                         Debug.Log(attackerData["ask"]);
                     }
                     Debug.Log(i + ",," + j);
-                    Debug.Log(isHanging);
+                    Debug.Log("ishanging:"+isHanging);
 
 
                     //범죄등급 +1 증가 후 다시 판단//
@@ -125,10 +131,10 @@ public class RecordData
     //진술서 데이터 생성
     public void MakeStatement(TableManager tableManager)
     {
-        correctState = new string[4]{ attackerData["familyName"] +" "+ attackerData["name"] , attackerData["crime"], attackerData["crimePlaceText"], attackerData["crimeReasonText"] };
-        currentState = new string[4]{ attackerData["familyName"] +" "+ attackerData["name"] , attackerData["crime"], attackerData["crimePlaceText"], attackerData["crimeReasonText"] };
+        correctState = new string[5]{ attackerData["name"] , attackerData["familyName"] , attackerData["crime"], attackerData["crimePlaceText"], attackerData["crimeReasonText"] };
+        currentState = new string[5]{ attackerData["name"] , attackerData["familyName"] , attackerData["crime"], attackerData["crimePlaceText"], attackerData["crimeReasonText"] };
 
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 5; i++)
         {
             Debug.Log("맞는거"+correctState[i]);
         }
@@ -136,36 +142,7 @@ public class RecordData
         Debug.Log("실행생성");
         if (lieORInfoError.ContainsKey("lie") || lieORInfoError.ContainsKey("infoError"))
         {
-            if (lieORInfoError.ContainsKey("lie")){
-                Debug.Log("위증!");
-                lieORinfoErrorValue = 1;
-                
-
-                for(int i = 0; i < lieORInfoError["lie"].Count; i++)
-                {
-                    if (lieORInfoError["lie"][i] == "name") //이름이 위증인 경우 위조된 정보로 변경
-                    {
-                        currentState[0] = tableManager.GetRandomStatement("nameT");
-                    }
-                    if (lieORInfoError["lie"][i] == "familyName") //성이 위증인 경우 ~
-                    {
-                        currentState[1] = tableManager.GetRandomStatement("familyName");
-                    }
-                    if (lieORInfoError["lie"][i] == "crime") //성이 위증인 경우
-                    {
-                        currentState[2] = tableManager.GetRandomStatement("crime");
-                    }
-                    if (lieORInfoError["lie"][i] == "crimePlaceText") //성이 위증인 경우
-                    {
-                        currentState[3] = tableManager.GetRandomStatement("crimePlaceText");
-                    }
-                    if (lieORInfoError["lie"][i] == "crimeReasonText") //성이 위증인 경우
-                    {
-                        currentState[4] = tableManager.GetRandomStatement("crimeReasonText"); ;
-                    }
-                }
-            }
-            else
+            if (lieORInfoError.ContainsKey("infoError"))
             {
                 lieORinfoErrorValue = 2;
                 Debug.Log("정보오류!");
@@ -189,6 +166,48 @@ public class RecordData
                         currentState[3] = tableManager.GetRandomStatement("crimePlaceText");
                     }
                     if (lieORInfoError["infoError"][i] == "crimeReasonText") //성이 위증인 경우
+                    {
+                        currentState[4] = tableManager.GetRandomStatement("crimeReasonText"); ;
+                    }
+                }
+
+                //6일차 이후 정보오류 발생 시 사건 기록서가 아닌 진술서 정보가 옳게
+                attackerData["name"] = currentState[0];
+                attackerData["familyName"] = currentState[1];
+                attackerData["crime"] = currentState[2];
+                attackerData["crimePlaceText"] = currentState[3];
+                attackerData["crimeReasonText"] = currentState[4];
+
+                Judgement();
+
+                Debug.Log("사형 재판결");
+            }
+
+
+            if (lieORInfoError.ContainsKey("lie")){
+                Debug.Log("위증!");
+                lieORinfoErrorValue = 99;
+                
+
+                for(int i = 0; i < lieORInfoError["lie"].Count; i++)
+                {
+                    if (lieORInfoError["lie"][i] == "name") //이름이 위증인 경우 위조된 정보로 변경
+                    {
+                        currentState[0] = tableManager.GetRandomStatement("nameT");
+                    }
+                    if (lieORInfoError["lie"][i] == "familyName") //성이 위증인 경우 ~
+                    {
+                        currentState[1] = tableManager.GetRandomStatement("familyName");
+                    }
+                    if (lieORInfoError["lie"][i] == "crime") //성이 위증인 경우
+                    {
+                        currentState[2] = tableManager.GetRandomStatement("crime");
+                    }
+                    if (lieORInfoError["lie"][i] == "crimePlaceText") //성이 위증인 경우
+                    {
+                        currentState[3] = tableManager.GetRandomStatement("crimePlaceText");
+                    }
+                    if (lieORInfoError["lie"][i] == "crimeReasonText") //성이 위증인 경우
                     {
                         currentState[4] = tableManager.GetRandomStatement("crimeReasonText"); ;
                     }

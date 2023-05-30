@@ -13,9 +13,18 @@ public class TableManager : MonoBehaviour
     private static AcceptCrimeInfoReader acceptCrimeInfoReader = null;
     private static SpecialJobIndexInfoReader specialJobIndexInfoReader = null;
 
+    ReadPrisonerInfo readPrisonerInfo;
+
+    bool isApplySpecificInfo;   // 특정 정보 적용 여부
+
     /// positionGrade = 신분(시민 등급)
     void Awake()
     {
+        if (HangingManager.day >= 1 && HangingManager.day <= 7)
+            isApplySpecificInfo = true;
+        else
+            isApplySpecificInfo = false;
+
         if (nameT == null)
         {
             nameT = csvReader.Read("nameInfo");
@@ -43,12 +52,15 @@ public class TableManager : MonoBehaviour
         // 조민수 : 정상적인 플레이에서는 각 해당 일차마다 추가 //
         //string fileName = "DayJudgeMentInfo";
         //judgeT.Add(CSVReader.Read(fileName + HangingManager.day.ToString()));
+
+        readPrisonerInfo = FindObjectOfType<ReadPrisonerInfo>();
     }
 
     public Dictionary<string,string> GetData(string attackerFamilyName, string attackerName, ref Dictionary<string, List<string>> lieORInfoError)
     {
         Dictionary<string,string> data = new Dictionary<string,string>();
         Debug.Log("day : " + HangingManager.day);
+
 
         GetPositionGradeAndFamilyName(data);
         GetName(nameT, data);
@@ -73,8 +85,11 @@ public class TableManager : MonoBehaviour
             if(HangingManager.day >= 6) 
                 GetLieORInfoError(data, ref lieORInfoError);
 
-            //국가적 요구 허락OR거절
-            data["ask"] = getRandomValueByRange(probabilityInfo["askAccept"][0]).ToString();
+            //국가적 요구 허락OR거절     //유민 수정
+            if (isApplySpecificInfo && readPrisonerInfo.GetAsk() != null)
+                data["ask"] = readPrisonerInfo.GetAsk();
+            else
+                data["ask"] = getRandomValueByRange(probabilityInfo["askAccept"][0]).ToString();
         }
         else
         {
@@ -90,7 +105,17 @@ public class TableManager : MonoBehaviour
         while (true)
         {
             int valueid = Random.Range(0, crimeT.Count);
-            int crimeGrade = getRandomValueByRange(probabilityInfo["crimeGrade"][0]);
+
+            //유민 수정
+            int crimeGrade;
+            if(isApplySpecificInfo && readPrisonerInfo.GetCrimeGrade() != -1)
+            {
+                crimeGrade = readPrisonerInfo.GetCrimeGrade();
+            }
+            else
+            {
+                crimeGrade = getRandomValueByRange(probabilityInfo["crimeGrade"][0]);
+            }
 
             string str = crimeT[valueid][crimeT[0]["header"][crimeGrade]][0];
             if (str.Equals("") == false){
@@ -112,10 +137,22 @@ public class TableManager : MonoBehaviour
         }
         else
         {
+            //유민 수정
             if (attackerName == null)
-                moveFlag = getRandomValueByRange(probabilityInfo["attackerMove"][0]);
+            {
+                if (isApplySpecificInfo && readPrisonerInfo.GetAttackerMove() != -1)
+                    moveFlag = readPrisonerInfo.GetAttackerMove();
+                else
+                    moveFlag = getRandomValueByRange(probabilityInfo["attackerMove"][0]);
+            }
             else
-                moveFlag = getRandomValueByRange(probabilityInfo["victimMove"][0]);
+            {
+                if (isApplySpecificInfo && readPrisonerInfo.GetVictimMove() != -1)
+                    moveFlag = readPrisonerInfo.GetVictimMove();
+                else
+                    moveFlag = getRandomValueByRange(probabilityInfo["victimMove"][0]);
+
+            }
 
             if (moveFlag == 1)
             {
@@ -135,7 +172,16 @@ public class TableManager : MonoBehaviour
 
     void GetPositionGradeAndFamilyName(Dictionary<string, string> data)
     {
-        int positionGrade = getRandomValueByRange(probabilityInfo["positionGrade"][0]);
+        //유민 수정
+        int positionGrade;
+        if(isApplySpecificInfo && readPrisonerInfo.GetGrade() != -1)
+        {
+            positionGrade = readPrisonerInfo.GetGrade();    
+        }
+        else
+        {
+            positionGrade = getRandomValueByRange(probabilityInfo["positionGrade"][0]);
+        }
         data["positionGrade"] = positionGrade.ToString();
         data["familyGrade"] = GetFamilyGrade(data["positionGrade"]);
         data["familyName"] = fnameT[Random.Range(0, fnameT.Count)][fnameT[0]["header"][positionGrade]][0];
@@ -162,7 +208,13 @@ public class TableManager : MonoBehaviour
 
         if (isAcceptCrime == 1)
         {
-            data["crimeReason"] = acceptCrimeList[UnityEngine.Random.Range(0, acceptCrimeList.Count)].ToString();
+            //유민 수정
+            if (isApplySpecificInfo && readPrisonerInfo.GetCrimeReason() != -1)
+            {
+                data["crimeReason"] = acceptCrimeList[readPrisonerInfo.GetCrimeReason()].ToString();
+            }
+            else
+                data["crimeReason"] = acceptCrimeList[UnityEngine.Random.Range(0, acceptCrimeList.Count)].ToString();
         }
         else
         {
@@ -240,9 +292,19 @@ public class TableManager : MonoBehaviour
         string jobText = null;
 
         if (isAttacker == 1)
-            specialJobFlag = getRandomValueByRange(probabilityInfo["attackerSpecialJob"][int.Parse(data["positionGrade"])]);
+        {
+            if (isApplySpecificInfo && readPrisonerInfo.GetAttackerJob() != -1)
+                specialJobFlag = readPrisonerInfo.GetAttackerJob();
+            else
+                specialJobFlag = getRandomValueByRange(probabilityInfo["attackerSpecialJob"][int.Parse(data["positionGrade"])]);
+        }
         else
-            specialJobFlag = getRandomValueByRange(probabilityInfo["victimSpecialJob"][0]);
+        {
+            if (isApplySpecificInfo && readPrisonerInfo.GetVictimJob() != -1)
+                specialJobFlag = readPrisonerInfo.GetVictimJob();
+            else
+                specialJobFlag = getRandomValueByRange(probabilityInfo["victimSpecialJob"][0]);
+        }
 
         if (jobInfoReader._specialJobDictionary.ContainsKey(day))
         {
@@ -273,7 +335,12 @@ public class TableManager : MonoBehaviour
     {
         if (HangingManager.day >= 4)
         {
-            if(data["positionGrade"].Equals("0"))
+            //유민 수정
+            if (isApplySpecificInfo && readPrisonerInfo.GetCrimeRecord() != -1)
+            {
+                data["crimeRecord"] = readPrisonerInfo.GetCrimeReason().ToString();
+            }
+            else if(data["positionGrade"].Equals("0"))
                 data["crimeRecord"] = getRandomValueByRange(probabilityInfo["crimeRecordHighest"][0]).ToString();
             else
                 data["crimeRecord"] = getRandomValueByRange(probabilityInfo["crimeRecordNotHighest"][0]).ToString();
@@ -321,9 +388,14 @@ public class TableManager : MonoBehaviour
                 cnt++;
 
                 int lieORInfoErrorDistinguish = getRandomValueByRange(probabilityInfo["lieORInfoError"][0]);
+                
                 //6일차 무조건 위증//
                 if (HangingManager.day == 6)
                     lieORInfoErrorDistinguish = 0;
+
+                //유민 추가
+                if (isApplySpecificInfo && readPrisonerInfo.GetLie() != -1)
+                    lieORInfoErrorDistinguish = readPrisonerInfo.GetLie();
 
                 //위증//
                 if (lieORInfoErrorDistinguish == 0)

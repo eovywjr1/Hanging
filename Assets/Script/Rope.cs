@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Rope : MonoBehaviour
 {
+    public prisoner prisoner;
+    private Rigidbody2D prisonerRigidbody;
+
     public LineRenderer lineRenderer;
     public int segmentCnt = 50;
     public int constraintLoop = 50;
@@ -27,6 +30,7 @@ public class Rope : MonoBehaviour
 
     private void Awake()
     {
+        prisonerRigidbody = prisoner.GetComponent<Rigidbody2D>();
         startTransform = GameObject.Find("RopeStartPoint").transform;
 
         Vector2 segmentPos = startTransform.position;
@@ -60,7 +64,6 @@ public class Rope : MonoBehaviour
             {
                 Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 int closestSegmentIndex = FindClosestSegmentIndex(mousePos);
-                Debug.Log("���� ���׸�Ʈ �ε��� : " + closestSegmentIndex);
 
                 endTransform = null;
                 if (closestSegmentIndex != -1)
@@ -70,6 +73,10 @@ public class Rope : MonoBehaviour
                         segments.RemoveAt(i);
                     }
                 }
+
+                prisoner.isCutRope = true;
+
+                prisonerRigidbody.bodyType = RigidbodyType2D.Dynamic;
             }
         }
     }

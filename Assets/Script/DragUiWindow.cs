@@ -5,18 +5,17 @@ using UnityEngine.EventSystems;
 
 public class DragUiWindow : MonoBehaviour, IDragHandler
 {
-    [SerializeField]
-    private GameObject dragArea; //어떤 부분을 눌러 움직여야 UI 움직이게 할 것인지
-    [SerializeField]
-    private GameObject uiObject;
-    private RectTransform rectTransform;
-    private Canvas canvas;
+    [SerializeField] private GameObject clickArea; //어떤 부분을 눌러 움직여야 UI 움직이게 할 것인지
+    [SerializeField] private GameObject uiObject;
 
+    private RectTransform rectTransform;
+    [SerializeField] private Canvas canvas;
 
     private void Awake()
     {
-        dragArea = this.gameObject;
+        clickArea = this.gameObject;
         uiObject = transform.parent.gameObject;
+
         rectTransform = uiObject.GetComponent<RectTransform>();
         canvas = uiObject.GetComponentInParent<Canvas>();
     }
@@ -25,5 +24,4 @@ public class DragUiWindow : MonoBehaviour, IDragHandler
     {
         rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
     }
-
 }
