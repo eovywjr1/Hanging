@@ -40,8 +40,8 @@ public class DialogBubbleController : MonoBehaviour
         if (bubbleIndex >= 0)
             dialogBubbleRecttransformList.Add(dialogBubbleList[bubbleIndex].GetComponent<RectTransform>());
 
-        //길면 줄바꿈 함수 삽입 자리//
-        DialogTextShow( str, bubbleIndex);
+        string modifiedString = str.Replace("\"", "");
+        DialogTextShow(modifiedString, bubbleIndex);
         SetBubbleSetSize(id, bubbleIndex);
     }
 
