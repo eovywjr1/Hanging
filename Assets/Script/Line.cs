@@ -20,6 +20,8 @@ public class Line
     public delegate void ShowData();
     ShowData showdata;
 
+    [SerializeField] int expandStep = 50;   //À¯¹Î Ãß°¡
+
     public Line(GameObject _lineObject, GameObject _windowObject)
     {
         lineObject = _lineObject;
@@ -94,7 +96,7 @@ public class Line
 
     public IEnumerator ExpendLine(float _parentX, float _parentYSum)
     {
-        int i = 1;
+        /*int i = 1;
         float d = i / devide;
         while (d < 1)
         {
@@ -102,6 +104,24 @@ public class Line
             MoveTo((windowObject.transform.position.x - _parentX) * d, (_parentYSum + windowObject.transform.position.y) * d - _parentYSum);
             yield return null;
             d = ++i / devide;
+        }
+
+        SetAlpha(1);
+        showdata();
+        */
+
+        parentYSum = _parentYSum;
+
+        for(int i=0;i<=expandStep; i++)
+        {
+            float t = (float)i / expandStep;
+            float x = (windowObject.transform.position.x - _parentX) * t;
+            float y = (_parentYSum + windowObject.transform.position.y) * t - _parentYSum;
+
+            MoveTo(x, y);
+
+            yield return null;
+
         }
 
         SetAlpha(1);
