@@ -15,7 +15,6 @@ public class Line
     public Image windowImage;
     SpriteRenderer buttonSpriteRenderer;
     private TextMeshProUGUI windowtmpu;
-    const float devide = 300f; //분모여서 속도와 반비례관계
     public float parentYSum;   //사형수, 교수대(부모들) y 추가
     public delegate void ShowData();
     ShowData showdata;
@@ -95,13 +94,17 @@ public class Line
     public IEnumerator ExpendLine(float _parentX, float _parentYSum)
     {
         int i = 1;
+        const float devide = 150f; //분모여서 속도와 반비례관계
         float d = i / devide;
         while (d < 1)
         {
             parentYSum = _parentYSum;
             MoveTo((windowObject.transform.position.x - _parentX) * d, (_parentYSum + windowObject.transform.position.y) * d - _parentYSum);
+
             yield return null;
-            d = ++i / devide;
+
+            ++i;
+            d = i / devide;
         }
 
         SetAlpha(1);
