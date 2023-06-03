@@ -15,12 +15,9 @@ public class Line
     public Image windowImage;
     SpriteRenderer buttonSpriteRenderer;
     private TextMeshProUGUI windowtmpu;
-    const float devide = 300f; //ºÐ¸ð¿©¼­ ¼Óµµ¿Í ¹Ýºñ·Ê°ü°è
-    public float parentYSum;   //»çÇü¼ö, ±³¼ö´ë(ºÎ¸ðµé) y Ãß°¡
+    public float parentYSum;   //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(ï¿½Î¸ï¿½ï¿½) y ï¿½ß°ï¿½
     public delegate void ShowData();
     ShowData showdata;
-
-    [SerializeField] int expandStep = 50;   //À¯¹Î Ãß°¡
 
     public Line(GameObject _lineObject, GameObject _windowObject)
     {
@@ -34,7 +31,7 @@ public class Line
 
     public void SetAlpha(float alpha)
     {   
-        //Ã³À½ ¶óÀÎ ¸¸µé¾îÁú ¶§//
+        //Ã³ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½//
         if (alpha == -1)
         {
             windowImage.color = new Color(1, 1, 1, 0);
@@ -43,7 +40,7 @@ public class Line
         }
         else
         {
-            lineLR.startColor = new Color(1, 1, 1, alpha * 3f);   //ÄÃ·¯ ³ªÁß¿¡ ÀçÁ¶Á¤ ÇÊ¿ä
+            lineLR.startColor = new Color(1, 1, 1, alpha * 3f);   //ï¿½Ã·ï¿½ ï¿½ï¿½ï¿½ß¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½
             lineLR.endColor = new Color(1, 1, 1, alpha * 3f);
             windowImage.color = new Color(1, 1, 1, alpha);
             windowtmpu.color = new Color(0, 0, 0, alpha);
@@ -58,7 +55,7 @@ public class Line
             
         float initAlpha = lineList[0].windowImage.color.a;
         float speed = 0.02f;
-        float oper = (mode == 1) ? speed * 0.5f : -1 * speed;  //³ªÅ¸³¯ ¶§ ´õ ºü¸£°Ô º¸ÀÌ´Â °æÇâ ÀÖÀ½
+        float oper = (mode == 1) ? speed * 0.5f : -1 * speed;  //ï¿½ï¿½Å¸ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         float d = initAlpha;
 
         while (d >= 0 && d <= 1 && lineList.Count > 0)
@@ -96,32 +93,18 @@ public class Line
 
     public IEnumerator ExpendLine(float _parentX, float _parentYSum)
     {
-        /*int i = 1;
+        int i = 1;
+        const float devide = 150f; //ï¿½Ð¸ð¿©¼ï¿½ ï¿½Óµï¿½ï¿½ï¿½ ï¿½Ýºï¿½Ê°ï¿½ï¿½ï¿½
         float d = i / devide;
         while (d < 1)
         {
             parentYSum = _parentYSum;
             MoveTo((windowObject.transform.position.x - _parentX) * d, (_parentYSum + windowObject.transform.position.y) * d - _parentYSum);
-            yield return null;
-            d = ++i / devide;
-        }
-
-        SetAlpha(1);
-        showdata();
-        */
-
-        parentYSum = _parentYSum;
-
-        for(int i=0;i<=expandStep; i++)
-        {
-            float t = (float)i / expandStep;
-            float x = (windowObject.transform.position.x - _parentX) * t;
-            float y = (_parentYSum + windowObject.transform.position.y) * t - _parentYSum;
-
-            MoveTo(x, y);
 
             yield return null;
 
+            ++i;
+            d = i / devide;
         }
 
         SetAlpha(1);
