@@ -58,22 +58,27 @@ public class RecordData
                     //ask는 이 함수에서 판단에 직접적인 영향 x//
                     if (header.Equals("ask")) continue;
 
+                    const int victimStringLength = 6;
+                    const int attackerStringLength = 8;
                     //attacker, victim 명시된 헤더 분리해서 각 data에 접근//
-                    if (header.Length > 6 && header.Substring(0, 6).Equals("victim"))
+                    if (header.Length > victimStringLength && header.Substring(0, 6).Equals("victim"))
                     {
                         compareList = victimData;
-                        subHeader = header.Substring(6);
+                        subHeader = header.Substring(victimStringLength);
                     }
-                    else if (header.Length > 8 && header.Substring(0, 8).Equals("attacker"))
+                    else if (header.Length > attackerStringLength && header.Substring(0, 8).Equals("attacker"))
                     {
                         compareList = attackerData;
-                        subHeader = header.Substring(8);
+                        subHeader = header.Substring(attackerStringLength);
                     }
                     else
                     {
                         compareList = attackerData;
                         subHeader = header;
                     }
+
+                    if (compareList.ContainsKey(subHeader) == false)
+                        continue;
 
                     //하나의 셀의 여러 개의 값 확인//
                     foreach (string str in judgeList[i][j][header])
