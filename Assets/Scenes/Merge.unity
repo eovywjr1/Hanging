@@ -945,7 +945,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2696586845578461405, guid: eb9383c62696a8342ab1744954e8dce2, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.0026893755
+      value: 0.003558116
       objectReference: {fileID: 0}
     - target: {fileID: 2696586845809489345, guid: eb9383c62696a8342ab1744954e8dce2, type: 3}
       propertyPath: 
@@ -1743,6 +1743,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3755610338484007293, guid: ec47edb70546de7468447ddd1a1d081f, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -1213178827
+      objectReference: {fileID: 0}
     - target: {fileID: 3755610338484007294, guid: ec47edb70546de7468447ddd1a1d081f, type: 3}
       propertyPath: m_PresetInfoIsWorld
       value: 1
@@ -2402,7 +2406,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 184650479665227983, guid: 707197e0b5fa309489fb779e399ebb0f, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2470269752632018196, guid: 707197e0b5fa309489fb779e399ebb0f, type: 3}
       propertyPath: m_SortingOrder
