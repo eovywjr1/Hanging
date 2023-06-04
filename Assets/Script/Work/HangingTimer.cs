@@ -8,15 +8,13 @@ public class HangingTimer : MonoBehaviour
 {
     bool isTimer;
     [SerializeField] private float workTime = 0f;
-    const float workMaxTime = 10f;
+    const float workMaxTime = 210f;
     Slider timerSlider;
-    HangingManager _hangingManager;
 
     private void Awake()
     {
         workTime = workMaxTime;
-        timerSlider = GetComponent<Slider>(); 
-        _hangingManager = FindObjectOfType<HangingManager>();
+        timerSlider = GetComponent<Slider>();
     }
 
     private void Update()
@@ -31,7 +29,7 @@ public class HangingTimer : MonoBehaviour
                 isTimer = false;
                 workTime = workMaxTime;
 
-                StartCoroutine(_hangingManager.endDay());
+                StartCoroutine(FindObjectOfType<HangingManager>().endDay());
             }
         }
     }

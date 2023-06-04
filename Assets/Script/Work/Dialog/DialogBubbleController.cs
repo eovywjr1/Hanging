@@ -51,9 +51,9 @@ public class DialogBubbleController : MonoBehaviour
         float x;
 
         if (id == 0)
-            x = 155 - dialogRectTransform.sizeDelta.x / 2;
+            x = 190 - dialogRectTransform.sizeDelta.x / 2;
         else
-            x = -155 + dialogRectTransform.sizeDelta.x / 2;
+            x = -190 + dialogRectTransform.sizeDelta.x / 2;
 
         dialogRectTransform.localPosition = new Vector2(x, 0);
     }
