@@ -94,7 +94,7 @@ public class Line
     public IEnumerator ExpendLine(float _parentX, float _parentYSum)
     {
         int i = 1;
-        const float devide = 25f; //�и𿩼� �ӵ��� �ݺ�ʰ���
+        const float devide = 25f; //devide는 분모여서 속도와 반비례 관계
         float d = i / devide;
         while (d < 1)
         {
