@@ -5,11 +5,18 @@ using UnityEngine.EventSystems;
 
 public class CutRope : MonoBehaviour, IListener
 {
+    private Rope ropeScript;
+
     Vector3 initialMousePosition;
     public GameObject rope;
 
     private float cutDistance = 2f;
     bool isCut, isPossibleAmnesty, isAmnesty;
+
+    private void Awake()
+    {
+        ropeScript = FindObjectOfType<Rope>();
+    }
 
     private void Start()
     {
@@ -20,13 +27,13 @@ public class CutRope : MonoBehaviour, IListener
     {
         if (isPossibleAmnesty && isAmnesty == false)
         {
-            if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject() && rope != null)
+            /*if ((Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)) && !EventSystem.current.IsPointerOverGameObject() && rope != null)
             {
                 Vector3 mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10);
                 initialMousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
                 isCut = true;
             }
-            else if (isCut && Input.GetMouseButton(0))
+            else if (isCut && (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)))
             {
                 Vector3 mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10);
                 Vector3 currentMousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
@@ -42,9 +49,16 @@ public class CutRope : MonoBehaviour, IListener
 
                 }
             }
-            else if (Input.GetMouseButtonUp(0))
+            else if ((Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)))
             {
                 isCut = false;
+            }*/
+
+            if(ropeScript.isCut && !EventSystem.current.IsPointerOverGameObject() && rope != null)
+            {
+                isAmnesty = true;
+
+                StartCoroutine(DelayedEvents());
             }
         }
     }
@@ -57,5 +71,14 @@ public class CutRope : MonoBehaviour, IListener
                 isPossibleAmnesty = true;
                 break;
         }
+    }
+
+    IEnumerator DelayedEvents()
+    {
+        yield return new WaitForSeconds(3.1f);
+
+        EventManager.instance.postNotification("amnesty", this, null);
+        EventManager.instance.postNotification("dialogEvent", this, UnityEngine.Random.Range(21, 28));
+        EventManager.instance.postNotification("dialogEvent", this, "amnesty");
     }
 }
