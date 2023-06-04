@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EffectManager : MonoBehaviour, IListener
+public class EffectManager : MonoBehaviour
 {
     private GameObject illusionFullScreen;
 
@@ -15,17 +15,7 @@ public class EffectManager : MonoBehaviour, IListener
     public IEnumerator activeFullillusion()
     {
         illusionFullScreen.SetActive(true);
-        yield return new WaitForSecondsRealtime(5f);
-        illusionFullScreen.SetActive(false);
-    }
 
-    public void OnEvent(string eventType, Component sender, object parameter = null)
-    {
-        switch (eventType)
-        {
-            case "activeFullillusion":
-                StartCoroutine(activeFullillusion());
-                break;
-        }
+        yield return new WaitForSecondsRealtime(2f);
     }
 }

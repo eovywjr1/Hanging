@@ -36,7 +36,7 @@ public class HangingManager : MonoBehaviour, IListener
     private int _discorrectJudgeCount = 0;
     private int _discorrectAndTodesstrafedPersonCount = 0;
 
-    public static int day = 1;
+    public static int day = 2;
 
     private void Awake()
     {
@@ -217,10 +217,18 @@ public class HangingManager : MonoBehaviour, IListener
     {
         _uiManager.hideScreenCanvas();
 
-        yield return StartCoroutine(EndDayEffect());
+        //조민수 comment : 7일차에 환각 나오고 게임 종료는 일단 임시, 추후에 변경가능성 있음
+        if (day == 7)
+        {
+            StartCoroutine(FindObjectOfType<GameManager>().endGame());
+        }
+        else
+        {
+            yield return StartCoroutine(EndDayEffect());
 
-        _uiManager.showScreenCanvas();
-        _uiManager.showDominantImage();
+            _uiManager.showScreenCanvas();
+            _uiManager.showDominantImage();
+        }
     }
 
     public void convertSceneNextDay()
