@@ -19,9 +19,7 @@ public class HangingManager : MonoBehaviour, IListener
     public ScrollViewController scrollViewController;
 
     public bool isTodesstrafe, isAmnesty, isActiveAsk;
-    public static bool isCompulsoryEnd;
     public bool isStatementWrongProcess;
-
 
     private int _judgeCount = 0;
     public int judgeCount
@@ -32,6 +30,7 @@ public class HangingManager : MonoBehaviour, IListener
             EventManager.instance.postNotification("updateAttackerCountCCTV", this, _judgeCount + 1);
         }
     }
+    private bool isCompulsoryEnd;
     private int _correctJudgeCount = 0;
     private int _discorrectJudgeCount = 0;
     private int _discorrectAndTodesstrafedPersonCount = 0;
@@ -47,7 +46,6 @@ public class HangingManager : MonoBehaviour, IListener
 
         scrollViewController=FindObjectOfType<ScrollViewController>();
 
-        createAttacker();
     }
 
     private void Start()
@@ -201,7 +199,7 @@ public class HangingManager : MonoBehaviour, IListener
         attackerInfo = attacker.GetComponent<AttackerInfo>();
 
         if (isCompulsoryEnd)
-            EventManager.instance.postPossibleEvent();
+            attackerMouseMove.setAllPossible();
 
         isTodesstrafe = false;
         isAmnesty = false;

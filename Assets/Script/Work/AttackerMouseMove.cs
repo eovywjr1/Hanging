@@ -149,11 +149,20 @@ public class AttackerMouseMove : MonoBehaviour, IListener
     {
         isPossibleTodesstrafe = _isPossibleTodesstrafe;
     }
+    
+    public void setAllPossible()
+    {
+        isPossibleClick = true;
+        isPossibleTodesstrafe = true;
+    }
 
     public void LineChangeTransparency(int mode)
     {
-        if (preChangeTransparency != null) StopCoroutine(preChangeTransparency);
-        if (line != null) preChangeTransparency = StartCoroutine(line.ChangeTransparency(mode));
+        if (preChangeTransparency != null) 
+            StopCoroutine(preChangeTransparency);
+
+        if (line != null) 
+            preChangeTransparency = StartCoroutine(line.ChangeTransparency(mode));
     }
 
     public void OnEvent(string eventType, Component sender, object parameter = null)
