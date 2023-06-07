@@ -44,7 +44,7 @@ public class EnemyMove : MonoBehaviour
         {
             // 플레이어를 향해 이동
             Vector3 direction = (target.position - transform.position).normalized;
-            transform.position += new Vector3(direction.x, 0f, direction.z) * movementSpeed * Time.deltaTime;
+            transform.position += new Vector3(direction.x, direction.y, 0f) * movementSpeed * Time.deltaTime;
         }
         else
         {
@@ -64,7 +64,7 @@ public class EnemyMove : MonoBehaviour
 
             if (distanceToDestination > 0.1f)
             {
-                transform.position += new Vector3(wanderDirection.x, 0f, wanderDirection.z) * movementSpeed * Time.deltaTime;
+                transform.position += new Vector3(wanderDirection.x, wanderDirection.y, 0f) * movementSpeed * Time.deltaTime;
             }
         }
     }
