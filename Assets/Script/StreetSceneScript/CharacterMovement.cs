@@ -39,13 +39,13 @@ public class CharacterMovement : MonoBehaviour
         {
             moveVelocity = Vector3.left;
 
-            characterTransform.localScale = new Vector3(-1, 1, 1);
+            characterTransform.localScale = new Vector3(-0.5f, 0.5f, 1);
         }
         else if(Input.GetAxisRaw("Horizontal") > 0)
         {
             moveVelocity = Vector3.right;
 
-            characterTransform.localScale = new Vector3(1, 1, 1);
+            characterTransform.localScale = new Vector3(0.5f, 0.5f, 1);
         }
 
         transform.position += moveVelocity * movePower * Time.deltaTime;
