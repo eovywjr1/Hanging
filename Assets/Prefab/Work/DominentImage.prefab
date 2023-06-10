@@ -684,7 +684,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: Peter
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2cc4455dd216d474bb23678ad0583a18, type: 2}
   m_sharedMaterial: {fileID: 8321218896676305982, guid: 2cc4455dd216d474bb23678ad0583a18, type: 2}
@@ -980,6 +980,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   password: {fileID: 4839158643262989736}
-  waitSec: 1.25
-  interval: 0.2
-  cnt: 18

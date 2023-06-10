@@ -4,12 +4,16 @@ using UnityEngine;
 
 public class UiManager : MonoBehaviour, IListener
 {
-    public GameObject GuideButton;
+    [SerializeField]
+    private AttackerMouseMove attackerMouseMove;
+    [SerializeField]
+    private Rope rope;
+    private HangingManager hangingManager;
 
+    private GameObject GuideWindow;
     [SerializeField] private GameObject statisticsImage;
     [SerializeField] private GameObject dominantImage;
 
-    private HangingManager hangingManager;
     private bool isPossibleActiveGuide = false;
     private bool isPossibleDeactiveGuide = false;
 
@@ -17,39 +21,48 @@ public class UiManager : MonoBehaviour, IListener
 
     private void Awake()
     {
-        GuideButton.SetActive(false);
+        GuideWindow = GameObject.Find("CctvCanvas").transform.Find("GuideScrollView").gameObject;
+        Debug.Assert(GuideWindow != null, "GuideScrollViewì¸ Objectê°€ ì—†ìŠµë‹ˆë‹¤.");
+
+        GuideWindow.SetActive(false);
         hangingManager = FindObjectOfType<HangingManager>();
 
-        Debug.Assert(statisticsImage != null, "statisticsImage¸¦ ³ÖÀ¸¼¼¿ä");
-        Debug.Assert(dominantImage != null, "dominentImage¸¦ ³ÖÀ¸¼¼¿ä");
-        Debug.Assert(_screenCanvas != null, "screenCanvas ³ÖÀ¸¼¼¿ä");
+        Debug.Assert(statisticsImage != null, "statisticsImageï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+        Debug.Assert(dominantImage != null, "dominentImageï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+        Debug.Assert(_screenCanvas != null, "screenCanvas ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
     }
 
     private void Start()
     {
         EventManager.instance.addListener("possibleactiveGuide", this);
         EventManager.instance.addListener("possibledeactiveGuide", this);
+
+        rope = GameObject.Find("rope").GetComponent<Rope>();
+        attackerMouseMove = GameObject.Find("Prisoner(Clone)").GetComponent<AttackerMouseMove>();
     }
 
     private void Update()
     {
-        guideOn();
-    }
-
-    private void guideOn()
-    {
         if (Input.GetKeyDown(KeyCode.G))
         {
-            if ((GuideButton.activeSelf == false) && (isPossibleActiveGuide))
+            if ((GuideWindow.activeSelf == false) && (isPossibleActiveGuide))
             {
-                GuideButton.SetActive(true);
+                GuideWindow.SetActive(true);
                 EventManager.instance.postNotification("dialogEvent", this, "activeGuide");
 
             }
-            else if (GuideButton.activeSelf && isPossibleDeactiveGuide)
+            else if (GuideWindow.activeSelf && isPossibleDeactiveGuide)
             {
-                GuideButton.SetActive(false);
+                GuideWindow.SetActive(false);
                 EventManager.instance.postNotification("dialogEvent", this, "deactiveGuide");
+                if (GuideWindow.activeSelf == true)
+                {
+                    GuideWindow.SetActive(false);
+                    attackerMouseMove.SetPossibleTodesstrafe(true);
+                    //Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ Ç®ï¿½ï¿½");
+                    rope.SetCutPossible(true);
+                    //Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Ç®ï¿½ï¿½");
+                }
             }
         }
     }
@@ -57,13 +70,14 @@ public class UiManager : MonoBehaviour, IListener
     public void showDominantImage()
     {
         Destroy(FindObjectOfType<HangingTimer>().gameObject);
+
         dominantImage.gameObject.SetActive(true);
     }
 
     public void showStatistics()
     {
         statisticsImage.SetActive(true);
-        FindObjectOfType<UIStatistics>().showStatistics(hangingManager.getHangingInfo());
+        FindObjectOfType<UIStatistics>().setStatistics(hangingManager.getHangingInfo());
     }
 
     public void showScreenCanvas()

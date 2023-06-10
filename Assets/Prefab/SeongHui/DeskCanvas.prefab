@@ -320,7 +320,6 @@ GameObject:
   - component: {fileID: 2696586844483965954}
   - component: {fileID: 2696586844483965957}
   - component: {fileID: 2696586844483965952}
-  - component: {fileID: 2696586844483965953}
   m_Layer: 5
   m_Name: Scroll View
   m_TagString: Untagged
@@ -435,18 +434,7 @@ MonoBehaviour:
   attackerInfo: {fileID: 0}
   txtALlTmp: {fileID: 7995845550891718017}
   forWidth: {fileID: 8664499455993769534}
---- !u!114 &2696586844483965953
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2696586844483965959}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 228a03cf6c4636247bd2a2a736faa648, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  content: {fileID: 2696586845578461404}
 --- !u!1 &2696586845391533025
 GameObject:
   m_ObjectHideFlags: 0
@@ -568,8 +556,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2696586845809489374}
   m_HandleRect: {fileID: 2696586845809489345}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 0.9999751
+  m_Value: -36744.152
+  m_Size: 0
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -711,7 +699,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0.00024212958, y: 0.002461848}
+  m_AnchoredPosition: {x: -0.0009124401, y: 99.52265}
   m_SizeDelta: {x: 103.48, y: 108.47}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &2696586845809489344
@@ -924,8 +912,12 @@ MonoBehaviour:
   changed: {fileID: 2800000, guid: 93013b578f8526f41800556eb8ec76ed, type: 3}
   lastMent: {fileID: 0}
   scrollViewController: {fileID: 0}
+  padStatement: {fileID: 0}
+  padStatementText: {fileID: 0}
   penCursor: 0
   currentList: []
+  currentClick: 
+  compareMentBoolLIst: 
 --- !u!1 &8528106049903653633
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Rope : MonoBehaviour
 {
+    public prisoner prisoner;
+    private Rigidbody2D prisonerRigidbody;
+
     public LineRenderer lineRenderer;
     public int segmentCnt = 50;
     public int constraintLoop = 50;
@@ -17,8 +20,8 @@ public class Rope : MonoBehaviour
 
     private List<Segment> segments = new List<Segment>();
 
-    [SerializeField]
-    bool isCutPossible = true;
+    [SerializeField] bool isCutPossible = true;
+    public bool isCut = false;
 
     private void Reset()
     {
@@ -27,6 +30,7 @@ public class Rope : MonoBehaviour
 
     private void Awake()
     {
+        prisonerRigidbody = prisoner.GetComponent<Rigidbody2D>();
         startTransform = GameObject.Find("RopeStartPoint").transform;
 
         Vector2 segmentPos = startTransform.position;
@@ -54,21 +58,33 @@ public class Rope : MonoBehaviour
 
     private void Update()
     {
-        if(isCutPossible)
+        if(isCutPossible && !isCut)
         {
-            if (Input.GetMouseButtonDown(1))
+            if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
             {
                 Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                int closestSegmentIndex = FindClosestSegmentIndex(mousePos);
-                Debug.Log("���� ���׸�Ʈ �ε��� : " + closestSegmentIndex);
 
-                endTransform = null;
-                if (closestSegmentIndex != -1)
+                float cutRange = 2.0f;  //밧줄 자를 수 있는 반경 범위
+                float distanceToStart = Vector2.Distance(startTransform.position, mousePos);
+
+                if(distanceToStart <= cutRange)
                 {
-                    for (int i = closestSegmentIndex; i < segments.Count; i++)
+                    int closestSegmentIndex = FindClosestSegmentIndex(mousePos);
+
+                    endTransform = null;
+                    if (closestSegmentIndex != -1)
                     {
-                        segments.RemoveAt(i);
+                        for (int i = closestSegmentIndex; i < segments.Count; i++)
+                        {
+                            segments.RemoveAt(i);
+                        }
                     }
+
+                    prisoner.isCutRope = true;
+
+                    prisonerRigidbody.bodyType = RigidbodyType2D.Dynamic;
+
+                    isCut = true;
                 }
             }
         }
