@@ -16,10 +16,7 @@ public class CutRope : MonoBehaviour, IListener
     private void Awake()
     {
         ropeScript = FindObjectOfType<Rope>();
-    }
 
-    private void Start()
-    {
         EventManager.instance.addListener("possibleamnesty", this);
     }
 
@@ -58,6 +55,8 @@ public class CutRope : MonoBehaviour, IListener
             {
                 isAmnesty = true;
 
+                EventManager.instance.postNotification("dialogEvent", this, UnityEngine.Random.Range(21, 28));
+
                 StartCoroutine(DelayedEvents());
             }
         }
@@ -78,7 +77,6 @@ public class CutRope : MonoBehaviour, IListener
         yield return new WaitForSeconds(3.1f);
 
         EventManager.instance.postNotification("amnesty", this, null);
-        EventManager.instance.postNotification("dialogEvent", this, UnityEngine.Random.Range(21, 28));
         EventManager.instance.postNotification("dialogEvent", this, "amnesty");
     }
 }

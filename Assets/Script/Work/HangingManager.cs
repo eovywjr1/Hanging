@@ -18,7 +18,7 @@ public class HangingManager : MonoBehaviour, IListener
     [SerializeField] GameObject convertEffect, nextDayEffect,attackerPrefab;
     public ScrollViewController scrollViewController;
 
-    public bool isTodesstrafe, isAmnesty, isActiveAsk;
+    public bool isTodesstrafe, isActiveAsk;
     public bool isStatementWrongProcess;
 
     private int _judgeCount = 0;
@@ -91,8 +91,6 @@ public class HangingManager : MonoBehaviour, IListener
 
     public void Amnesty()
     {
-        isAmnesty = true;
-
         //���� �Ǻ�//
         if (checkCorrectTodesstrafe(1)) 
             Debug.Log("True");
@@ -199,10 +197,9 @@ public class HangingManager : MonoBehaviour, IListener
         attackerInfo = attacker.GetComponent<AttackerInfo>();
 
         if (isCompulsoryEnd)
-            attackerMouseMove.setAllPossible();
+            EventManager.instance.postPossibleEvent();
 
         isTodesstrafe = false;
-        isAmnesty = false;
         isActiveAsk = false;
     }
 
