@@ -189,6 +189,11 @@ public class DialogUpdateAndEvent : MonoBehaviour, IListener
         StartCoroutine(FindObjectOfType<GameManager>().endGame());
     }
 
+    private void showIllegalMoveGuide()
+    {
+        FindObjectOfType<GuideButton>().showIllegalMoveGuide();
+    }
+
     public void OnEvent(string eventType, Component sender, object parameter = null)
     {
         if (sender == this)
