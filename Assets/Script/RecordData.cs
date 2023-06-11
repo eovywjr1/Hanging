@@ -96,7 +96,7 @@ public class RecordData
                     }
                 }
 
-                Debug.Log("돌아가는지?");
+
                 //검색 완료//
                 if (isMatch)
                 {
