@@ -113,6 +113,8 @@ public class HangingManager : MonoBehaviour, IListener
         {
             Debug.Log(attackerInfo.recordData.isHanging);
 
+            ++_correctJudgeCount;
+
             return true;
         }
         else
@@ -120,6 +122,10 @@ public class HangingManager : MonoBehaviour, IListener
             Debug.Log(attackerInfo.recordData.isHanging);
 
             StartCoroutine(StartHoldOutHands());
+
+            ++_discorrectJudgeCount;
+            if (mode == 0)
+                ++_discorrectAndTodesstrafedPersonCount;
 
             return false;
         }
