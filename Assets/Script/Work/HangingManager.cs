@@ -1,6 +1,7 @@
 using Kino;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -20,6 +21,8 @@ public class HangingManager : MonoBehaviour, IListener
 
     public bool isTodesstrafe, isActiveAsk;
     public bool isStatementWrongProcess;
+
+    public GameObject staButton;
 
     private int _judgeCount = 0;
     public int judgeCount
@@ -55,6 +58,8 @@ public class HangingManager : MonoBehaviour, IListener
         EventManager.instance.addListener("amnesty", this);
         EventManager.instance.addListener("todesstrafe", this);
         EventManager.instance.addListener("activeAsk", this);
+
+        if (day >=6 ) OnStaButton();
     }
 
     public void EndTodesstrafe()
@@ -211,7 +216,8 @@ public class HangingManager : MonoBehaviour, IListener
     public IEnumerator endDay()
     {
         _uiManager.hideScreenCanvas();
-
+        
+      
         //조민수 comment : 7일차에 환각 나오고 게임 종료는 일단 임시, 추후에 변경가능성 있음
         if (day == 7)
         {
@@ -249,5 +255,10 @@ public class HangingManager : MonoBehaviour, IListener
                 isActiveAsk = true;
                 break;
         }
+    }
+
+    private void OnStaButton()
+    {
+        staButton.SetActive(true);
     }
 }
