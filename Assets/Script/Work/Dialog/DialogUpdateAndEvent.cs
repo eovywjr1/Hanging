@@ -10,11 +10,12 @@ public class DialogUpdateAndEvent : MonoBehaviour, IListener
     DialogBubbleController dialogBubbleController;
     DialogWindowController dialogWindowController;
     HangingManager hangingManager;
+    private BossHand _bossHand = null;
 
     private Dictionary<string, List<List<string>>> compulsoryT, situationD;
 
     bool timeover;
-    public bool clickAttacker, todesstrafe, amnesty, moveCameraToDesk, submitBadge, activeGuide, deactiveGuide, clickBasicJudgementGuide; // waituntil 위해서 public
+    public bool clickAttacker, todesstrafe, amnesty, moveCameraToDesk, activeGuide, deactiveGuide, clickBasicJudgementGuide; // waituntil 위해서 public
 
     string conditionName;
 
@@ -23,6 +24,10 @@ public class DialogUpdateAndEvent : MonoBehaviour, IListener
         dialogBubbleController = GetComponent<DialogBubbleController>();
         dialogWindowController = FindObjectOfType<DialogWindowController>();
         hangingManager = FindObjectOfType<HangingManager>();
+        { 
+            _bossHand = FindObjectOfType<BossHand>();
+            Debug.Assert(_bossHand, "조민수 : bossHand 스크립트가 없어서 확인부탁드립니다.");
+        }
 
         string fileName = HangingManager.day + "DayCompulsoryDialog";
         compulsoryT = dialogReader.Read(fileName);
@@ -91,7 +96,7 @@ public class DialogUpdateAndEvent : MonoBehaviour, IListener
             }
 
             if ((i.Count > 4) && (i[4].Equals("") == false))
-                EventManager.instance.postNotification("dialogAuto" + i[4], this, null);
+                Invoke(i[4], 0f);
         }
     }
 
@@ -129,6 +134,19 @@ public class DialogUpdateAndEvent : MonoBehaviour, IListener
         this.GetType().GetField(name).SetValue(this, true);
     }
 
+    public IEnumerator dialogUnsubmitBadge(float time)
+    {
+        yield return new WaitForSecondsRealtime(time);
+
+        bool isBadgeSumit = _bossHand.isSubmit;
+
+        if (isBadgeSumit == false)
+        {
+            if (time == 10f)
+                StartCoroutine(SetSituationDialog(UnityEngine.Random.Range(58, 60), 0));
+        }
+    }
+
     void Initialize()
     {
         timeover = false;
@@ -137,6 +155,38 @@ public class DialogUpdateAndEvent : MonoBehaviour, IListener
     int StringToInt(string str)
     {
         return int.Parse(str);
+    }
+
+    private void badgeCountDownDialog()
+    {
+        StartCoroutine(SetSituationDialog(60, 0));
+    }
+
+    private void badgeSecondCountDownDialog()
+    {
+        StartCoroutine(_bossHand.checkSubmit(2f, (isSubmit) =>
+        {
+            if (isSubmit == false)
+                return;
+        }));
+
+        StartCoroutine(SetSituationDialog(60, 0));
+    }
+
+    private void badgeLastSecondCountDownDialog()
+    {
+        StartCoroutine(_bossHand.checkSubmit(2f, (isSubmit) =>
+        {
+            if (isSubmit)
+                StartCoroutine(SetSituationDialog(61, 0));
+            else
+                StartCoroutine(SetSituationDialog(62, 0));
+        }));
+    }
+
+    private void gameOverForUnSubmitBage()
+    {
+        StartCoroutine(FindObjectOfType<GameManager>().endGame());
     }
 
     public void OnEvent(string eventType, Component sender, object parameter = null)
