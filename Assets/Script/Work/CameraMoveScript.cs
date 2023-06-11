@@ -10,7 +10,7 @@ public class CameraMoveScript : MonoBehaviour, IListener
     private float maxPositionY = 0;
     private float downMaxPositionY = -7.2f, upMaxPositionY = 0;
 
-    private void Start()
+    private void Awake()
     {
         EventManager.instance.addListener("possiblemoveCameraToDesk", this);
     }
@@ -19,9 +19,7 @@ public class CameraMoveScript : MonoBehaviour, IListener
     {
         if (Input.GetKeyDown(KeyCode.Space) && isPossibleMove)
         {
-            _directionY *= -1f;
-            maxPositionY = (maxPositionY == downMaxPositionY) ? upMaxPositionY : downMaxPositionY;
-            isMove = true;
+            moveToDesk(_directionY * -1);
 
             EventManager.instance.postNotification("dialogEvent", this, "moveCameraToDesk");
         }
@@ -43,6 +41,7 @@ public class CameraMoveScript : MonoBehaviour, IListener
     {
         isMove = true;
         _directionY = directionY;
+        maxPositionY = (directionY == 1) ? upMaxPositionY : downMaxPositionY;
     }
 
     public void OnEvent(string eventType, Component sender, object parameter = null)

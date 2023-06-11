@@ -7,6 +7,7 @@ public class BossHand : MonoBehaviour, IListener
 {
     public static BossHand instance;
     public GameObject button;
+    private HangingManager _hangingManager;
 
     private Vector3 originalLoca;
     private Vector3 destination;
@@ -16,6 +17,8 @@ public class BossHand : MonoBehaviour, IListener
     private void Awake()
     {
         instance = this;
+
+        _hangingManager = FindObjectOfType<HangingManager>();
 
         EventManager.instance.addListener("badge", this);
     }
@@ -68,6 +71,8 @@ public class BossHand : MonoBehaviour, IListener
         yield return new WaitForSecondsRealtime(1.5f);
 
         yield return StartCoroutine(backHandAndDestroyBadge(badge));
+
+        _hangingManager.subtractBadgeCount();
     }
 
     IEnumerator MoveTo(GameObject obj, Vector3 toPos)

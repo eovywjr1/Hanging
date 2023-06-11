@@ -39,6 +39,7 @@ public class HangingManager : MonoBehaviour, IListener
     private int _discorrectAndTodesstrafedPersonCount = 0;
 
     public static int day = 1;
+    private static int badgeCount = 3;
 
     private void Awake()
     {
@@ -48,7 +49,6 @@ public class HangingManager : MonoBehaviour, IListener
         _uiManager = FindObjectOfType<UiManager>();
 
         scrollViewController=FindObjectOfType<ScrollViewController>();
-
     }
 
     private void Start()
@@ -60,6 +60,8 @@ public class HangingManager : MonoBehaviour, IListener
         EventManager.instance.addListener("activeAsk", this);
 
         if (day >=6 ) OnStaButton();
+
+        FindObjectOfType<BadgeManager>().spawnBadge(badgeCount);
     }
 
     public void EndTodesstrafe()
@@ -239,6 +241,11 @@ public class HangingManager : MonoBehaviour, IListener
         day++;
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void subtractBadgeCount()
+    {
+        --badgeCount;
     }
 
     public void OnEvent(string eventType, Component sender, object parameter = null)
