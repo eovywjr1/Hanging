@@ -1,6 +1,7 @@
 using Kino;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -18,8 +19,10 @@ public class HangingManager : MonoBehaviour, IListener
     [SerializeField] GameObject convertEffect, nextDayEffect,attackerPrefab;
     public ScrollViewController scrollViewController;
 
-    public bool isTodesstrafe, isAmnesty, isActiveAsk;
+    public bool isTodesstrafe, isActiveAsk;
     public bool isStatementWrongProcess;
+
+    public GameObject staButton;
 
     private int _judgeCount = 0;
     public int judgeCount
@@ -36,6 +39,7 @@ public class HangingManager : MonoBehaviour, IListener
     private int _discorrectAndTodesstrafedPersonCount = 0;
 
     public static int day = 1;
+    private static int badgeCount = 3;
 
     private void Awake()
     {
@@ -45,7 +49,6 @@ public class HangingManager : MonoBehaviour, IListener
         _uiManager = FindObjectOfType<UiManager>();
 
         scrollViewController=FindObjectOfType<ScrollViewController>();
-
     }
 
     private void Start()
@@ -55,6 +58,10 @@ public class HangingManager : MonoBehaviour, IListener
         EventManager.instance.addListener("amnesty", this);
         EventManager.instance.addListener("todesstrafe", this);
         EventManager.instance.addListener("activeAsk", this);
+
+        if (day >=6 ) OnStaButton();
+
+        FindObjectOfType<BadgeManager>().spawnBadge(badgeCount);
     }
 
     public void EndTodesstrafe()
@@ -91,8 +98,6 @@ public class HangingManager : MonoBehaviour, IListener
 
     public void Amnesty()
     {
-        isAmnesty = true;
-
         //���� �Ǻ�//
         if (checkCorrectTodesstrafe(1)) 
             Debug.Log("True");
@@ -108,6 +113,8 @@ public class HangingManager : MonoBehaviour, IListener
         {
             Debug.Log(attackerInfo.recordData.isHanging);
 
+            ++_correctJudgeCount;
+
             return true;
         }
         else
@@ -115,6 +122,10 @@ public class HangingManager : MonoBehaviour, IListener
             Debug.Log(attackerInfo.recordData.isHanging);
 
             StartCoroutine(StartHoldOutHands());
+
+            ++_discorrectJudgeCount;
+            if (mode == 0)
+                ++_discorrectAndTodesstrafedPersonCount;
 
             return false;
         }
@@ -199,10 +210,9 @@ public class HangingManager : MonoBehaviour, IListener
         attackerInfo = attacker.GetComponent<AttackerInfo>();
 
         if (isCompulsoryEnd)
-            attackerMouseMove.setAllPossible();
+            EventManager.instance.postPossibleEvent();
 
         isTodesstrafe = false;
-        isAmnesty = false;
         isActiveAsk = false;
     }
 
@@ -214,7 +224,8 @@ public class HangingManager : MonoBehaviour, IListener
     public IEnumerator endDay()
     {
         _uiManager.hideScreenCanvas();
-
+        
+      
         //조민수 comment : 7일차에 환각 나오고 게임 종료는 일단 임시, 추후에 변경가능성 있음
         if (day == 7)
         {
@@ -238,6 +249,11 @@ public class HangingManager : MonoBehaviour, IListener
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
+    public void subtractBadgeCount()
+    {
+        --badgeCount;
+    }
+
     public void OnEvent(string eventType, Component sender, object parameter = null)
     {
         switch (eventType)
@@ -252,5 +268,10 @@ public class HangingManager : MonoBehaviour, IListener
                 isActiveAsk = true;
                 break;
         }
+    }
+
+    private void OnStaButton()
+    {
+        staButton.SetActive(true);
     }
 }

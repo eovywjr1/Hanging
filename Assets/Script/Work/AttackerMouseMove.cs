@@ -26,13 +26,13 @@ public class AttackerMouseMove : MonoBehaviour, IListener
     {
         hangingManager = FindObjectOfType<HangingManager>();
         lineManager = FindObjectOfType<LineManager>();
+
+        EventManager.instance.addListener("possibleclickAttacker", this);
+        EventManager.instance.addListener("possibletodesstrafe", this);
     }
 
     private void Start()
     {
-        EventManager.instance.addListener("possibleclickAttacker", this);
-        EventManager.instance.addListener("possibletodesstrafe", this);
-
         prisoner = GetComponentInChildren<prisoner>();
     }
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GuideButton : MonoBehaviour, IListener
+public class GuideButton : MonoBehaviour
 {
     [SerializeField]
     private ScrollRect scrollRect;
@@ -19,8 +19,6 @@ public class GuideButton : MonoBehaviour, IListener
     private void OnEnable()
     {
         scrollRect.verticalNormalizedPosition = 1f;
-
-        EventManager.instance.addListener("dialogAutoshowIllegalMoveGuide", this);
     }
 
     //���̵�â �ݱ�
@@ -69,14 +67,10 @@ public class GuideButton : MonoBehaviour, IListener
         scrollRect.verticalNormalizedPosition = 1f - normalizedPosition;
     }
 
-    public void OnEvent(string eventType, Component sender, object parameter = null)
+    public void showIllegalMoveGuide()
     {
-        switch (eventType)
-        {
-            case "dialogAutoshowIllegalMoveGuide":
-                StartCoroutine(goToLocationByNumber("5_A"));
-                break;
-        }
+        string illegalButtonText = "5_A";
+        StartCoroutine(goToLocationByNumber(illegalButtonText));
     }
 }
 
