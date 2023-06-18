@@ -85,7 +85,7 @@ public class TableManager : MonoBehaviour
             if(HangingManager.day >= 6) 
                 GetLieORInfoError(data, ref lieORInfoError);
 
-            if (HangingManager.day >= 10)
+            if (HangingManager.day >= 9)
                 SetHumanClone(data);
 
             //국가적 요구 허락OR거절     //유민 수정
