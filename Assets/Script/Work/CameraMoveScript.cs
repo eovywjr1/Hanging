@@ -19,7 +19,13 @@ public class CameraMoveScript : MonoBehaviour, IListener
     {
         if (Input.GetKeyDown(KeyCode.Space) && isPossibleMove)
         {
+<<<<<<< Updated upstream
             moveToDesk(_directionY * -1);
+=======
+            _directionY *= -1f;
+            maxPositionY = (maxPositionY == downMaxPositionY) ? upMaxPositionY : downMaxPositionY;
+            isMove = true;
+>>>>>>> Stashed changes
 
             EventManager.instance.postNotification("dialogEvent", this, "moveCameraToDesk");
         }
@@ -41,7 +47,10 @@ public class CameraMoveScript : MonoBehaviour, IListener
     {
         isMove = true;
         _directionY = directionY;
+<<<<<<< Updated upstream
         maxPositionY = (directionY == 1) ? upMaxPositionY : downMaxPositionY;
+=======
+>>>>>>> Stashed changes
     }
 
     public void OnEvent(string eventType, Component sender, object parameter = null)

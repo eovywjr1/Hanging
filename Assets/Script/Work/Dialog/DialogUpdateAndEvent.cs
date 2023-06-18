@@ -189,11 +189,14 @@ public class DialogUpdateAndEvent : MonoBehaviour, IListener
         StartCoroutine(FindObjectOfType<GameManager>().endGame());
     }
 
+<<<<<<< Updated upstream
     private void showIllegalMoveGuide()
     {
         FindObjectOfType<GuideButton>().showIllegalMoveGuide();
     }
 
+=======
+>>>>>>> Stashed changes
     public void OnEvent(string eventType, Component sender, object parameter = null)
     {
         if (sender == this)
