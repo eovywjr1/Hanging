@@ -85,6 +85,9 @@ public class TableManager : MonoBehaviour
             if(HangingManager.day >= 6) 
                 GetLieORInfoError(data, ref lieORInfoError);
 
+            if (HangingManager.day >= 10)
+                SetHumanClone(data);
+
             //국가적 요구 허락OR거절     //유민 수정
             if (isApplySpecificInfo && readPrisonerInfo.GetAsk() != null)
                 data["ask"] = readPrisonerInfo.GetAsk();
@@ -194,6 +197,15 @@ public class TableManager : MonoBehaviour
 
         data["gender"] = list[0]["header"][headerid];
         data["name"] = list[valueid][list[0]["header"][headerid]][0];
+    }
+
+    private void SetHumanClone(Dictionary<string, string> data)
+    {
+        if(HangingManager.day == 10)
+        {
+            data["humanClone"] = 0.ToString();
+        }
+        data["humanClone"] = Random.Range(0, 2).ToString();
     }
 
     private void SetCrimeReason(Dictionary<string, string> data)
