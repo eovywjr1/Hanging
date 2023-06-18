@@ -344,7 +344,7 @@ PrefabInstance:
       objectReference: {fileID: 2938550313611920719}
     - target: {fileID: 2076108095126952184, guid: ee39c750dbaadb947af1d1b5a95a9e91, type: 3}
       propertyPath: segmentCnt
-      value: 40
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 2076108095126952184, guid: ee39c750dbaadb947af1d1b5a95a9e91, type: 3}
       propertyPath: endTransform
@@ -352,11 +352,15 @@ PrefabInstance:
       objectReference: {fileID: 5660886376084048379}
     - target: {fileID: 2076108095126952184, guid: ee39c750dbaadb947af1d1b5a95a9e91, type: 3}
       propertyPath: constraintLoop
-      value: 40
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 2076108095126952184, guid: ee39c750dbaadb947af1d1b5a95a9e91, type: 3}
       propertyPath: startTransform
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2076108095126952185, guid: ee39c750dbaadb947af1d1b5a95a9e91, type: 3}
+      propertyPath: m_UseWorldSpace
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2076108095126952185, guid: ee39c750dbaadb947af1d1b5a95a9e91, type: 3}
       propertyPath: m_Parameters.colorGradient.key0.b
