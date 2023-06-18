@@ -57,11 +57,11 @@ public class UiManager : MonoBehaviour, IListener
                 EventManager.instance.postNotification("dialogEvent", this, "deactiveGuide");
                 if (GuideWindow.activeSelf == true)
                 {
-                    //GuideWindow.SetActive(false);
-                    //attackerMouseMove.SetPossibleTodesstrafe(true);
-                    ////Debug.Log("������ Ŭ�� Ǯ��");
-                    //rope.SetCutPossible(true);
-                    ////Debug.Log("���� �� Ǯ��");
+                    GuideWindow.SetActive(false);
+                    attackerMouseMove.SetPossibleTodesstrafe(true);
+                    //Debug.Log("������ Ŭ�� Ǯ��");
+                    rope.SetCutPossible(true);
+                    //Debug.Log("���� �� Ǯ��");
                 }
             }
         }

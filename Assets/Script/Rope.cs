@@ -137,18 +137,16 @@ public class Rope : MonoBehaviour
 
     private void ApplyConstraint()
     {
-        int lastIdx = segments.Count;
+        int lastIdx = segments.Count - 1;
 
-        //�� ��(ù��°) ���׸�Ʈ�� ������Ŵ
         segments[0].position = startTransform.position;
 
         if (endTransform)
         {
-            segments[segments.Count - 1].position = endTransform.position;
-            lastIdx -= 1;
+            segments[lastIdx].position = endTransform.position;
         }
 
-        for(int i=0;i<segments.Count - 1;i++)
+        for(int i=0;i< lastIdx;i++)
         {
             float distance = (segments[i].position - segments[i + 1].position).magnitude;
             float diff = segmentLength - distance;
@@ -156,11 +154,11 @@ public class Rope : MonoBehaviour
 
             Vector2 movement = dir * diff;
 
-            if (i == 0) //ù��° ���׸�Ʈ �����̸� �ȵ�. �ι�° ���׸�Ʈ�� �̵�
+            if (i == 0)
             {
                 segments[i + 1].position += movement;
             }
-            else if(i < lastIdx)
+            else if(i < lastIdx )
             {
                 segments[i].position -= movement * 0.5f;
                 segments[i + 1].position += movement * 0.5f;
@@ -174,7 +172,7 @@ public class Rope : MonoBehaviour
         public Vector2 position;
         public Vector2 velocity;
 
-        public Segment(Vector2 _position) //����
+        public Segment(Vector2 _position)
         {
             previousPos = _position;
             position = _position;
