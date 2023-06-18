@@ -201,11 +201,20 @@ public class TableManager : MonoBehaviour
 
     private void SetHumanClone(Dictionary<string, string> data)
     {
+        switch(HangingManager.day)
+        {
+            case 10:
+                data["humanClone"] = 0.ToString();
+                break;
+            default:
+                data["humanClone"] = Random.Range(0, 2).ToString();
+                break;
+        }
         if(HangingManager.day == 10)
         {
+            //몸수색 구현후 작업 필요
             data["humanClone"] = 0.ToString();
         }
-        data["humanClone"] = Random.Range(0, 2).ToString();
     }
 
     private void SetCrimeReason(Dictionary<string, string> data)
