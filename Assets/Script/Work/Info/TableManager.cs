@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEngine;
 
 public class TableManager : MonoBehaviour
@@ -15,9 +15,9 @@ public class TableManager : MonoBehaviour
 
     ReadPrisonerInfo readPrisonerInfo;
 
-    bool isApplySpecificInfo;   // Æ¯Á¤ Á¤º¸ Àû¿ë ¿©ºÎ
+    bool isApplySpecificInfo;   // íŠ¹ì • ì •ë³´ ì ìš© ì—¬ë¶€
 
-    /// positionGrade = ½ÅºĞ(½Ã¹Î µî±Ş)
+    /// positionGrade = ì‹ ë¶„(ì‹œë¯¼ ë“±ê¸‰)
     void Awake()
     {
         if (HangingManager.day >= 1 && HangingManager.day <= 7)
@@ -37,7 +37,7 @@ public class TableManager : MonoBehaviour
             acceptCrimeInfoReader = new AcceptCrimeInfoReader(Resources.Load("AcceptCrimeInfo") as TextAsset);
             specialJobIndexInfoReader = new SpecialJobIndexInfoReader(Resources.Load("AcceptCrimeInfo") as TextAsset);
 
-            // Á¶¹Î¼ö : °¢ ÀÏÂ÷ º° Å×½ºÆ® ÇÒ ¶§ »ç¿ëÇÏ´Â ÄÚµå //
+            // ì¡°ë¯¼ìˆ˜ : ê° ì¼ì°¨ ë³„ í…ŒìŠ¤íŠ¸ í•  ë•Œ ì‚¬ìš©í•˜ëŠ” ì½”ë“œ //
             string fileName = "DayJudgeMentInfo";
             judgeT.Add(csvReader.Read("1" + fileName));
             judgeT.Add(csvReader.Read("2" + fileName));
@@ -49,7 +49,7 @@ public class TableManager : MonoBehaviour
             judgeT.Add(csvReader.Read("8" + fileName));
         }
 
-        // Á¶¹Î¼ö : Á¤»óÀûÀÎ ÇÃ·¹ÀÌ¿¡¼­´Â °¢ ÇØ´ç ÀÏÂ÷¸¶´Ù Ãß°¡ //
+        // ì¡°ë¯¼ìˆ˜ : ì •ìƒì ì¸ í”Œë ˆì´ì—ì„œëŠ” ê° í•´ë‹¹ ì¼ì°¨ë§ˆë‹¤ ì¶”ê°€ //
         //string fileName = "DayJudgeMentInfo";
         //judgeT.Add(CSVReader.Read(fileName + HangingManager.day.ToString()));
 
@@ -72,7 +72,7 @@ public class TableManager : MonoBehaviour
         }
         GetCrimePlaceAndMove(data, attackerName);
 
-        //ÅëÇÕ ±â·ÏÀÏ °æ¿ì °¡ÇØÀÚ data¿¡¸¸ ³ÖÀ½//
+        //í†µí•© ê¸°ë¡ì¼ ê²½ìš° ê°€í•´ì dataì—ë§Œ ë„£ìŒ//
         if (attackerFamilyName == null)
         {
             GetcrimeRecord(data);
@@ -81,14 +81,23 @@ public class TableManager : MonoBehaviour
             SetJob(data, data["positionGrade"], 1);
             Debug.Log("Job : " + data["job"]);
 
-            //À§Áõ¿©ºÎ//
+            //ìœ„ì¦ì—¬ë¶€//
             if(HangingManager.day >= 6) 
                 GetLieORInfoError(data, ref lieORInfoError);
 
+            //ë³µì œì¸ê°„//
             if (HangingManager.day >= 9)
                 SetHumanClone(data);
 
-            //±¹°¡Àû ¿ä±¸ Çã¶ôOR°ÅÀı     //À¯¹Î ¼öÁ¤
+            if (HangingManager.day >= 12)
+            {
+                SetCrimeType(data);         //ë²”ì£„ ì¢…ë¥˜ ì •ì˜
+                SetGeneCode(data);          //ìœ ì „ì ì½”ë“œ ë°œê²¬ ì—¬ë¶€ ì •ì˜
+                SetNormalGeneCode(data);    //ì •ìƒì¸ ìœ ì „ì ì½”ë“œ ì—¬ë¶€ ì •ì˜
+                SetGradeBrand(data);        //ëª¸ìˆ˜ìƒ‰ ê²°ê³¼ ì‹œë¯¼ ë“±ê¸‰ í‘œì‹ì˜ ì´ìƒì„ ì •ì˜
+            }
+
+            //êµ­ê°€ì  ìš”êµ¬ í—ˆë½ORê±°ì ˆ     //ìœ ë¯¼ ìˆ˜ì •
             if (isApplySpecificInfo && readPrisonerInfo.GetAsk() != null)
                 data["ask"] = readPrisonerInfo.GetAsk();
             else
@@ -109,7 +118,7 @@ public class TableManager : MonoBehaviour
         {
             int valueid = Random.Range(0, crimeT.Count);
 
-            //À¯¹Î ¼öÁ¤
+            //ìœ ë¯¼ ìˆ˜ì •
             int crimeGrade;
             if(isApplySpecificInfo && readPrisonerInfo.GetCrimeGrade() != -1)
             {
@@ -140,7 +149,7 @@ public class TableManager : MonoBehaviour
         }
         else
         {
-            //À¯¹Î ¼öÁ¤
+            //ìœ ë¯¼ ìˆ˜ì •
             if (attackerName == null)
             {
                 if (isApplySpecificInfo && readPrisonerInfo.GetAttackerMove() != -1)
@@ -175,7 +184,7 @@ public class TableManager : MonoBehaviour
 
     void GetPositionGradeAndFamilyName(Dictionary<string, string> data)
     {
-        //À¯¹Î ¼öÁ¤
+        //ìœ ë¯¼ ìˆ˜ì •
         int positionGrade;
         if(isApplySpecificInfo && readPrisonerInfo.GetGrade() != -1)
         {
@@ -212,8 +221,54 @@ public class TableManager : MonoBehaviour
         }
         if(HangingManager.day == 10)
         {
-            //¸ö¼ö»ö ±¸ÇöÈÄ ÀÛ¾÷ ÇÊ¿ä
+            //ëª¸ìˆ˜ìƒ‰ êµ¬í˜„í›„ ì‘ì—… í•„ìš”
             data["humanClone"] = 0.ToString();
+        }
+    }
+
+    private void SetCrimeType(Dictionary<string, string> data)
+    {
+        data["crimeType"] = Random.Range(0, 5).ToString();
+    }
+
+    private void SetGeneCode(Dictionary<string, string> data)
+    {
+        bool foundGeneCode = false; //ìœ ì „ì ì½”ë“œ ë°œê²¬ ì‘ì—… êµ¬í˜„ ì™„ë£Œ í›„ ìˆ˜ì • í•„ìš”
+
+        if (foundGeneCode)
+            data["geneCode"] = "1";
+        else
+            data["geneCode"] = "0";
+    }
+
+    private void SetNormalGeneCode(Dictionary<string, string> data)
+    {
+        bool foundNormalGeneCode = false;   //ìœ ì „ì ì½”ë“œ ë°œê²¬ ì‘ì—… êµ¬í˜„ ì™„ë£Œ í›„ ìˆ˜ì • í•„ìš”
+
+        if (foundNormalGeneCode)
+            data["normalGeneCode"] = "1";
+        else
+            data["normalGeneCode"] = "0";
+    }
+
+    private void SetGradeBrand(Dictionary<string, string> data)
+    {
+        //ëª¸ìˆ˜ìƒ‰ ì‘ì—… êµ¬í˜„ ì™„ë£Œ í›„ ìˆ˜ì • í•„ìš”
+
+        bool sameWithBirthday = true;       //ë“±ê¸‰ í‘œì‹ ìƒì„±ì¼ == ì¶œìƒì¼ ì¼ ê²½ìš°
+        bool sameWithDateChanged = true;    //ë“±ê¸‰ í‘œì‹ ìƒì„±ì¼ == ë³€ê²½ì¼ ì¼ ê²½ìš°
+
+        if(sameWithBirthday && !sameWithDateChanged)
+        {
+            data["gradeBrand"] = "1";
+        }
+        else if(!sameWithBirthday && sameWithDateChanged)
+        {
+            data["gradeBrand"] = "2";
+        }
+        else if(!sameWithBirthday && !sameWithDateChanged)
+        {
+            data["gradeBrand"] = "0";
         }
     }
 
@@ -229,7 +284,7 @@ public class TableManager : MonoBehaviour
 
         if (isAcceptCrime == 1)
         {
-            //À¯¹Î ¼öÁ¤
+            //ìœ ë¯¼ ìˆ˜ì •
             if (isApplySpecificInfo && readPrisonerInfo.GetCrimeReason() != -1)
             {
                 data["crimeReason"] = acceptCrimeList[readPrisonerInfo.GetCrimeReason()].ToString();
@@ -284,7 +339,7 @@ public class TableManager : MonoBehaviour
         }
     }
 
-    //½ÅºĞ µî±Ş//
+    //ì‹ ë¶„ ë“±ê¸‰//
     private string GetFamilyGrade(string grade)
     {
         switch (grade)
@@ -304,8 +359,8 @@ public class TableManager : MonoBehaviour
         }
     }
 
-    //Á÷¾÷//
-    //personÀº °¡ÇØÀÚ, ÇÇÇØÀÚ ±¸ºĞ
+    //ì§ì—…//
+    //personì€ ê°€í•´ì, í”¼í•´ì êµ¬ë¶„
     void SetJob(Dictionary<string, string> data, string positionGrade, int isAttacker)
     {
         int specialJobFlag = 0;
@@ -340,13 +395,15 @@ public class TableManager : MonoBehaviour
         }
 
 
-        //¾Æ·¡ ³»¿ëÀ» µ¥ÀÌÅÍ·Î »©¾ß ÇÔ
+        //ì•„ë˜ ë‚´ìš©ì„ ë°ì´í„°ë¡œ ë¹¼ì•¼ í•¨
         data["jobText"] = jobText;
         data["job"] = specialJobIndexInfoReader.getSpecialJobIndex(HangingManager.day, jobText, int.Parse(data["positionGrade"]), isAttacker).ToString();
 
-        Debug.Log("Á÷¾÷ : " + jobText);
+        Debug.Log("ì§ì—… : " + jobText);
     }
     
+    
+
     string GetAge()
     {
         return Random.Range(20, 61).ToString();
@@ -356,7 +413,7 @@ public class TableManager : MonoBehaviour
     {
         if (HangingManager.day >= 4)
         {
-            //À¯¹Î ¼öÁ¤
+            //ìœ ë¯¼ ìˆ˜ì •
             if (isApplySpecificInfo && readPrisonerInfo.GetCrimeRecord() != -1)
             {
                 data["crimeRecord"] = readPrisonerInfo.GetCrimeReason().ToString();
@@ -368,11 +425,11 @@ public class TableManager : MonoBehaviour
 
             if (int.Parse(data["crimeRecord"]) == probabilityInfo["crimeRecordHighest"][0].Count - 1)
             {
-                data["crimeRecordText"] = "¾øÀ½";
+                data["crimeRecordText"] = "ì—†ìŒ";
             }
             else
             {   
-                // ºñ¾îÀÖ´Â°Å ÀúÀå¾ÈÇÏ°Ô ¹Ù²ã¾ß µÊ.
+                // ë¹„ì–´ìˆëŠ”ê±° ì €ì¥ì•ˆí•˜ê²Œ ë°”ê¿”ì•¼ ë¨.
                 while (true)
                 {
                     int valueid = Random.Range(0, crimeT.Count);
@@ -410,15 +467,15 @@ public class TableManager : MonoBehaviour
 
                 int lieORInfoErrorDistinguish = getRandomValueByRange(probabilityInfo["lieORInfoError"][0]);
                 
-                //6ÀÏÂ÷ ¹«Á¶°Ç À§Áõ//
+                //6ì¼ì°¨ ë¬´ì¡°ê±´ ìœ„ì¦//
                 if (HangingManager.day == 6)
                     lieORInfoErrorDistinguish = 0;
 
-                //À¯¹Î Ãß°¡
+                //ìœ ë¯¼ ì¶”ê°€
                 if (isApplySpecificInfo && readPrisonerInfo.GetLie() != -1)
                     lieORInfoErrorDistinguish = readPrisonerInfo.GetLie();
 
-                //À§Áõ//
+                //ìœ„ì¦//
                 if (lieORInfoErrorDistinguish == 0)
                 {
                     isLie = true;
@@ -426,7 +483,7 @@ public class TableManager : MonoBehaviour
                     lieORInfoError["lie"].Add(errorList[i]);
                     data["lie"] = isLie ? "1" : "0";
                 }
-                //Á¤º¸ ¿À·ù//
+                //ì •ë³´ ì˜¤ë¥˜//
                 else
                 {
                     if (HangingManager.day >= 7)
@@ -478,7 +535,7 @@ public class TableManager : MonoBehaviour
         {
             return GetCrimePlaceText(Random.Range(0, 7).ToString());
         }
-        else //¸¶Áö¸· crimeReasonText
+        else //ë§ˆì§€ë§‰ crimeReasonText
         {
             int valueid = Random.Range(0, crimeT.Count);
             int headerid = Random.Range(0, crimeT[0]["header"].Count);
@@ -500,7 +557,7 @@ public class TableManager : MonoBehaviour
                 return index;
         }
 
-        Debug.LogWarning($" È®·ü ÃÑÇÕÀÌ '{randomValue}' ÀÔ´Ï´Ù. ¼öÁ¤ÀÌ ÇÊ¿äÇÕ´Ï´Ù.");
+        Debug.LogWarning($" í™•ë¥  ì´í•©ì´ '{randomValue}' ì…ë‹ˆë‹¤. ìˆ˜ì •ì´ í•„ìš”í•©ë‹ˆë‹¤.");
         return -1;
     }
 }
