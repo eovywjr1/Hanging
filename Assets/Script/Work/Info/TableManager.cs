@@ -97,6 +97,13 @@ public class TableManager : MonoBehaviour
                 SetGradeBrand(data);        //몸수색 결과 시민 등급 표식의 이상을 정의
             }
 
+            if(HangingManager.day >= 13)
+            {
+                SetGradeBrandChange(data);  //몸수색 결과 중 시민 등급 표식 변경일 정의
+                SetScar(data);  //몸수색 결과 중 흉터 여부 정의
+                SetTattoo(data);    //몸수색 결과 중 문신 여부 정의
+            }
+
             //국가적 요구 허락OR거절     //유민 수정
             if (isApplySpecificInfo && readPrisonerInfo.GetAsk() != null)
                 data["ask"] = readPrisonerInfo.GetAsk();
@@ -314,6 +321,40 @@ public class TableManager : MonoBehaviour
             }
         }
         data["crimeReasonText"] = detailT[int.Parse(data["crimeReason"])][detailT[0]["header"][0]][0];
+    }
+
+    private void SetGradeBrandChange(Dictionary<string, string> data)
+    {
+        //몸수색 구현 완료 후 수정 필요
+        //시민 등급 변경일이 사유(모범, 국가공헌, 국정 지원)에 따라 다름
+        System.DateTime changeDate = System.DateTime.Today; //임시
+        System.DateTime baseDate = System.DateTime.Today;   //임시
+
+        int result = System.DateTime.Compare(changeDate, baseDate);
+    
+        if(result < 0)  //시민등급 변경일이 해당 '변경 제도 시행일' 이전
+        {
+            data["gradeBrandChange"] = "0";
+        }
+        else //시민등급 변경일이 해당 '변경 제도 시행일' 이후인 경우
+        {
+            data["gradeBrandChange"] = "1";
+        }
+    }
+
+    private void SetScar(Dictionary<string, string> data)
+    {
+        // 몸수색 구현 완료 후 수정 필요
+        int scar = 0;   //몸수색 관련 스크립트에서 흉터 여부 값 가져오기
+
+        data["scar"] = scar.ToString();
+    }
+
+    private void SetTattoo(Dictionary<string, string> data)
+    {
+        //몸수색 구현 완료 후 수정 필요
+        int tattoo = 0; //임시값, 몸수색 관련 스크립트에서 타투 여부 값 가져오기
+        data["tattoo"] = tattoo.ToString();
     }
 
     private string GetCrimePlaceText(string grade)
