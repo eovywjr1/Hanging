@@ -104,6 +104,15 @@ public class TableManager : MonoBehaviour
                 SetTattoo(data);    //몸수색 결과 중 문신 여부 정의
             }
 
+            if (HangingManager.day >= 14)
+            {
+                SetBurn(data);  //몸수색 결과 중 화상 여부 정의
+                if (data["brandChange"] == "4" || data["brandChange"] =="5")
+                    // 시민 등급 표식이 결혼이나 입적으로 변경된 경우,
+                    // 배우자나 부모의 시민등급과 본인의 시민 등급 사이의 관계를 정의
+                    SetPartnerGrade(data);  
+            }
+
             //국가적 요구 허락OR거절     //유민 수정
             if (isApplySpecificInfo && readPrisonerInfo.GetAsk() != null)
                 data["ask"] = readPrisonerInfo.GetAsk();
@@ -356,6 +365,45 @@ public class TableManager : MonoBehaviour
         int tattoo = 0; //임시값, 몸수색 관련 스크립트에서 타투 여부 값 가져오기
         data["tattoo"] = tattoo.ToString();
     }
+
+
+    // 혜원 추가 (맞는지 모르겠어요....ㅠㅠㅠ)
+    private void SetBurn(Dictionary<string, string> data)
+    {
+        //몸수색 구현 완료 후 수정 필요
+        int burn = 0;   //몸수색 관련 스크립트에서 화상 여부 값 가져오기
+        data["burn"] = burn.ToString();
+    }
+    private void SetPartnerGrade(Dictionary<string, string> data)
+    {
+        // 시민 등급 표식 변경자 중 사유가 결혼 또는 입적인 경우,
+        // 배우자와 부모의 시민 등급을 정의
+
+
+        //if (data["brandChange"] == "4" || data["brandChange"] == "5")
+        //{
+
+        //}
+
+        int partnerGrade = 0; //임시값, 부모나 배우자의 등급이 저장된다고 생각.
+        //int parentGrade = 0; //임시값, 혹시나 따로 저장될 경우.
+
+        if (int.Parse(data["positionGrade"]) == partnerGrade)
+        {
+            data["partnerGrade"] = "0";
+        }
+        if (int.Parse(data["positionGrade"]) < partnerGrade)
+        {
+            data["partnerGrade"] = "1";
+        }
+        if (int.Parse(data["positionGrade"]) > partnerGrade)
+        {
+            data["partnerGrade"] = "2";
+        }
+    }
+    
+    //
+
 
     private string GetCrimePlaceText(string grade)
     {
