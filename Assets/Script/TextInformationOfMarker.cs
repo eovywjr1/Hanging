@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -6,23 +6,12 @@ using TMPro;
 public class TextInformationOfMarker : MonoBehaviour
 {
     [SerializeField] TMP_Text information;
+    [SerializeField] BodySearchData bodySearchData;
 
     private void Start()
     {
-        System.DateTime currentDate = System.DateTime.Now;
-        System.DateTime randomDate1 = GetRandomDate(currentDate, currentDate.AddYears(1));
-        System.DateTime randomDate2 = GetRandomDate(currentDate, currentDate.AddYears(1));
-
-        information.text = "µî±Ş Ç¥½Ä »ı¼ºÀÏ : " + randomDate1.ToString("yyyy-MM-dd") + "\n";
-        information.text += "½Â±ŞÀÏ : " + randomDate2.ToString("yyyy-MM-dd");
-    }
-
-    private System.DateTime GetRandomDate(System.DateTime startDate, System.DateTime endDate)
-    {
-        System.TimeSpan timeSpan = endDate - startDate;
-        System.TimeSpan randomTimeSpan = new System.TimeSpan((long)(Random.value * timeSpan.Ticks));
-        System.DateTime randomDate = startDate + randomTimeSpan;
-
-        return randomDate;
+        information.text = "ë“±ê¸‰ í‘œì‹ ìƒì„±ì¼ : " + bodySearchData.randomDate1.ToString("yyyy-MM-dd") + "\n";
+        information.text += "ìŠ¹ê¸‰ì¼ : " + bodySearchData.randomDate2.ToString("yyyy-MM-dd") + "\n";
+        information.text += "ë“±ê¸‰ í‘œì‹ ë³€ê²½ ì‚¬ìœ  : " + bodySearchData.reasonForChange;
     }
 }
