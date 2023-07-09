@@ -274,4 +274,9 @@ public class HangingManager : MonoBehaviour, IListener
     {
         staButton.SetActive(true);
     }
+
+    public void searchReport()
+    {
+
+    }
 }
