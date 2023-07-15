@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 
 public class TableManager : MonoBehaviour
@@ -106,11 +107,22 @@ public class TableManager : MonoBehaviour
 
             if (HangingManager.day >= 14)
             {
-                SetBurn(data);  //몸수색 결과 중 화상 여부 정의
-                if (data["brandChange"] == "4" || data["brandChange"] =="5")
+                if (data["scar"] == "1")    //화상 흉터가 있을 경우
+                {
+                    SetBurn(data);  //몸수색 결과 중 화상 흉터와 출생일 사이의 관계를 정의
+                }
+                if (data["brandChange"] == "4" || data["brandChange"] == "5")
+                {
                     // 시민 등급 표식이 결혼이나 입적으로 변경된 경우,
                     // 배우자나 부모의 시민등급과 본인의 시민 등급 사이의 관계를 정의
-                    SetPartnerGrade(data);  
+                    SetPartnerGrade(data);
+                }
+            }
+            if (HangingManager.day >= 15)
+            {
+                if (data["tatto"] == "2")
+                    SetRTattoDate(data);
+                SetFace(data);
             }
 
             //국가적 요구 허락OR거절     //유민 수정
@@ -367,7 +379,7 @@ public class TableManager : MonoBehaviour
     }
 
 
-    // 혜원 추가 (맞는지 모르겠어요....ㅠㅠㅠ)
+    // 혜원 추가
     private void SetBurn(Dictionary<string, string> data)
     {
         //몸수색 구현 완료 후 수정 필요
@@ -378,12 +390,6 @@ public class TableManager : MonoBehaviour
     {
         // 시민 등급 표식 변경자 중 사유가 결혼 또는 입적인 경우,
         // 배우자와 부모의 시민 등급을 정의
-
-
-        //if (data["brandChange"] == "4" || data["brandChange"] == "5")
-        //{
-
-        //}
 
         int partnerGrade = 0; //임시값, 부모나 배우자의 등급이 저장된다고 생각.
         //int parentGrade = 0; //임시값, 혹시나 따로 저장될 경우.
@@ -401,7 +407,53 @@ public class TableManager : MonoBehaviour
             data["partnerGrade"] = "2";
         }
     }
-    
+
+    private void SetRTattoDate(Dictionary<string, string> data)
+    {
+        //몸수색 구현 완료 후 수정 필요
+        //캐릭터 몸수색 결과 중 반란군 문신 생성일을 정의
+
+        int rtattoDate = 0; //임시 값, 몸수색 관련 스크립트에서
+                            //반란군 문신 생성일 값 가져오기
+
+        if (rtattoDate <= 2011)
+        {
+            data["rTattoDate"] = "0";
+        }
+        else if (rtattoDate >= 2012 && rtattoDate <= 2016)
+        {
+            data["rTattoDate"] = "1";
+        }
+        else
+        {
+            data["rTattoDate"] = "2";
+        }
+    }
+
+    private void SetFace(Dictionary<string, string> data)
+    {
+        //캐릭터의 얼굴 수색 결과 중
+        //캐릭터가 충족한 시민 등급 외형 조건을 정의
+
+        //얼굴 수색 구현 후 수정 필요
+
+        bool ARankCitizenAppearance = false;    //임시값
+        bool BRankCitizenAppearance = false;    //임시값
+
+        if (!ARankCitizenAppearance && !BRankCitizenAppearance)
+        {
+            data["face"] = "0";
+        }
+        else if (ARankCitizenAppearance)
+        {
+            data["face"] = "1";
+        }
+        else if (BRankCitizenAppearance)
+        {
+            data["face"] = "2";
+        }
+    }
+
     //
 
 
