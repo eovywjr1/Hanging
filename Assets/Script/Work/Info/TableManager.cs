@@ -388,7 +388,7 @@ public class TableManager : MonoBehaviour
     private void SetBrandChange(Dictionary<string, string> data)
     {
         if (HangingManager.day == 13)
-            data["brandChange"] = Random.Range(0, 3).ToString();
+            data["brandChange"] = Random.Range(0, 4).ToString();
         else
             data["brandChange"] = Random.Range(0, 6).ToString();
     }
