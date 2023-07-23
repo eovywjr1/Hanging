@@ -6,7 +6,7 @@ public class FaceSearchData : MonoBehaviour
 {
     public Dictionary<string, int> faceData;
 
-    public FaceSearchData()
+    private void Awake()
     {
         faceData = new Dictionary<string, int>();
 
