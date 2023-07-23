@@ -103,6 +103,7 @@ public class TableManager : MonoBehaviour
                 SetGradeBrandChange(data);  //몸수색 결과 중 시민 등급 표식 변경일 정의
                 SetScar(data);  //몸수색 결과 중 흉터 여부 정의
                 SetTattoo(data);    //몸수색 결과 중 문신 여부 정의
+                SetBrandChange(data);      // 시민 등급 표식 사유
             }
 
             if (HangingManager.day >= 14)
@@ -123,6 +124,13 @@ public class TableManager : MonoBehaviour
                 if (data["tatto"] == "2")
                     SetRTattoDate(data);
                 SetFace(data);
+
+            }
+
+            if(HangingManager.day >= 17)
+            {
+                SetPupil(data);
+                SetHair(data);
             }
 
             //국가적 요구 허락OR거절     //유민 수정
@@ -378,6 +386,13 @@ public class TableManager : MonoBehaviour
         data["tattoo"] = tattoo.ToString();
     }
 
+    private void SetBrandChange(Dictionary<string, string> data)
+    {
+        if (HangingManager.day == 13)
+            data["brandChange"] = Random.Range(0, 4).ToString();
+        else
+            data["brandChange"] = Random.Range(0, 6).ToString();
+    }
 
     // 혜원 추가
     private void SetBurn(Dictionary<string, string> data)
@@ -455,6 +470,21 @@ public class TableManager : MonoBehaviour
     }
 
     //
+    private void SetPupil(Dictionary<string, string> data)
+    {
+        //얼굴 수색 결과 중 "눈동자 색상" 정의
+        //얼굴 수색 데이터 스크립트에서 값 가져와야 함 (수정 필요)
+
+        data["pupil"] = Random.Range(0, 4).ToString();  //임시값
+    }
+
+    private void SetHair(Dictionary<string, string> data)
+    {
+        //얼굴 수색 결과 중, "머리카락 색상" 정의
+        //얼굴 수색 데이터 스크립트에서 값 가져와야 함 (수정 필요)
+
+        data["hair"] = Random.Range(0, 5).ToString();   //임시값
+    }
 
 
     private string GetCrimePlaceText(string grade)
