@@ -132,6 +132,16 @@ public class TableManager : MonoBehaviour
                 SetPupil(data);
                 SetHair(data);
             }
+            
+            if (HangingManager.day >= 18)
+            {
+                SetUnderTatto(data);
+            }
+
+            if (HangingManager.day >= 19)
+            {
+                SetDegradation(data);
+            }
 
             //국가적 요구 허락OR거절     //유민 수정
             if (isApplySpecificInfo && readPrisonerInfo.GetAsk() != null)
@@ -452,10 +462,12 @@ public class TableManager : MonoBehaviour
 
         //얼굴 수색 구현 후 수정 필요
 
-        bool ARankCitizenAppearance = false;    //임시값
-        bool BRankCitizenAppearance = false;    //임시값
+        bool ARankCitizenAppearance = false;    //임시값, 최상급
+        bool BRankCitizenAppearance = false;    //임시값, 상급
+        bool ERankCitizenAppearance = false;    //임시값, 최하급
 
-        if (!ARankCitizenAppearance && !BRankCitizenAppearance)
+        if (!ARankCitizenAppearance && !BRankCitizenAppearance && 
+            !ERankCitizenAppearance)
         {
             data["face"] = "0";
         }
@@ -466,6 +478,10 @@ public class TableManager : MonoBehaviour
         else if (BRankCitizenAppearance)
         {
             data["face"] = "2";
+        }
+        else if (ERankCitizenAppearance)
+        {
+            data["face"] = "3";
         }
     }
 
@@ -486,6 +502,67 @@ public class TableManager : MonoBehaviour
         data["hair"] = Random.Range(0, 5).ToString();   //임시값
     }
 
+    private void SetUnderTatto(Dictionary<string, string> data)
+    {
+        //몸수색 구현 완료 후 수정 필요
+        //몸수색 관련 스크립트에서 커버 문신 아래 있는 문신 값 가져오기
+        int underTatto = 0;   //임시값
+        data["underTatto"] = underTatto.ToString();
+    }
+
+    private void SetDegradation(Dictionary<string, string> data)
+    {
+        //캐릭터의 등급을 격하하는 경우,
+        //격하 정도를 정의
+        //0 = 격하하지 않음, 1 = 1단계 격하
+
+        // 사형수 등급이 중급이나 하급이면서 3등급의 범죄를 저질렀을 경우
+        // 단, 전과가 없을 경우 제외
+        if (((int.Parse(data["positionGrade"]) == 2 ||
+            int.Parse(data["positionGrade"]) == 1) &&
+            int.Parse(data["crimeGrade"]) == 2) &&
+            int.Parse(data["crimeRecord"]) != 0)
+        {
+            data["degradation"] = "1";
+        }
+        // 사형수 등급이 상급이고, 2등급의 범죄를 저질렀으며
+        // 피해자가 상급 이상, 2급 이상의 전과가 있을 때 격하
+        // 단, 사형수 직업이 판사, 검사, 정치인인 경우 제외
+        else if ((int.Parse(data["positionGrade"]) == 3 &&
+            int.Parse(data["crimeGrade"]) == 1) &&
+            int.Parse(data["victimGrade"]) >= 3 &&
+            int.Parse(data["crimeRecord"]) >= 2 &&
+            int.Parse(data["job"]) != 1) //이 부분 모르겠음
+        {
+            data["degradation"] = "1";
+        }
+        // 사형수 등급이 상급이고, 3등급의 범죄를 저질렀으며
+        // 3급 이상의 전과가 있을 때 격하
+        // 단, 사형수 직업이 특정직업인 경우 제외
+        else if ((int.Parse(data["positionGrade"]) == 3 &&
+            int.Parse(data["crimeGrade"]) == 3) &&
+            int.Parse(data["crimeRecord"]) >= 3 &&
+            int.Parse(data["job"]) != 1) //이 부분 모르겠음
+        {
+            data["degradation"] = "1"; 
+        }
+        // 사형수 등급이 중급이고, 2등급 이상의 범죄를 저질렀으며
+        // 2급 이상의 전과가 있을 때 격하
+        else if ((int.Parse(data["positionGrade"]) == 2 &&
+            int.Parse(data["crimeGrade"]) <= 1) &&
+            int.Parse(data["crimeRecord"]) >= 2)
+        {
+            data["degradation"] = "1";
+        }
+        // 사형수 등급이 중급~하급이고 시민 등급 변경 사유가 모범이며
+        // 전과가 있을 경우 무조건 격하
+        else if ((int.Parse(data["positionGrade"]) <= 2 &&
+            int.Parse(data["brandChange"]) == 1 &&
+            int.Parse(data["crimeRecord"]) >= 1))
+        {
+            data["degradation"] = "1";
+        }
+    }
 
     private string GetCrimePlaceText(string grade)
     {
