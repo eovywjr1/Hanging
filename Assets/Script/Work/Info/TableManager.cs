@@ -483,23 +483,25 @@ public class TableManager : MonoBehaviour
         {
             data["face"] = "3";
         }
+
+        //?????? 임시!!
+        /*
+        FaceSearchData faceSearchData = FindObjectOfType<FaceSearchData>();
+        data["face"] = faceSearchData.faceData["faceGrade"].ToString();
+        */
     }
 
     //
     private void SetPupil(Dictionary<string, string> data)
     {
-        //얼굴 수색 결과 중 "눈동자 색상" 정의
-        //얼굴 수색 데이터 스크립트에서 값 가져와야 함 (수정 필요)
-
-        data["pupil"] = Random.Range(0, 4).ToString();  //임시값
+        FaceColorData faceColorData = FindObjectOfType<FaceColorData>();
+        data["pupil"] = faceColorData.getEyeColor().ToString();
     }
 
     private void SetHair(Dictionary<string, string> data)
     {
-        //얼굴 수색 결과 중, "머리카락 색상" 정의
-        //얼굴 수색 데이터 스크립트에서 값 가져와야 함 (수정 필요)
-
-        data["hair"] = Random.Range(0, 5).ToString();   //임시값
+        FaceColorData faceColorData = FindObjectOfType<FaceColorData>();
+        data["hair"] = faceColorData.getHairColor().ToString();
     }
 
     private void SetUnderTatto(Dictionary<string, string> data)
