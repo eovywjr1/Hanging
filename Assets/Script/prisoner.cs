@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,6 +16,7 @@ public class prisoner : MonoBehaviour
     public bool isCutRope = false;
     private bool isBeingDragged = false;
     private bool isCollidingWithGround = false;
+    public bool isPlayingTortureAnim = false;
 
     void Start()
     {
@@ -61,6 +62,27 @@ public class prisoner : MonoBehaviour
             animator.SetBool("cutRope", true);
         }
     }
+
+    //애니메이션 수정 필요
+    public void PlayTortureAnimation(int level)
+    {
+        if(isPlayingTortureAnim)
+        {
+            animator.SetBool("shock" + level.ToString(), true);
+            animator.SetBool("idle", false);
+            isPlayingTortureAnim = false;
+        }
+    }
+
+    public void StopTortureAnimation(int level)
+    {
+        if (!isPlayingTortureAnim)
+        {
+            animator.SetBool("shock" + level.ToString(), false);
+            animator.SetBool("idle", true);
+        }
+    }
+
 
     private void OnCollisionEnter2D(Collision2D collision)
     {

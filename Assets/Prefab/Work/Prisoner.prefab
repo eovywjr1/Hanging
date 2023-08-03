@@ -945,3 +945,4 @@ MonoBehaviour:
   - {fileID: 7400000, guid: d24d52630f3d8a941b7129b403e6f37f, type: 2}
   isLift: 0
   isCutRope: 0
+  isPlayingTortureAnim: 0
