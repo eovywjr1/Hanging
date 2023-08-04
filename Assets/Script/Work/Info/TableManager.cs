@@ -36,7 +36,7 @@ public class TableManager : MonoBehaviour
             probabilityInfo = workProbabilityCSVRedaer.Read("WorkProbabilityInfo");
             jobInfoReader = new JobInfoReader(Resources.Load("JobInfo") as TextAsset);
             acceptCrimeInfoReader = new AcceptCrimeInfoReader(Resources.Load("AcceptCrimeInfo") as TextAsset);
-            specialJobIndexInfoReader = new SpecialJobIndexInfoReader(Resources.Load("AcceptCrimeInfo") as TextAsset);
+            specialJobIndexInfoReader = new SpecialJobIndexInfoReader(Resources.Load("SpecialJobIndexInfo") as TextAsset);
 
             // 조민수 : 각 일차 별 테스트 할 때 사용하는 코드 //
             string fileName = "DayJudgeMentInfo";

@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class UiManager : MonoBehaviour, IListener
 {
-    [SerializeField]
-    private AttackerMouseMove attackerMouseMove;
-    [SerializeField]
-    private Rope rope;
     private HangingManager hangingManager;
 
     private GameObject GuideWindow;
@@ -27,18 +23,15 @@ public class UiManager : MonoBehaviour, IListener
         GuideWindow.SetActive(false);
         hangingManager = FindObjectOfType<HangingManager>();
 
-        Debug.Assert(statisticsImage != null, "statisticsImage�� ��������");
-        Debug.Assert(dominantImage != null, "dominentImage�� ��������");
-        Debug.Assert(_screenCanvas != null, "screenCanvas ��������");
+        Debug.Assert(statisticsImage != null, "statisticsImage가 없습니다.");
+        Debug.Assert(dominantImage != null, "dominentImage가 없습니다.");
+        Debug.Assert(_screenCanvas != null, "screenCanvas가 없습니다.");
     }
 
     private void Start()
     {
         EventManager.instance.addListener("possibleactiveGuide", this);
         EventManager.instance.addListener("possibledeactiveGuide", this);
-
-        rope = GameObject.Find("rope").GetComponent<Rope>();
-        attackerMouseMove = GameObject.Find("Prisoner(Clone)").GetComponent<AttackerMouseMove>();
     }
 
     private void Update()
@@ -58,10 +51,17 @@ public class UiManager : MonoBehaviour, IListener
                 if (GuideWindow.activeSelf == true)
                 {
                     GuideWindow.SetActive(false);
-                    attackerMouseMove.SetPossibleTodesstrafe(true);
-                    //Debug.Log("������ Ŭ�� Ǯ��");
-                    rope.SetCutPossible(true);
-                    //Debug.Log("���� �� Ǯ��");
+
+                    //조민수 : [삭제 예정] 각 UI들이 Raycast 사용하면 삭제해야 함//
+                    Rope rope = FindObjectOfType<Rope>();
+                    AttackerMouseMove attackerMouseMove = FindObjectOfType<AttackerMouseMove>();
+
+                    if (rope)
+                        rope.SetCutPossible(true);
+
+                    if (attackerMouseMove)
+                        attackerMouseMove.SetPossibleTodesstrafe(true);
+                    //////////////////////////////////////////////////////////////
                 }
             }
         }

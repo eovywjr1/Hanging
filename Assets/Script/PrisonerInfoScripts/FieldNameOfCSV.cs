@@ -15,12 +15,17 @@ public class FieldNameOfCSV : MonoBehaviour
     {
         char charValue = (char)(day + '0');
 
-        fileName = "Prisoner_day";
-        fileName += charValue;
-
         fieldNames = new List<string>();
+        fileName = "Assets/Resources/" + "Prisoner_day" + charValue + ".csv";
 
-        using (var reader = new StreamReader("Assets/Resources/" + fileName + ".csv"))
+        FileInfo fileInfo = new FileInfo(fileName);
+        if (fileInfo.Exists == false)
+        {
+            Debug.Assert(false, "조민수 comment : " + fileName + "이 없습니다 파일을 추가해주세요.");
+            return;
+        }
+
+        using (var reader = new StreamReader(fileName))
         {
             string line = reader.ReadLine();
             if (line != null)
