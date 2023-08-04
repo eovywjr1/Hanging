@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 // 1~7일차 사형수 정보 데이터 관리
 
@@ -28,9 +29,14 @@ public class ReadPrisonerInfo : MonoBehaviour
     private void Awake()
     {
         char charValue = (char)(day + '0');
+        fileName = "Prisoner_day" + charValue;
 
-        fileName = "Prisoner_day";
-        fileName += charValue;
+        FileInfo fileInfo = new FileInfo(fileName);
+        if (fileInfo.Exists == false)
+        {
+            Debug.Assert(false, "조민수 comment : " + fileName + "이 없습니다 파일을 추가해주세요.");
+            return;
+        }
 
         data = CSVReader2.Read(fileName);
 
@@ -43,6 +49,9 @@ public class ReadPrisonerInfo : MonoBehaviour
 
     private void Start()
     {
+        if (data == null)
+            return;
+
         for (int i = 0; i < data.Count; i++)
         {
             for (int j = 1; j < fieldNameOfCSV.fieldNames.Count; j++)

@@ -27,28 +27,28 @@ public class SpecialJobIndexInfoReader
 
         var header = Regex.Split(lines[0], SPLIT_RE);
         int lineLength = lines.Length;
-        for (var i = 1; i < lineLength; ++i)
+        for (int i = 1; i < lineLength; ++i)
         {
             var values = Regex.Split(lines[i], SPLIT_RE);
             if (values.Length == 0)
                 continue;
 
             int headerLength = header.Length;
-            for (var j = 0; j < headerLength; j++)
+            for (int j = 0; j < headerLength; j++)
             {
                 if (values[j].Equals(""))
                     continue;
 
                 if (header[j].Equals("day"))
-                    _dayList.Add(int.Parse(values[i]));
+                    _dayList.Add(int.Parse(values[j]));
                 else if (header[j].Equals("job"))
                     _jobNameList.Add(values[j]);
                 else if (header[j].Equals("positionGrade"))
-                    _positionGradeList.Add(int.Parse(values[i]));
+                    _positionGradeList.Add(int.Parse(values[j]));
                 else if (header[j].Equals("isAttacker"))
-                    _isAttackerList.Add(int.Parse(values[i]));
+                    _isAttackerList.Add(int.Parse(values[j]));
                 else if (header[j].Equals("index"))
-                    _specialJobIndexList.Add(int.Parse(values[i]));
+                    _specialJobIndexList.Add(int.Parse(values[j]));
             }
         }
     }
