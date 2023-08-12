@@ -8,7 +8,6 @@ using System.IO;
 public class ReadPrisonerInfo : MonoBehaviour
 {
     public int order;   //사형수 번호(순서) 관리하는 스크립트에서 order 가져와 사용하도록 변경 필요
-    string fileName;
     int day = HangingManager.day;
     //public int tmpDay;
 
@@ -29,14 +28,16 @@ public class ReadPrisonerInfo : MonoBehaviour
     private void Awake()
     {
         char charValue = (char)(day + '0');
-        fileName = "Prisoner_day" + charValue;
 
-        FileInfo fileInfo = new FileInfo(fileName);
+        string fileName = "Prisoner_day" + charValue;
+        string filePath = "Assets/Resources/" + fileName + ".csv";
+        FileInfo fileInfo = new FileInfo(filePath);
         if (fileInfo.Exists == false)
         {
-            Debug.Assert(false, "조민수 comment : " + fileName + "이 없습니다 파일을 추가해주세요.");
+            Debug.Assert(false, "조민수 comment : " + filePath + "이 없습니다 파일을 추가해주세요.");
             return;
         }
+
 
         data = CSVReader2.Read(fileName);
 

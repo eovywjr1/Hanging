@@ -31,10 +31,11 @@ public class DialogUpdateAndEvent : MonoBehaviour, IListener
         }
 
         string fileName = HangingManager.day + "DayCompulsoryDialog";
-        FileInfo fileInfo = new FileInfo(fileName);
+        string filePath = "Assets/Resources/" + fileName + ".csv";
+        FileInfo fileInfo = new FileInfo(filePath);
         if (fileInfo.Exists == false)
         {
-            Debug.Assert(false, "조민수 comment : " + fileName + "이 없습니다 파일을 추가해주세요.");
+            Debug.Assert(false, "조민수 comment : " + filePath + "이 없습니다 파일을 추가해주세요.");
             return;
         }
 
