@@ -19,7 +19,7 @@ public class HangingManager : MonoBehaviour, IListener
     [SerializeField] GameObject convertEffect, nextDayEffect,attackerPrefab;
     public ScrollViewController scrollViewController;
 
-    public bool isTodesstrafe, isActiveAsk;
+    public bool isTodesstrafe, isExecuteAsk;
     public bool isStatementWrongProcess;
 
     public GameObject staButton;
@@ -57,9 +57,10 @@ public class HangingManager : MonoBehaviour, IListener
 
         EventManager.instance.addListener("amnesty", this);
         EventManager.instance.addListener("todesstrafe", this);
-        EventManager.instance.addListener("activeAsk", this);
+        EventManager.instance.addListener("executeAsk", this);
 
-        if (day >=6 ) OnStaButton();
+        if (day >= 6)
+            OnStaButton();
 
         FindObjectOfType<BadgeManager>().spawnBadge(badgeCount);
     }
@@ -69,7 +70,7 @@ public class HangingManager : MonoBehaviour, IListener
         DestroyAllLineAndWindow();
         NextAttacker();
 
-        if (isActiveAsk && attackerInfo.recordData.attackerData["ask"].Equals("1") == false)
+        if ((isExecuteAsk) && (attackerInfo.checkAttackerReplyAsk() == false))
         {
             if (Ask.isFirst)
             {
@@ -213,7 +214,7 @@ public class HangingManager : MonoBehaviour, IListener
             EventManager.instance.postPossibleEvent();
 
         isTodesstrafe = false;
-        isActiveAsk = false;
+        isExecuteAsk = false;
     }
 
     public HangingInfoWrapper getHangingInfo()
@@ -264,8 +265,8 @@ public class HangingManager : MonoBehaviour, IListener
             case "todesstrafe":
                 Todesstrafe();
                 break;
-            case "activeAsk":
-                isActiveAsk = true;
+            case "executeAsk":
+                isExecuteAsk = true;
                 break;
         }
     }
