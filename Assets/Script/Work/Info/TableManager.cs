@@ -150,10 +150,7 @@ public class TableManager : MonoBehaviour
             }
 
             //국가적 요구 허락OR거절     //유민 수정
-            if (isApplySpecificInfo && readPrisonerInfo.GetAsk() != null)
-                data["ask"] = readPrisonerInfo.GetAsk();
-            else
-                data["ask"] = getRandomValueByRange(probabilityInfo["askAccept"][0]).ToString();
+            data["askAccept"] = ((isApplySpecificInfo) && (readPrisonerInfo.GetAsk() != null)) ? readPrisonerInfo.GetAsk() : getRandomValueByRange(probabilityInfo["askAccept"][0]).ToString();
         }
         else
         {

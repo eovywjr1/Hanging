@@ -3,27 +3,44 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Ask : MonoBehaviour
+public class Ask : MonoBehaviour, IListener
 {
-    [SerializeField] AttackerInfo attackerInfo;
-    bool isPossibleAsk, isActiveAsk;
+    AttackerInfo attackerInfo;
     public static bool isFirst = true;
 
-    public void ActiveAsk()
+    private void Start()
     {
-        if (attackerInfo.recordData.attackerData["ask"].Equals("1"))
+        EventManager.instance.addListener("possibleAsk", this);
+    }
+
+    public void activeAsk()
+    {
+        attackerInfo = GetComponent<AttackerInfo>();
+        if (attackerInfo == null)
+            return;
+
+        if (attackerInfo.checkAttackerPossibleAsk() == false)
+            return;
+
+        //ui 보여주기
+        //버튼(예) 누르면 executeAsk 호출
+    }
+
+    public void executeAsk()
+    {
+        if (attackerInfo.recordData.attackerData["askReply"].Equals("1"))
             acceptAsk();
         else
             rejectAsk();
 
         EventManager.instance.postNotification("dialogEvent", this, 29);
-        EventManager.instance.postNotification("activeAsk", this, null);
+        EventManager.instance.postNotification("executeAsk", this, null);
     }
 
     public void acceptAsk()
     {
-        if (attackerInfo.recordData.attackerData.ContainsKey("ask") && attackerInfo.recordData.attackerData["ask"].Equals("1"))
-            attackerInfo.recordData.isHanging = 1;
+        if (attackerInfo.checkAttackerAcceptAsk() && attackerInfo.checkAttackerReplyAsk())
+            attackerInfo.recordData.isHanging = 0;
 
         EventManager.instance.postNotification("dialogEvent", this, UnityEngine.Random.Range(30, 41));
     }
@@ -31,5 +48,18 @@ public class Ask : MonoBehaviour
     public void rejectAsk()
     {
         EventManager.instance.postNotification("dialogEvent", this, UnityEngine.Random.Range(41, 53));
+    }
+
+    public void OnEvent(string eventType, Component sender, object parameter = null)
+    {
+        switch (eventType)
+        {
+            case "possibleAsk":
+                {
+
+                    activeAsk();
+                }
+                break;
+        }
     }
 }

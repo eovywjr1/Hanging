@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 161126516914584283}
   - component: {fileID: 161126516914584285}
   - component: {fileID: 161126516914584284}
+  - component: {fileID: 258151758303233075}
   m_Layer: 10
   m_Name: Prisoner
   m_TagString: prisoner
@@ -100,9 +101,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9cc1be5df1adf14fb81205e36fddc40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ask: {fileID: 0}
   lie: {fileID: 0}
   scrollViewController: {fileID: 0}
+--- !u!114 &258151758303233075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 161126516914584281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 352d62302c5eed040b8e69dd024f72cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackerInfo: {fileID: 0}
 --- !u!1 &161126516951867916
 GameObject:
   m_ObjectHideFlags: 0
