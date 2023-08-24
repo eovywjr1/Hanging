@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using Unity.VisualScripting;
+using System.IO;
 
 public class DialogUpdateAndEvent : MonoBehaviour, IListener
 {
@@ -30,6 +31,13 @@ public class DialogUpdateAndEvent : MonoBehaviour, IListener
         }
 
         string fileName = HangingManager.day + "DayCompulsoryDialog";
+        FileInfo fileInfo = new FileInfo(fileName);
+        if (fileInfo.Exists == false)
+        {
+            Debug.Assert(false, "조민수 comment : " + fileName + "이 없습니다 파일을 추가해주세요.");
+            return;
+        }
+
         compulsoryT = dialogReader.Read(fileName);
         situationD = dialogReader.Read("SituationDialog");
     }
@@ -44,6 +52,9 @@ public class DialogUpdateAndEvent : MonoBehaviour, IListener
 
     IEnumerator UpdateDialogCompulsory(string id)
     {
+        if (compulsoryT == null)
+            yield break;
+
         while (compulsoryT.ContainsKey(id))
         {
             yield return StartCoroutine(UpdateDialog(compulsoryT[id]));
