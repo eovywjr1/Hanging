@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Net;
 
-public class AttackerMouseMove : MonoBehaviour, IListener
+public class AttackerMouseMove : MonoBehaviour
 {
     HangingManager hangingManager;
     LineManager lineManager;
@@ -26,14 +26,19 @@ public class AttackerMouseMove : MonoBehaviour, IListener
     {
         hangingManager = FindObjectOfType<HangingManager>();
         lineManager = FindObjectOfType<LineManager>();
-
-        EventManager.instance.addListener("possibleclickAttacker", this);
-        EventManager.instance.addListener("possibletodesstrafe", this);
     }
 
     private void Start()
     {
         prisoner = GetComponentInChildren<prisoner>();
+
+        Init();
+    }
+
+    private void Init()
+    {
+        if (hangingManager.checkEndCompulsoryDialog())
+            setAllPossible();
     }
 
     void Update()
@@ -163,19 +168,5 @@ public class AttackerMouseMove : MonoBehaviour, IListener
 
         if (line != null) 
             preChangeTransparency = StartCoroutine(line.ChangeTransparency(mode));
-    }
-
-    public void OnEvent(string eventType, Component sender, object parameter = null)
-    {
-        switch (eventType)
-        {
-            case "possibleclickAttacker":
-                isPossibleClick = true;
-                break;
-
-            case "possibletodesstrafe":
-                isPossibleTodesstrafe = true;
-                break;
-        }
     }
 }

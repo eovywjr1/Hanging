@@ -33,16 +33,24 @@ public class HangingManager : MonoBehaviour, IListener
             EventManager.instance.postNotification("updateAttackerCountCCTV", this, _judgeCount + 1);
         }
     }
-    private bool isCompulsoryEnd;
+    private bool isEndCompulsoryDialog;
     private int _correctJudgeCount = 0;
     private int _discorrectJudgeCount = 0;
     private int _discorrectAndTodesstrafedPersonCount = 0;
 
-    public static int day = 8;
+    public static int day = 1;
+#if UNITY_EDITOR
+    public int debug_day = 8;
+#endif
+
     private static int badgeCount = 3;
 
     private void Awake()
     {
+#if UNITY_EDITOR
+        day = debug_day;
+#endif
+
         dialogWindowController = FindObjectOfType<DialogWindowController>();
         hangingTimer = FindObjectOfType<HangingTimer>();
         analogGlitch = FindObjectOfType<AnalogGlitch>();
@@ -51,13 +59,13 @@ public class HangingManager : MonoBehaviour, IListener
         scrollViewController=FindObjectOfType<ScrollViewController>();
     }
 
-    private void Start()
+    void Start()
     {
-        createAttacker();
-
         EventManager.instance.addListener("amnesty", this);
         EventManager.instance.addListener("todesstrafe", this);
         EventManager.instance.addListener("executeAsk", this);
+
+        createAttacker();
 
         if (day >= 6)
             OnStaButton();
@@ -110,7 +118,7 @@ public class HangingManager : MonoBehaviour, IListener
 
     private bool checkCorrectTodesstrafe(int mode)
     {
-        if (isCompulsoryEnd == false || mode == attackerInfo.recordData.isHanging)
+        if (isEndCompulsoryDialog == false || mode == attackerInfo.recordData.isHanging)
         {
             Debug.Log(attackerInfo.recordData.isHanging);
 
@@ -192,7 +200,7 @@ public class HangingManager : MonoBehaviour, IListener
 
     public void EndCompulsory()
     {
-        isCompulsoryEnd = true;
+        isEndCompulsoryDialog = true;
 
         EventManager.instance.postNotification("dialogEvent", this, "createAttacker");
         EventManager.instance.postPossibleEvent();
@@ -210,8 +218,16 @@ public class HangingManager : MonoBehaviour, IListener
         attackerMouseMove = attacker.GetComponent<AttackerMouseMove>();
         attackerInfo = attacker.GetComponent<AttackerInfo>();
 
-        if (isCompulsoryEnd)
+        if (isEndCompulsoryDialog)
+        {
             EventManager.instance.postPossibleEvent();
+
+            attackerMouseMove.setAllPossible();
+            Rope rope = attacker.transform.Find("rope").GetComponent<Rope>();
+            Debug.Assert(rope, "rope를 못 찾았습니다.");
+            if (rope)
+                rope.isPossibleCut = true;
+        }
 
         isTodesstrafe = false;
         isExecuteAsk = false;
@@ -279,5 +295,10 @@ public class HangingManager : MonoBehaviour, IListener
     public void searchReport()
     {
 
+    }
+
+    public bool checkEndCompulsoryDialog()
+    {
+        return isEndCompulsoryDialog;
     }
 }
