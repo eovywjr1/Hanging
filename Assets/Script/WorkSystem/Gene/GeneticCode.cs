@@ -1,39 +1,21 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class GeneticCode : MonoBehaviour
+public class GeneticCode : SystemDataManager
 {
     [SerializeField] TMP_Text text;
 
-    const string cloneCode = "ticlo";  //ÀÓ½Ã º¹Á¦ÀÎ°£ ÄÚµå
+    const string cloneCode = "ticlo";  //ì„ì‹œ ë³µì œì¸ê°„ ì½”ë“œ (ì„ì˜ë¡œ ì •í•¨)
 
     private string geneticCode;
-    public bool isClone;
 
     private void Awake()
     {
-        SetClone();
         GenerateRandomCode();
 
         text.text = geneticCode;
-        Debug.Log("·£´ı À¯ÀüÀÚ ÄÚµå´Â " + geneticCode);
-        Debug.Log("·£´ı À¯ÀüÀÚ ÄÚµåÀÇ ±æÀÌ´Â " + geneticCode.Length);
-    }
-
-    private void SetClone()
-    {
-        System.Random random = new System.Random();
-
-        if(random.Next(0,3) == 1)  
-        {
-            isClone = true;
-        }
-        else
-        {
-            isClone = false;
-        }
     }
 
     private void GenerateRandomCode()

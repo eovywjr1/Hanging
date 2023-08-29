@@ -38,7 +38,7 @@ public class HangingManager : MonoBehaviour, IListener
     private int _discorrectJudgeCount = 0;
     private int _discorrectAndTodesstrafedPersonCount = 0;
 
-    public static int day = 8;
+    public static int day = 10;
     private static int badgeCount = 3;
 
     private void Awake()
