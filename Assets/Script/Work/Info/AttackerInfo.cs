@@ -7,7 +7,6 @@ public class AttackerInfo : MonoBehaviour
     public RecordData recordData;
     TableManager tableManager;
     ReadPrisonerInfo readPrisonerInfo;
-    [SerializeField] Ask ask;
     [SerializeField] Lie lie;
     public ScrollViewController scrollViewController;
 
@@ -35,5 +34,38 @@ public class AttackerInfo : MonoBehaviour
     public RecordData GetRecordData()
     {
         return recordData;
+    }
+
+    public bool checkAttackerPossibleAsk() 
+    {
+        if (recordData.attackerData.ContainsKey("ask") == false)
+            return false;
+
+        if (recordData.attackerData["ask"].Equals("-1"))
+            return false;
+
+        return true;
+    }
+
+    public bool checkAttackerAcceptAsk()
+    {
+        if (recordData.attackerData.ContainsKey("askAccept") == false)
+            return false;
+
+        if (recordData.attackerData["askAccept"].Equals("1") == false)
+            return false;
+
+        return true;
+    }
+
+    public bool checkAttackerReplyAsk() 
+    {
+        if (recordData.attackerData.ContainsKey("askReply") == false)
+            return false;
+
+        if (recordData.attackerData["askReply"].Equals("1") == false)
+            return false;
+
+        return true;
     }
 }

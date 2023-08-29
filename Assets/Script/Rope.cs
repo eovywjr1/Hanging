@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Rope : MonoBehaviour
 {
@@ -20,7 +21,7 @@ public class Rope : MonoBehaviour
 
     private List<Segment> segments = new List<Segment>();
 
-    [SerializeField] bool isCutPossible = true;
+    public bool isPossibleCut = false;
     public bool isCut = false;
 
     private void Reset()
@@ -53,12 +54,12 @@ public class Rope : MonoBehaviour
 
     public void SetCutPossible(bool _isCutPossible)
     {
-        isCutPossible = _isCutPossible;
+        isPossibleCut = _isCutPossible;
     }
 
     private void Update()
     {
-        if(isCutPossible && !isCut)
+        if ((isPossibleCut) && (isCut == false))
         {
             if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
             {
@@ -67,7 +68,7 @@ public class Rope : MonoBehaviour
                 float cutRange = 2.0f;  //밧줄 자를 수 있는 반경 범위
                 float distanceToStart = Vector2.Distance(startTransform.position, mousePos);
 
-                if(distanceToStart <= cutRange)
+                if (distanceToStart <= cutRange)
                 {
                     int closestSegmentIndex = FindClosestSegmentIndex(mousePos);
 
@@ -80,11 +81,9 @@ public class Rope : MonoBehaviour
                         }
                     }
 
-                    prisoner.isCutRope = true;
-
                     prisonerRigidbody.bodyType = RigidbodyType2D.Dynamic;
 
-                    isCut = true;
+                    cutRope();
                 }
             }
         }
@@ -164,6 +163,27 @@ public class Rope : MonoBehaviour
                 segments[i + 1].position += movement * 0.5f;
             }
         }
+    }
+
+    private void cutRope()
+    {
+        prisoner.isCutRope = true;
+        isCut = true;
+
+        if (EventSystem.current.IsPointerOverGameObject() == false)
+        {
+            EventManager.instance.postNotification("dialogEvent", this, UnityEngine.Random.Range(21, 28));
+
+            StartCoroutine(DelayedEvents());
+        }
+    }
+
+    private IEnumerator DelayedEvents()
+    {
+        yield return new WaitForSeconds(3.1f);
+
+        EventManager.instance.postNotification("amnesty", this, null);
+        EventManager.instance.postNotification("dialogEvent", this, "amnesty");
     }
 
     public class Segment

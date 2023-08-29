@@ -19,7 +19,7 @@ public class HangingManager : MonoBehaviour, IListener
     [SerializeField] GameObject convertEffect, nextDayEffect,attackerPrefab;
     public ScrollViewController scrollViewController;
 
-    public bool isTodesstrafe, isActiveAsk;
+    public bool isTodesstrafe, isExecuteAsk;
     public bool isStatementWrongProcess;
 
     public GameObject staButton;
@@ -33,16 +33,24 @@ public class HangingManager : MonoBehaviour, IListener
             EventManager.instance.postNotification("updateAttackerCountCCTV", this, _judgeCount + 1);
         }
     }
-    private bool isCompulsoryEnd;
+    private bool isEndCompulsoryDialog;
     private int _correctJudgeCount = 0;
     private int _discorrectJudgeCount = 0;
     private int _discorrectAndTodesstrafedPersonCount = 0;
 
-    public static int day = 10;
+    public static int day = 1;
+#if UNITY_EDITOR
+    public int debug_day = 8;
+#endif
+
     private static int badgeCount = 3;
 
     private void Awake()
     {
+#if UNITY_EDITOR
+        day = debug_day;
+#endif
+
         dialogWindowController = FindObjectOfType<DialogWindowController>();
         hangingTimer = FindObjectOfType<HangingTimer>();
         analogGlitch = FindObjectOfType<AnalogGlitch>();
@@ -51,15 +59,16 @@ public class HangingManager : MonoBehaviour, IListener
         scrollViewController=FindObjectOfType<ScrollViewController>();
     }
 
-    private void Start()
+    void Start()
     {
-        createAttacker();
-
         EventManager.instance.addListener("amnesty", this);
         EventManager.instance.addListener("todesstrafe", this);
-        EventManager.instance.addListener("activeAsk", this);
+        EventManager.instance.addListener("executeAsk", this);
 
-        if (day >=6 ) OnStaButton();
+        createAttacker();
+
+        if (day >= 6)
+            OnStaButton();
 
         FindObjectOfType<BadgeManager>().spawnBadge(badgeCount);
     }
@@ -69,7 +78,7 @@ public class HangingManager : MonoBehaviour, IListener
         DestroyAllLineAndWindow();
         NextAttacker();
 
-        if (isActiveAsk && attackerInfo.recordData.attackerData["ask"].Equals("1") == false)
+        if ((isExecuteAsk) && (attackerInfo.checkAttackerReplyAsk() == false))
         {
             if (Ask.isFirst)
             {
@@ -109,7 +118,7 @@ public class HangingManager : MonoBehaviour, IListener
 
     private bool checkCorrectTodesstrafe(int mode)
     {
-        if (isCompulsoryEnd == false || mode == attackerInfo.recordData.isHanging)
+        if (isEndCompulsoryDialog == false || mode == attackerInfo.recordData.isHanging)
         {
             Debug.Log(attackerInfo.recordData.isHanging);
 
@@ -178,7 +187,7 @@ public class HangingManager : MonoBehaviour, IListener
         isStatementWrongProcess = false;
     }
 
-    public IEnumerator StartStateWrong() //ì§„ìˆ ì„œ ì˜¤ë‹µì¼ ê²½ìš° ë…¸ì´ì¦ˆ ì¶œë ¥ & ë±ƒì§€ íšŒìˆ˜ 
+    public IEnumerator StartStateWrong() //ì§„ìˆ ?„œ ?˜¤?‹µ?¼ ê²½ìš° ?…¸?´ì¦? ì¶œë ¥ & ë±ƒì?? ?šŒ?ˆ˜ 
     {
         isStatementWrongProcess = true;
 
@@ -191,7 +200,7 @@ public class HangingManager : MonoBehaviour, IListener
 
     public void EndCompulsory()
     {
-        isCompulsoryEnd = true;
+        isEndCompulsoryDialog = true;
 
         EventManager.instance.postNotification("dialogEvent", this, "createAttacker");
         EventManager.instance.postPossibleEvent();
@@ -209,11 +218,19 @@ public class HangingManager : MonoBehaviour, IListener
         attackerMouseMove = attacker.GetComponent<AttackerMouseMove>();
         attackerInfo = attacker.GetComponent<AttackerInfo>();
 
-        if (isCompulsoryEnd)
+        if (isEndCompulsoryDialog)
+        {
             EventManager.instance.postPossibleEvent();
 
+            attackerMouseMove.setAllPossible();
+            Rope rope = attacker.transform.Find("rope").GetComponent<Rope>();
+            Debug.Assert(rope, "ropeë¥? ëª? ì°¾ì•˜?Šµ?‹ˆ?‹¤.");
+            if (rope)
+                rope.isPossibleCut = true;
+        }
+
         isTodesstrafe = false;
-        isActiveAsk = false;
+        isExecuteAsk = false;
     }
 
     public HangingInfoWrapper getHangingInfo()
@@ -226,7 +243,7 @@ public class HangingManager : MonoBehaviour, IListener
         _uiManager.hideScreenCanvas();
         
       
-        //ì¡°ë¯¼ìˆ˜ comment : 7ì¼ì°¨ì— í™˜ê° ë‚˜ì˜¤ê³  ê²Œì„ ì¢…ë£ŒëŠ” ì¼ë‹¨ ì„ì‹œ, ì¶”í›„ì— ë³€ê²½ê°€ëŠ¥ì„± ìˆìŒ
+        //ì¡°ë?¼ìˆ˜ comment : 7?¼ì°¨ì— ?™˜ê°? ?‚˜?˜¤ê³? ê²Œì„ ì¢…ë£Œ?Š” ?¼?‹¨ ?„?‹œ, ì¶”í›„?— ë³?ê²½ê???Š¥?„± ?ˆ?Œ
         if (day == 7)
         {
             StartCoroutine(FindObjectOfType<GameManager>().endGame());
@@ -242,8 +259,8 @@ public class HangingManager : MonoBehaviour, IListener
 
     public void convertSceneNextDay()
     {
-        //í‡´ê·¼ê¸¸ ë¡œë“œë¡œ ë³€ê²½í•´ì•¼ í•¨
-        //í‡´ê·¼ê¸¸ì´ ëë‚œ í›„ì— day ì¦ê°€í•˜ëŠ” ê²ƒìœ¼ë¡œ ë³€ê²½í•´ì•¼ í•¨
+        //?‡´ê·¼ê¸¸ ë¡œë“œë¡? ë³?ê²½í•´?•¼ ?•¨
+        //?‡´ê·¼ê¸¸?´ ??‚œ ?›„?— day ì¦ê???•˜?Š” ê²ƒìœ¼ë¡? ë³?ê²½í•´?•¼ ?•¨
         day++;
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -264,8 +281,8 @@ public class HangingManager : MonoBehaviour, IListener
             case "todesstrafe":
                 Todesstrafe();
                 break;
-            case "activeAsk":
-                isActiveAsk = true;
+            case "executeAsk":
+                isExecuteAsk = true;
                 break;
         }
     }
@@ -278,5 +295,10 @@ public class HangingManager : MonoBehaviour, IListener
     public void searchReport()
     {
 
+    }
+
+    public bool checkEndCompulsoryDialog()
+    {
+        return isEndCompulsoryDialog;
     }
 }
