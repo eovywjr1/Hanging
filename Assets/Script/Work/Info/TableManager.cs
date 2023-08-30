@@ -15,6 +15,7 @@ public class TableManager : MonoBehaviour
     private static SpecialJobIndexInfoReader specialJobIndexInfoReader = null;
 
     ReadPrisonerInfo readPrisonerInfo;
+    SystemDataManager systemDataManager;    //유전자코드, 몸수색, 얼굴 수색 등의 시스템 정보 관리
 
     bool isApplySpecificInfo;   // 특정 정보 적용 여부
 
@@ -48,6 +49,9 @@ public class TableManager : MonoBehaviour
             judgeT.Add(csvReader.Read("6" + fileName));
             judgeT.Add(csvReader.Read("7" + fileName));
             judgeT.Add(csvReader.Read("8" + fileName));
+            judgeT.Add(csvReader.Read("9" + fileName));
+            judgeT.Add(csvReader.Read("10" + fileName));
+            
         }
 
         // 조민수 : 정상적인 플레이에서는 각 해당 일차마다 추가 //
@@ -86,9 +90,13 @@ public class TableManager : MonoBehaviour
             if(HangingManager.day >= 6) 
                 GetLieORInfoError(data, ref lieORInfoError);
 
-            //복제인간//
+            //9일차부터 복제인간 등장
             if (HangingManager.day >= 9)
+            {
+                systemDataManager = FindObjectOfType<SystemDataManager>();
+
                 SetHumanClone(data);
+            }
 
             if (HangingManager.day >= 12)
             {
@@ -259,19 +267,13 @@ public class TableManager : MonoBehaviour
 
     private void SetHumanClone(Dictionary<string, string> data)
     {
-        switch(HangingManager.day)
+        if(systemDataManager.isClone)
         {
-            case 10:
-                data["humanClone"] = 0.ToString();
-                break;
-            default:
-                data["humanClone"] = Random.Range(0, 2).ToString();
-                break;
+            data["humanClone"] = 1.ToString();  //복제인간일 경우
         }
-        if(HangingManager.day == 10)
+        else
         {
-            //몸수색 구현후 작업 필요
-            data["humanClone"] = 0.ToString();
+            data["humanClone"] = 0.ToString();  //복제인간 아닐 경우
         }
     }
 
