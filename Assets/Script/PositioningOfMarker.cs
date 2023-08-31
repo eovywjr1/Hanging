@@ -1,36 +1,69 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PositioningOfMarker : MonoBehaviour
 {
+    public GameObject prisoner;
+    RecordData recordData;
+
     [SerializeField] GameObject marker;
-    [SerializeField] List<Sprite> markerList;
+    [SerializeField] List<Sprite> spriteList;
 
     [SerializeField] GameObject parentOfList;
     private List<Transform> positionList;
     private Transform position;
 
     SpriteRenderer spriteRenderer;
-    RecordData recordData;
 
-    new private void Awake()
+    [SerializeField] private int grade;
+    [SerializeField] private int gradePos;
+    [SerializeField] private int scarPos;
+    [SerializeField] private int tattooPos;
+
+    private void Awake()
     {
+        prisoner = GameObject.Find("Prisoner(Clone)").gameObject;
+        recordData = prisoner.GetComponent<AttackerInfo>().recordData;
+
         spriteRenderer = GetComponent<SpriteRenderer>();
         positionList 
             = new List<Transform>(parentOfList.GetComponentsInChildren<Transform>());
         
-        positionList.Remove(parentOfList.transform);    //»óÀ§ ¿ÀºêÁ§Æ®ÀÇ TransformÀº Á¦°Å
+        positionList.Remove(parentOfList.transform);    //ìƒìœ„ ì˜¤ë¸Œì íŠ¸ì˜ Transformì€ ì œê±°
     }
 
     private void Start()
     {
-        //¼öÁ¤ ÇÊ¿ä
-        int grade = int.Parse(recordData.attackerData["positionGrade"]);
+        grade = int.Parse(recordData.attackerData["positionGrade"]);
+        //Debug.Log("ì‚¬í˜•ìˆ˜ì˜ ë“±ê¸‰ì€ " + grade + "!!");
         int random = Random.Range(0, positionList.Count);
+        int randomIdx = Random.Range(0, spriteList.Count);
+        string objName = this.gameObject.name;
+        
+        switch(objName)
+        {
+            case "ì‹œë¯¼ë“±ê¸‰í‘œì‹":
+                spriteRenderer.sprite = spriteList[grade - 1];
+                position = positionList[gradePos];
+                break;
+            case "ë¬¸ì‹ ":
+                spriteRenderer.sprite = spriteList[randomIdx];
+                position = positionList[tattooPos];
+                break;
+            case "í‰í„°":
+                spriteRenderer.sprite = spriteList[randomIdx];
+                position = positionList[scarPos];
+                break;
+            default:
+                break;
+        }
 
-        spriteRenderer.sprite = markerList[grade];
-        position = positionList[random];
         marker.transform.position = position.position;
+    }
+
+    void SetRandomPos()
+    {
+        
     }
 }
