@@ -6,12 +6,12 @@ using TMPro;
 public class TextInformationOfMarker : MonoBehaviour
 {
     [SerializeField] TMP_Text information;
-    [SerializeField] BodySearchData bodySearchData;
+    [SerializeField] WorkSystemData systemDataManager;
 
     private void Start()
     {
-        information.text = "등급 표식 생성일 : " + bodySearchData.randomDate1.ToString("yyyy-MM-dd") + "\n";
-        information.text += "승급일 : " + bodySearchData.randomDate2.ToString("yyyy-MM-dd") + "\n";
-        information.text += "등급 표식 변경 사유 : " + bodySearchData.reasonForChange;
+        information.text = "등급 표식 생성일 : " + systemDataManager.markerOccurDate.ToString("yyyy-MM-dd") + "\n";
+        information.text += "승급일 : " + systemDataManager.promotionDate.ToString("yyyy-MM-dd") + "\n";
+        information.text += "등급 표식 변경 사유 : " + systemDataManager.reasonForChange;
     }
 }

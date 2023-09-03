@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class GeneticCode : SystemDataManager
+public class GeneticCode : WorkSystemData
 {
     [SerializeField] TMP_Text text;
 

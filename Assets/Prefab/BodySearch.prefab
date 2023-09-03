@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 751692162526320685}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.3, y: -0.007, z: -1}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8201009839071242583}
@@ -100,11 +100,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prisoner: {fileID: 0}
   marker: {fileID: 751692162526320685}
-  spriteList:
+  markerList:
   - {fileID: 21300000, guid: 48d0a717acb794e45926550cdc78e11c, type: 3}
   - {fileID: 21300000, guid: 6c9ed1935d74e544287b5fcd497977f9, type: 3}
   - {fileID: 21300000, guid: 2bd528cb226caf84b854c2e8ff12b819, type: 3}
-  parentOfList: {fileID: 8201009838967016253}
   grade: 0
 --- !u!58 &2253564642318503674
 CircleCollider2D:
@@ -150,7 +149,7 @@ Transform:
   m_GameObject: {fileID: 2109906822717604614}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.1, y: -0.007, z: -1}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8201009839071242583}
@@ -222,10 +221,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prisoner: {fileID: 0}
   marker: {fileID: 2109906822717604614}
-  spriteList:
+  markerList:
   - {fileID: 21300000, guid: 4bf2ca0cdb7b54f4090d652b10327f73, type: 3}
   - {fileID: 21300000, guid: 46e04aa431d7c4c499f14f6c2eda3e60, type: 3}
-  parentOfList: {fileID: 8201009838967016253}
   grade: 0
 --- !u!58 &1064054740757290756
 CircleCollider2D:
@@ -1249,7 +1247,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   information: {fileID: 8201009838697454474}
-  bodySearchData: {fileID: 1513563384070860944}
+  systemDataManager: {fileID: 0}
 --- !u!1 &8201009838845849369
 GameObject:
   m_ObjectHideFlags: 0
@@ -1547,13 +1545,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prisoner: {fileID: 0}
   marker: {fileID: 8201009838884350524}
-  spriteList:
+  markerList:
   - {fileID: 21300000, guid: 7ac3feae5bf6d8841ba066f899d56383, type: 3}
   - {fileID: 21300000, guid: 477c9ffe57204ce40aa2905881eb0080, type: 3}
   - {fileID: 21300000, guid: cbe9871914fb57c448b4294611e5060c, type: 3}
   - {fileID: 21300000, guid: bc95067d745684f4b967ebbe8f896283, type: 3}
   - {fileID: 21300000, guid: 712160ba026109a47be63294f6ed7ea6, type: 3}
-  parentOfList: {fileID: 8201009838967016253}
   grade: 0
 --- !u!114 &8201009838884350520
 MonoBehaviour:
@@ -1633,7 +1630,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8201009839071242583}
-  - component: {fileID: 1513563384070860944}
+  - component: {fileID: 6040684363579880962}
   m_Layer: 0
   m_Name: BodySearch
   m_TagString: Untagged
@@ -1663,7 +1660,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1513563384070860944
+--- !u!114 &6040684363579880962
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1672,10 +1669,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 8201009839071242582}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a8bf6d518df3d24d8cb1427d80f4f3b, type: 3}
+  m_Script: {fileID: 11500000, guid: 10e1d80ec8c29df42826e41f598174ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  reasonForChange: 
+  parentOfPos: {fileID: 8201009838967016253}
+  positionList: []
+  gradePos: 0
+  scarPos: 0
+  tattooPos: 0
 --- !u!1 &8201009839174795587
 GameObject:
   m_ObjectHideFlags: 0

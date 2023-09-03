@@ -40,7 +40,7 @@ public class HangingManager : MonoBehaviour, IListener
 
     public static int day = 1;
 #if UNITY_EDITOR
-    public int debug_day = 8;
+    public int debug_day = 1;
 #endif
 
     private static int badgeCount = 3;
