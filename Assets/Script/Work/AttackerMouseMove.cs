@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Net;
 
-public class AttackerMouseMove : MonoBehaviour
+public class AttackerMouseMove : MonoBehaviour, IListener
 {
     HangingManager hangingManager;
     LineManager lineManager;
@@ -26,6 +26,8 @@ public class AttackerMouseMove : MonoBehaviour
     {
         hangingManager = FindObjectOfType<HangingManager>();
         lineManager = FindObjectOfType<LineManager>();
+
+        EventManager.instance.addListener("possibleclickAttacker", this);
     }
 
     private void Start()
@@ -168,5 +170,15 @@ public class AttackerMouseMove : MonoBehaviour
 
         if (line != null) 
             preChangeTransparency = StartCoroutine(line.ChangeTransparency(mode));
+    }
+
+    public void OnEvent(string eventType, Component sender, object parameter)
+    {
+        switch (eventType)
+        {
+            case "possibleclickAttacker":
+                isPossibleClick = true;
+                break;
+        }
     }
 }

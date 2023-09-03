@@ -971,6 +971,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 895e5cf08af455846b4ec370616d7581, type: 3}
+--- !u!1 &946725328 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9175592025962683070, guid: 895e5cf08af455846b4ec370616d7581, type: 3}
+  m_PrefabInstance: {fileID: 946725327}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &992028931
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1157,6 +1162,10 @@ PrefabInstance:
       propertyPath: bossHand
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 9054927331804017861, guid: 49384f57359b72a4a93d70114bbf4a7a, type: 3}
+      propertyPath: badgeWrap
+      value: 
+      objectReference: {fileID: 946725328}
     - target: {fileID: 9054927331804017861, guid: 49384f57359b72a4a93d70114bbf4a7a, type: 3}
       propertyPath: staButton
       value: 
