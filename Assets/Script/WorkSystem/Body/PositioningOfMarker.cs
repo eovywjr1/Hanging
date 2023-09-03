@@ -1,22 +1,22 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PositioningOfMarker : MonoBehaviour
 {
-    [SerializeField] GameObject parentOfPos;    //À§Ä¡¸®½ºÆ®ÀÇ ºÎ¸ğ
-    public List<Transform> positionList;       //À§Ä¡¸®½ºÆ®
+    [SerializeField] GameObject parentOfPos;    //ìœ„ì¹˜ë¦¬ìŠ¤íŠ¸ì˜ ë¶€ëª¨
+    public List<Transform> positionList;       //ìœ„ì¹˜ë¦¬ìŠ¤íŠ¸
 
-    public int gradePos;  //µî±Ş À§Ä¡
-    public int scarPos;   //ÈäÅÍ À§Ä¡
-    public int tattooPos; //¹®½Å À§Ä¡
+    public int gradePos;  //ë“±ê¸‰ ìœ„ì¹˜
+    public int scarPos;   //í‰í„° ìœ„ì¹˜
+    public int tattooPos; //ë¬¸ì‹  ìœ„ì¹˜
 
     private void Awake()
     {
         positionList
             = new List<Transform>(parentOfPos.GetComponentsInChildren<Transform>());
 
-        positionList.Remove(parentOfPos.transform);    //»óÀ§ ¿ÀºêÁ§Æ®ÀÇ TransformÀº Á¦°Å
+        positionList.Remove(parentOfPos.transform);    //ìƒìœ„ ì˜¤ë¸Œì íŠ¸ì˜ Transformì€ ì œê±°
 
         SetRandomPos();
     }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ActivateObjectOnMouseOver : MonoBehaviour
+public class ActivateObjectOnMouseOver : TextInformationOfMarker
 {
     [SerializeField] GameObject targetObject;
 
@@ -14,6 +14,7 @@ public class ActivateObjectOnMouseOver : MonoBehaviour
     private void OnMouseEnter()
     {
         targetObject.SetActive(true);
+        SetText(this.gameObject.name);
     }
 
     private void OnMouseExit()

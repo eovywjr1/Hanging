@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5593784743423852314}
   - component: {fileID: 4267131458885128399}
   - component: {fileID: 7293285904942446768}
+  - component: {fileID: 700654801348956964}
   - component: {fileID: 2253564642318503674}
   m_Layer: 0
   m_Name: "\uBB38\uC2E0"
@@ -98,13 +99,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ac2e8381cb95a943b4dee1c30ef6941, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prisoner: {fileID: 0}
+  prisoner: {fileID: 8201009838697454479}
   marker: {fileID: 751692162526320685}
   markerList:
   - {fileID: 21300000, guid: 48d0a717acb794e45926550cdc78e11c, type: 3}
   - {fileID: 21300000, guid: 6c9ed1935d74e544287b5fcd497977f9, type: 3}
   - {fileID: 21300000, guid: 2bd528cb226caf84b854c2e8ff12b819, type: 3}
   grade: 0
+--- !u!114 &700654801348956964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 751692162526320685}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da589213eb45c9948a03002a729ca4b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  information: {fileID: 8201009838697454474}
+  systemDataManager: {fileID: 0}
+  inforText: 
+  targetObject: {fileID: 8201009838862263203}
 --- !u!58 &2253564642318503674
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -132,6 +149,7 @@ GameObject:
   - component: {fileID: 1675284714739548323}
   - component: {fileID: 5583442346461932577}
   - component: {fileID: 4440183622838736946}
+  - component: {fileID: 6307189531590721906}
   - component: {fileID: 1064054740757290756}
   m_Layer: 0
   m_Name: "\uD749\uD130"
@@ -219,12 +237,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ac2e8381cb95a943b4dee1c30ef6941, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prisoner: {fileID: 0}
+  prisoner: {fileID: 8201009838697454479}
   marker: {fileID: 2109906822717604614}
   markerList:
   - {fileID: 21300000, guid: 4bf2ca0cdb7b54f4090d652b10327f73, type: 3}
   - {fileID: 21300000, guid: 46e04aa431d7c4c499f14f6c2eda3e60, type: 3}
   grade: 0
+--- !u!114 &6307189531590721906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2109906822717604614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da589213eb45c9948a03002a729ca4b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  information: {fileID: 8201009838697454474}
+  systemDataManager: {fileID: 0}
+  inforText: 
+  targetObject: {fileID: 8201009838862263203}
 --- !u!58 &1064054740757290756
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1109,7 +1143,7 @@ GameObject:
   - component: {fileID: 8201009838697454472}
   - component: {fileID: 8201009838697454475}
   - component: {fileID: 8201009838697454474}
-  - component: {fileID: 8201009838697454473}
+  - component: {fileID: 8046595884662473384}
   m_Layer: 5
   m_Name: TextInfo
   m_TagString: Untagged
@@ -1234,7 +1268,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &8201009838697454473
+--- !u!114 &8046595884662473384
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1248,6 +1282,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   information: {fileID: 8201009838697454474}
   systemDataManager: {fileID: 0}
+  inforText: 
 --- !u!1 &8201009838845849369
 GameObject:
   m_ObjectHideFlags: 0
@@ -1349,7 +1384,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8201009838862263212
 Transform:
   m_ObjectHideFlags: 0
@@ -1564,6 +1599,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da589213eb45c9948a03002a729ca4b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  information: {fileID: 8201009838697454474}
+  systemDataManager: {fileID: 0}
+  inforText: 
   targetObject: {fileID: 8201009838862263203}
 --- !u!58 &6097293937299377524
 CircleCollider2D:

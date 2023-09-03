@@ -124,6 +124,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8690459493155949538}
     m_Modifications:
+    - target: {fileID: 700654801348956964, guid: c18c57d20475b5349bd9121202a8586f, type: 3}
+      propertyPath: systemDataManager
+      value: 
+      objectReference: {fileID: 3764545205962110368}
+    - target: {fileID: 6307189531590721906, guid: c18c57d20475b5349bd9121202a8586f, type: 3}
+      propertyPath: systemDataManager
+      value: 
+      objectReference: {fileID: 3764545205962110368}
+    - target: {fileID: 8046595884662473384, guid: c18c57d20475b5349bd9121202a8586f, type: 3}
+      propertyPath: systemDataManager
+      value: 
+      objectReference: {fileID: 3764545205962110368}
+    - target: {fileID: 8201009838697454473, guid: c18c57d20475b5349bd9121202a8586f, type: 3}
+      propertyPath: systemDataManager
+      value: 
+      objectReference: {fileID: 3764545205962110368}
+    - target: {fileID: 8201009838884350520, guid: c18c57d20475b5349bd9121202a8586f, type: 3}
+      propertyPath: systemDataManager
+      value: 
+      objectReference: {fileID: 3764545205962110368}
     - target: {fileID: 8201009838884350526, guid: c18c57d20475b5349bd9121202a8586f, type: 3}
       propertyPath: markerList.Array.size
       value: 5

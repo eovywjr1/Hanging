@@ -18,7 +18,7 @@ public class WorkSystemData  : MonoBehaviour
 
     private void Awake()
     {
-        //bool값 확률(?)과 일자 설정은 기획 수정 후 변경 필요
+        //해당bool값 확률(?)과 일자 설정은 기획 수정 후 변경 필요
         SetRandomBool(isClone);
         SetRandomBool(isCut);
         SetRandomBool(isBurn);
@@ -37,7 +37,7 @@ public class WorkSystemData  : MonoBehaviour
     {
         System.Random random = new System.Random();
 
-        if(random.Next(0,3) == 1)
+        if(random.Next(0,3) == 1)   //확률은 추후 기획에 맞춰 수정 필요
         {
             boolData = true;
         }
@@ -47,7 +47,7 @@ public class WorkSystemData  : MonoBehaviour
         }
     }
 
-    DateTime GetRandomDate(DateTime startDate, DateTime endDate)
+    DateTime GetRandomDate(DateTime startDate, DateTime endDate)    //날짜 설정 기준은 기획에 맞춰 수정 필요
     {
         TimeSpan timeSpan = endDate - startDate;
         TimeSpan randomTimeSpan = new TimeSpan((long)(UnityEngine.Random.value * timeSpan.Ticks));
