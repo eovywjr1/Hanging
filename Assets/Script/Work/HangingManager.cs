@@ -76,7 +76,10 @@ public class HangingManager : MonoBehaviour, IListener
         createAttacker();
 
         if (CheckEnableGimmick(EnableGimmick.StaButton))
+        { 
             OnStaButton();
+            
+        }
 
         spawnBadge(badgeCount);
     }
@@ -296,10 +299,11 @@ public class HangingManager : MonoBehaviour, IListener
 
     private void OnStaButton()
     {
+        
         if (staButton == null)
             return;
-
         staButton.SetActive(true);
+      
     }
 
     public void searchReport()
