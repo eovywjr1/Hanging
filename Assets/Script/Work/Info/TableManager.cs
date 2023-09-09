@@ -51,7 +51,7 @@ public class TableManager : MonoBehaviour
             judgeT.Add(csvReader.Read("8" + fileName));
             judgeT.Add(csvReader.Read("9" + fileName));
             judgeT.Add(csvReader.Read("10" + fileName));
-            zz
+            
         }
 
         // 조민수 : 정상적인 플레이에서는 각 해당 일차마다 추가 //
