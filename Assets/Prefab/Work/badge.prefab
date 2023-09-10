@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6536005740198139837}
   - component: {fileID: 6536005740198139839}
   m_Layer: 0
-  m_Name: badge
+  m_Name: Badge
   m_TagString: badge
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

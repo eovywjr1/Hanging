@@ -15,7 +15,7 @@ public class TableManager : MonoBehaviour
     private static SpecialJobIndexInfoReader specialJobIndexInfoReader = null;
 
     ReadPrisonerInfo readPrisonerInfo;
-    SystemDataManager systemDataManager;    //유전자코드, 몸수색, 얼굴 수색 등의 시스템 정보 관리
+    WorkSystemData systemDataManager;    //유전자코드, 몸수색, 얼굴 수색 등의 시스템 정보 관리
 
     bool isApplySpecificInfo;   // 특정 정보 적용 여부
 
@@ -93,7 +93,7 @@ public class TableManager : MonoBehaviour
             //9일차부터 복제인간 등장
             if (HangingManager.day >= 9)
             {
-                systemDataManager = FindObjectOfType<SystemDataManager>();
+                systemDataManager = FindObjectOfType<WorkSystemData>();
 
                 SetHumanClone(data);
             }

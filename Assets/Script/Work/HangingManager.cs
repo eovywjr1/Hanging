@@ -33,6 +33,9 @@ public class HangingManager : MonoBehaviour, IListener
             EventManager.instance.postNotification("updateAttackerCountCCTV", this, _judgeCount + 1);
         }
     }
+
+    [SerializeField] private GameObject badgePrefab;
+    [SerializeField] private GameObject badgeWrap;
     private bool isEndCompulsoryDialog;
     private int _correctJudgeCount = 0;
     private int _discorrectJudgeCount = 0;
@@ -40,10 +43,16 @@ public class HangingManager : MonoBehaviour, IListener
 
     public static int day = 1;
 #if UNITY_EDITOR
-    public int debug_day = 8;
+    public int debug_day = 1;
 #endif
 
     private static int badgeCount = 3;
+
+    public enum EnableGimmick
+    {
+        StaButton
+    }
+
 
     private void Awake()
     {
@@ -55,7 +64,6 @@ public class HangingManager : MonoBehaviour, IListener
         hangingTimer = FindObjectOfType<HangingTimer>();
         analogGlitch = FindObjectOfType<AnalogGlitch>();
         _uiManager = FindObjectOfType<UiManager>();
-
         scrollViewController=FindObjectOfType<ScrollViewController>();
     }
 
@@ -67,10 +75,13 @@ public class HangingManager : MonoBehaviour, IListener
 
         createAttacker();
 
-        if (day >= 6)
+        if (CheckEnableGimmick(EnableGimmick.StaButton))
+        { 
             OnStaButton();
+            
+        }
 
-        FindObjectOfType<BadgeManager>().spawnBadge(badgeCount);
+        spawnBadge(badgeCount);
     }
 
     public void EndTodesstrafe()
@@ -222,9 +233,8 @@ public class HangingManager : MonoBehaviour, IListener
         {
             EventManager.instance.postPossibleEvent();
 
-            attackerMouseMove.setAllPossible();
             Rope rope = attacker.transform.Find("rope").GetComponent<Rope>();
-            Debug.Assert(rope, "ropeë¥? ëª? ì°¾ì•˜?Šµ?‹ˆ?‹¤.");
+            Debug.Assert(rope, "not find rope");
             if (rope)
                 rope.isPossibleCut = true;
         }
@@ -289,7 +299,11 @@ public class HangingManager : MonoBehaviour, IListener
 
     private void OnStaButton()
     {
+        
+        if (staButton == null)
+            return;
         staButton.SetActive(true);
+      
     }
 
     public void searchReport()
@@ -300,5 +314,44 @@ public class HangingManager : MonoBehaviour, IListener
     public bool checkEndCompulsoryDialog()
     {
         return isEndCompulsoryDialog;
+    }
+
+    private void spawnBadge(int size)
+    {
+        if (badgePrefab == null)
+        {
+            Debug.Assert(false, "not insert BadgePrefab");
+            return;
+        }
+
+        if (badgeWrap == null)
+        {
+            Debug.Assert(false, "not insert BadgeWrap");
+            return;
+        }
+
+        Transform badgeTransform = badgeWrap.transform;
+        for (int index = 0; index < size; ++index)
+        {
+            Vector3 vector3 = badgeTransform.position;
+            vector3.x = index - 1;
+            Instantiate(badgePrefab, vector3, Quaternion.identity, badgeTransform);
+        }
+    }
+
+    public bool CheckEnableGimmick(EnableGimmick enableGimmickType)
+    {
+        switch (enableGimmickType)
+        {
+            case EnableGimmick.StaButton:
+                {
+                    if (day >= 6)
+                        return true;
+
+                    break;
+                }
+        }
+
+        return false;
     }
 }

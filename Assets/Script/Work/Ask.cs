@@ -11,6 +11,9 @@ public class Ask : MonoBehaviour, IListener
     private void Start()
     {
         EventManager.instance.addListener("possibleAsk", this);
+
+        if (FindObjectOfType<HangingManager>().checkEndCompulsoryDialog())
+            activeAsk();
     }
 
     public void activeAsk()

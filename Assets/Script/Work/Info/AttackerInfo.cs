@@ -18,17 +18,17 @@ public class AttackerInfo : MonoBehaviour
 
     void Start()
     {
-
         recordData = new RecordData(tableManager, readPrisonerInfo);
 
         scrollViewController = FindObjectOfType<ScrollViewController>();
-        scrollViewController.MakeMentList();
+        Debug.Assert(scrollViewController, "not find ScrollViewController");
+        if (scrollViewController)
+            scrollViewController.MakeMentList();
 
 /*        recordData = new RecordData(tableManager);
         Debug.Log("정보생성완료");
         scrollViewController = FindObjectOfType<ScrollViewController>();
         scrollViewController.MakeMentList();*/
-
     }
 
     public RecordData GetRecordData()
