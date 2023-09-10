@@ -830,7 +830,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2696586845578461405, guid: eb9383c62696a8342ab1744954e8dce2, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.0027735895
+      value: 0.0031243106
       objectReference: {fileID: 0}
     - target: {fileID: 2696586845809489345, guid: eb9383c62696a8342ab1744954e8dce2, type: 3}
       propertyPath: 
@@ -1180,7 +1180,7 @@ PrefabInstance:
       objectReference: {fileID: 946725328}
     - target: {fileID: 9054927331804017861, guid: 49384f57359b72a4a93d70114bbf4a7a, type: 3}
       propertyPath: debug_day
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 9054927331804017861, guid: 49384f57359b72a4a93d70114bbf4a7a, type: 3}
       propertyPath: staButton

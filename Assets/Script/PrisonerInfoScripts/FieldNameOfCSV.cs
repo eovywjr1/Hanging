@@ -13,6 +13,8 @@ public class FieldNameOfCSV : MonoBehaviour
 
     private void Awake()
     {
+
+        if (day >= 8) return;
         char charValue = (char)(day + '0');
 
         fieldNames = new List<string>();
