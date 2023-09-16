@@ -12,6 +12,7 @@ TagManager:
   - rope
   - middleCriteria
   - TodesstrafeCriteria
+  - Record
   layers:
   - Default
   - TransparentFX
@@ -24,7 +25,7 @@ TagManager:
   - 
   - 
   - Attacker
-  - 
+  - Record
   - 
   - 
   - 

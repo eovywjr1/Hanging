@@ -124,51 +124,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TortureSystem: {fileID: 0}
   tortureCondition: 0
---- !u!1 &4469114973735057659
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 165132828132430254}
-  - component: {fileID: 1498442762264819090}
-  m_Layer: 0
-  m_Name: BadgeManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &165132828132430254
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4469114973735057659}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 9054927331474103976}
-  m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1498442762264819090
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4469114973735057659}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e6d11ea3f952ba84bb9022e3af57cad0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  badgePrefab: {fileID: 6536005740198139779, guid: 8788f1352e186df4d931aca672b3a850, type: 3}
 --- !u!1 &6227643705250682742
 GameObject:
   m_ObjectHideFlags: 0
@@ -256,10 +211,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 8009114894455455344}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa8ea86a069c2b44794c56400fe2be2a, type: 3}
+  m_Script: {fileID: 11500000, guid: df9bb05fa09d18c4ca61b3d61b6f5f7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isClone: 0
+  isCut: 0
+  isBurn: 0
+  isRebelForces: 0
+  reasonForChange: 
 --- !u!1 &9054927330431540718
 GameObject:
   m_ObjectHideFlags: 0
@@ -341,7 +300,6 @@ Transform:
   - {fileID: 491071539}
   - {fileID: 882189171128930428}
   - {fileID: 4089009709918693495}
-  - {fileID: 165132828132430254}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -475,4 +433,6 @@ MonoBehaviour:
   isExecuteAsk: 0
   isStatementWrongProcess: 0
   staButton: {fileID: 0}
+  badgePrefab: {fileID: 0}
+  badgeWrap: {fileID: 0}
   debug_day: 8

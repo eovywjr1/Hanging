@@ -5,6 +5,7 @@ using UnityEngine;
 using static UnityEngine.RuleTile.TilingRuleOutput;
 using UnityEngine.UI;
 using Unity.VisualScripting;
+using hanging;
 
 public class Line
 {
@@ -15,7 +16,7 @@ public class Line
     public Image windowImage;
     SpriteRenderer buttonSpriteRenderer;
     private TextMeshProUGUI windowtmpu;
-    public float parentYSum;   //������, ������(�θ��) y �߰�
+    public float parentYSum;
     public delegate void ShowData();
     ShowData showdata;
 
@@ -40,7 +41,7 @@ public class Line
         }
         else
         {
-            lineLR.startColor = new Color(1, 1, 1, alpha * 3f);   //�÷� ���߿� ������ �ʿ�
+            lineLR.startColor = new Color(1, 1, 1, alpha * 3f);
             lineLR.endColor = new Color(1, 1, 1, alpha * 3f);
             windowImage.color = new Color(1, 1, 1, alpha);
             windowtmpu.color = new Color(0, 0, 0, alpha);
@@ -48,14 +49,17 @@ public class Line
         }
     }
 
-    public IEnumerator ChangeTransparency(int mode)
+    public IEnumerator ChangeTransparency(MoveMode moveMode)
     {
         if (lineList.Count == 0)
             yield break;
-            
+
+        if (moveMode == MoveMode.Down)
+            windowObject.SetActive(true);
+
         float initAlpha = lineList[0].windowImage.color.a;
         float speed = 0.02f;
-        float oper = (mode == 1) ? speed * 0.5f : -1 * speed;  //��Ÿ�� �� �� ������ ���̴� ���� ����
+        float oper = (moveMode == MoveMode.Down) ? speed * 0.5f : -1 * speed;
         float d = initAlpha;
 
         while (d >= 0 && d <= 1 && lineList.Count > 0)
@@ -73,6 +77,8 @@ public class Line
         {
             foreach (Line line in lineList)
                 line.SetAlpha(0);
+
+            windowObject.SetActive(false);
         }
         else if (d >= 0.9)
         {
