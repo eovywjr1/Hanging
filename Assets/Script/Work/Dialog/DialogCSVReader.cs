@@ -7,9 +7,9 @@ using System.Linq;
 
 public class DialogCSVReader
 {
-    static string SPLIT_RE = @",(?=(?:[^""]*""[^""]*"")*(?![^""]*""))";
-    static string LINE_SPLIT_RE = @"\r\n|\n\r|\n|\r";
-    static char[] TRIM_CHARS = { '\"' };
+    private string SPLIT_RE = @",(?=(?:[^""]*""[^""]*"")*(?![^""]*""))";
+    private string LINE_SPLIT_RE = @"\r\n|\n\r|\n|\r";
+    private char[] TRIM_CHARS = { '\"' };
 
     public Dictionary<string, List<List<string>>> Read(string file)
     {

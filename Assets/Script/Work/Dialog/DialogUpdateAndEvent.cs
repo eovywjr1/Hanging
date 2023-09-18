@@ -3,22 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using Unity.VisualScripting;
-using System.IO;
 
 public class DialogUpdateAndEvent : MonoBehaviour, IListener
 {
-    DialogCSVReader dialogReader = new DialogCSVReader();
+    private enum DialogType
+    {
+        Common,
+        CountDown,
+        SubmitBadge,
+    };
+
     DialogBubbleController dialogBubbleController;
     DialogWindowController dialogWindowController;
     HangingManager hangingManager;
     private BossHand _bossHand = null;
 
-    private Dictionary<string, List<List<string>>> compulsoryT, situationD;
+    private Dictionary<string, List<List<string>>> _compulsoryDialogData, _situationDialogData;
 
     bool timeover;
     public bool clickAttacker, todesstrafe, amnesty, moveCameraToDesk, activeGuide, deactiveGuide, clickBasicJudgementGuide; // waituntil 위해서 public
 
     string conditionName;
+
+    private DialogType _currentDialogType = DialogType.Common;
 
     private void Awake()
     {
@@ -29,23 +36,15 @@ public class DialogUpdateAndEvent : MonoBehaviour, IListener
             _bossHand = FindObjectOfType<BossHand>();
             Debug.Assert(_bossHand, "조민수 : bossHand 스크립트가 없어서 확인부탁드립니다.");
         }
-
-        string fileName = HangingManager.day + "DayCompulsoryDialog";
-        string filePath = "Assets/Resources/" + fileName + ".csv";
-        FileInfo fileInfo = new FileInfo(filePath);
-        if (fileInfo.Exists == false)
-        {
-            Debug.Assert(false, "조민수 comment : " + filePath + "이 없습니다 파일을 추가해주세요.");
-            return;
-        }
-
-        compulsoryT = dialogReader.Read(fileName);
-        situationD = dialogReader.Read("SituationDialog");
     }
 
     void Start()
     {
         EventManager.instance.addListener("dialogEvent", this);
+        EventManager.instance.addListener("submitBadge", this);
+
+        _compulsoryDialogData = GameManager.instance._dialogData.getCompulsoryDialogTable(HangingManager.day);
+        _situationDialogData = GameManager.instance._dialogData.situationDialogData;
 
         string id = HangingManager.day + "000";
         StartCoroutine(UpdateDialogCompulsory(id));
@@ -53,12 +52,12 @@ public class DialogUpdateAndEvent : MonoBehaviour, IListener
 
     IEnumerator UpdateDialogCompulsory(string id)
     {
-        if (compulsoryT == null)
+        if (_compulsoryDialogData == null)
             yield break;
 
-        while (compulsoryT.ContainsKey(id))
+        while (_compulsoryDialogData.ContainsKey(id))
         {
-            yield return StartCoroutine(UpdateDialog(compulsoryT[id]));
+            yield return StartCoroutine(UpdateDialog(_compulsoryDialogData[id], _currentDialogType));
 
             id = (StringToInt(id) + 1).ToString();
         }
@@ -70,12 +69,12 @@ public class DialogUpdateAndEvent : MonoBehaviour, IListener
 
     IEnumerator UpdateDialogSituation(string id)
     {
-        yield return StartCoroutine(UpdateDialog(situationD[id]));
+        yield return StartCoroutine(UpdateDialog(_situationDialogData[id], _currentDialogType));
 
         yield return null;
     }
 
-    IEnumerator UpdateDialog(List<List<string>> list)
+    IEnumerator UpdateDialog(List<List<string>> list, DialogType dialogType)
     {
         IEnumerator dialogTimerCoroutine;
 
@@ -83,13 +82,16 @@ public class DialogUpdateAndEvent : MonoBehaviour, IListener
         {
             Initialize();
 
+            if (_currentDialogType != dialogType)
+                break;
+
             dialogBubbleController.CreateDialogBubble(StringToInt(i[1]), i[2]);
 
             dialogTimerCoroutine = NextDialogTimer();
             StartCoroutine(dialogTimerCoroutine);
             yield return new WaitUntil(NextDialog);
             StopCoroutine(dialogTimerCoroutine);
-            yield return StartCoroutine(Timer(0.2f)); // 검토 //
+            yield return StartCoroutine(Timer(0.2f));
 
             if ((i.Count > 3) && (i[3].Equals("") == false))
             {
@@ -110,6 +112,8 @@ public class DialogUpdateAndEvent : MonoBehaviour, IListener
             if ((i.Count > 4) && (i[4].Equals("") == false))
                 Invoke(i[4], 0f);
         }
+
+        _currentDialogType = DialogType.Common;
     }
 
     bool NextDialog()
@@ -171,6 +175,7 @@ public class DialogUpdateAndEvent : MonoBehaviour, IListener
 
     private void badgeCountDownDialog()
     {
+        _currentDialogType = DialogType.CountDown;
         StartCoroutine(SetSituationDialog(60, 0));
     }
 
@@ -182,6 +187,7 @@ public class DialogUpdateAndEvent : MonoBehaviour, IListener
                 return;
         }));
 
+        _currentDialogType = DialogType.CountDown;
         StartCoroutine(SetSituationDialog(60, 0));
     }
 
@@ -211,8 +217,15 @@ public class DialogUpdateAndEvent : MonoBehaviour, IListener
         if (sender == this)
             return;
 
-        if (parameter.GetType() == typeof(int))
+        if ((parameter != null) && (parameter.GetType() == typeof(int)))
             StartCoroutine(SetSituationDialog(Convert.ToInt32(parameter), 0));
+
+        switch (eventType)
+        {
+            case "submitBadge":
+                _currentDialogType = DialogType.SubmitBadge;
+                break;
+        }
 
         switch (parameter)
         {
