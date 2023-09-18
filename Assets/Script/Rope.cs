@@ -63,6 +63,9 @@ public class Rope : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
             {
+                if (EventSystem.current.IsPointerOverGameObject())
+                    return;
+
                 Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
                 float cutRange = 2.0f;  //밧줄 자를 수 있는 반경 범위

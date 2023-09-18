@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using hanging;
 
 public class HangingManager : MonoBehaviour, IListener
 {
@@ -53,12 +54,23 @@ public class HangingManager : MonoBehaviour, IListener
         StaButton
     }
 
-
     private void Awake()
     {
 #if UNITY_EDITOR
         day = debug_day;
 #endif
+
+        if (badgePrefab == null)
+        {
+            Debug.Assert(false, "not insert BadgePrefab");
+            return;
+        }
+
+        if (badgeWrap == null)
+        {
+            Debug.Assert(false, "not insert BadgeWrap");
+            return;
+        }
 
         dialogWindowController = FindObjectOfType<DialogWindowController>();
         hangingTimer = FindObjectOfType<HangingTimer>();
@@ -76,12 +88,15 @@ public class HangingManager : MonoBehaviour, IListener
         createAttacker();
 
         if (CheckEnableGimmick(EnableGimmick.StaButton))
-        { 
             OnStaButton();
-            
-        }
 
-        spawnBadge(badgeCount);
+        Transform badgeTransform = badgeWrap.transform;
+        for (int index = 0; index < badgeCount; ++index)
+        {
+            Vector3 vector3 = badgeTransform.position;
+            vector3.x = index - 1;
+            Instantiate(badgePrefab, vector3, Quaternion.identity, badgeTransform);
+        }
     }
 
     public void EndTodesstrafe()
@@ -314,29 +329,6 @@ public class HangingManager : MonoBehaviour, IListener
     public bool checkEndCompulsoryDialog()
     {
         return isEndCompulsoryDialog;
-    }
-
-    private void spawnBadge(int size)
-    {
-        if (badgePrefab == null)
-        {
-            Debug.Assert(false, "not insert BadgePrefab");
-            return;
-        }
-
-        if (badgeWrap == null)
-        {
-            Debug.Assert(false, "not insert BadgeWrap");
-            return;
-        }
-
-        Transform badgeTransform = badgeWrap.transform;
-        for (int index = 0; index < size; ++index)
-        {
-            Vector3 vector3 = badgeTransform.position;
-            vector3.x = index - 1;
-            Instantiate(badgePrefab, vector3, Quaternion.identity, badgeTransform);
-        }
     }
 
     public bool CheckEnableGimmick(EnableGimmick enableGimmickType)

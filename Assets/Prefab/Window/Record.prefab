@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8972812224096714928}
   - component: {fileID: 4346458256023655092}
   - component: {fileID: 440907875026079600}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: AttackerButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -170,7 +170,7 @@ GameObject:
   - component: {fileID: 4841914207720447521}
   - component: {fileID: 4841914207720447520}
   - component: {fileID: 6666099837081398732}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: Data
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -326,7 +326,7 @@ GameObject:
   - component: {fileID: 8401961001978057043}
   m_Layer: 11
   m_Name: Record
-  m_TagString: Untagged
+  m_TagString: Record
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -368,12 +368,12 @@ Canvas:
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
-  m_OverrideSorting: 0
+  m_OverrideSorting: 1
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
-  m_SortingLayerID: 0
-  m_SortingOrder: 2
+  m_SortingLayerID: -1213178827
+  m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!114 &4841914209743029690
 MonoBehaviour:
@@ -397,7 +397,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &4841914209743029701
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -532,7 +532,7 @@ GameObject:
   - component: {fileID: 8110703269976880971}
   - component: {fileID: 7302843797578897653}
   - component: {fileID: 2893639211666459706}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: VictimExclamationMark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
