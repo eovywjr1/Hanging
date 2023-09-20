@@ -100,7 +100,7 @@ public class RecordData
                 //검색 완료//
                 if (isMatch)
                 {
-                    Debug.Log("검색이 완료 되어는지?");
+                    Debug.Log("검색이 완료 되었는가?");
                     isHanging = int.Parse(judgeList[i][j]["judgement"][0]);
                     
                     //유민) 
@@ -141,16 +141,15 @@ public class RecordData
 
         for (int i = 0; i < 5; i++)
         {
-            Debug.Log("맞는거"+correctState[i]);
+            Debug.Log("맞는 정보 : "+correctState[i]);
         }
 
-        Debug.Log("실행생성");
         if (lieORInfoError.ContainsKey("lie") || lieORInfoError.ContainsKey("infoError"))
         {
             if (lieORInfoError.ContainsKey("infoError"))
             {
                 lieORinfoErrorValue = 2;
-                Debug.Log("정보오류!");
+                Debug.Log("정보오류");
 
                 for (int i = 0; i < lieORInfoError["infoError"].Count; i++)
                 {
@@ -190,7 +189,7 @@ public class RecordData
 
 
             if (lieORInfoError.ContainsKey("lie")){
-                Debug.Log("위증!");
+                Debug.Log("위증");
                 lieORinfoErrorValue = 99;
                 
 
@@ -222,7 +221,7 @@ public class RecordData
 
         for (int i = 0; i < 4; i++)
         {
-            Debug.Log("진술서에 보여지고 있는 것 : " + currentState[i]);
+            Debug.Log("진술서에 보여지고 있는 데이터 : " + currentState[i]);
         }
 
     }
