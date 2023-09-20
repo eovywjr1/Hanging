@@ -42,9 +42,9 @@ public class HangingManager : MonoBehaviour, IListener
     private int _discorrectJudgeCount = 0;
     private int _discorrectAndTodesstrafedPersonCount = 0;
 
-    public static int day = 1;
+    public static int day = 6;
 #if UNITY_EDITOR
-    public int debug_day = 1;
+    public int debug_day = 6;
 #endif
 
     private static int badgeCount = 3;

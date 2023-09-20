@@ -30,7 +30,12 @@ public class TableManager : MonoBehaviour
         if (nameT == null)
         {
             nameT = csvReader.Read("nameInfo");
-            fnameT = csvReader.Read("familyNameInfo");
+
+            //성희 : 6일차 이후로 성 추가돼서 파일 변경
+            if (HangingManager.day <= 5) fnameT = csvReader.Read("familyNameInfoBeforeDay6");
+            else fnameT = csvReader.Read("familyNameInfoAfterDay6");
+
+
             crimeT = csvReader.Read("crimeInfo");
             detailT = csvReader.Read("crimeReasonInfo");
 
@@ -46,7 +51,7 @@ public class TableManager : MonoBehaviour
             judgeT.Add(csvReader.Read("3" + fileName));
             judgeT.Add(csvReader.Read("4" + fileName));
             judgeT.Add(csvReader.Read("5" + fileName));
-            judgeT.Add(csvReader.Read("6" + fileName));
+            //judgeT.Add(csvReader.Read("6" + fileName)); 6일차에 추가되는 데이터 없음
             judgeT.Add(csvReader.Read("7" + fileName));
             judgeT.Add(csvReader.Read("8" + fileName));
             judgeT.Add(csvReader.Read("9" + fileName));
@@ -86,8 +91,15 @@ public class TableManager : MonoBehaviour
             SetJob(data, data["positionGrade"], 1);
             Debug.Log("Job : " + data["job"]);
 
-            //위증여부//
-            if(HangingManager.day >= 6) 
+
+            //성희 : 5일차 범죄가중, 신규 데이터
+            if (HangingManager.day == 5)
+            {
+                IncreaseCrimeGrade(data);
+            }
+
+            //n일차부터 위증여부 추가, 임시로 8로 지정해둠//
+            if(HangingManager.day >= 8) 
                 GetLieORInfoError(data, ref lieORInfoError);
 
             //9일차부터 복제인간 등장
@@ -808,5 +820,15 @@ public class TableManager : MonoBehaviour
 
         Debug.LogWarning($" 확률 총합이 '{randomValue}' 입니다. 수정이 필요합니다.");
         return -1;
+    }
+
+    public void IncreaseCrimeGrade(Dictionary<string, string> data)
+    {
+        if(int.Parse(data["positionGrade"])>=2 
+            && 1<=int.Parse(data["crimeRecord"])
+            && int.Parse(data["crimeRecord"]) <= 2)
+        {
+            data["crimeRecord"] = (int.Parse(data["crimeRecord"])-1).ToString();
+        }
     }
 }
