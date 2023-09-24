@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Rope : MonoBehaviour
+public class Rope : MonoBehaviour, IListener
 {
     public prisoner prisoner;
     private Rigidbody2D prisonerRigidbody;
@@ -40,6 +40,11 @@ public class Rope : MonoBehaviour
             segments.Add(new Segment(segmentPos));
             segmentPos.y -= segmentLength;
         }
+    }
+
+    private void Start()
+    {
+        EventManager.instance.addListener("possibleamnesty", this);
     }
 
     private void FixedUpdate()
@@ -200,6 +205,16 @@ public class Rope : MonoBehaviour
             previousPos = _position;
             position = _position;
             velocity = Vector2.zero;
+        }
+    }
+
+    public void OnEvent(string eventType, Component sender, object parameter = null)
+    {
+        switch (eventType)
+        {
+            case "possibleamnesty":
+                isPossibleCut = true;
+                break;
         }
     }
 }

@@ -830,7 +830,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2696586845578461405, guid: eb9383c62696a8342ab1744954e8dce2, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.0031243106
+      value: 0.0032287259
       objectReference: {fileID: 0}
     - target: {fileID: 2696586845809489345, guid: eb9383c62696a8342ab1744954e8dce2, type: 3}
       propertyPath: 
@@ -1180,7 +1180,7 @@ PrefabInstance:
       objectReference: {fileID: 946725328}
     - target: {fileID: 9054927331804017861, guid: 49384f57359b72a4a93d70114bbf4a7a, type: 3}
       propertyPath: debug_day
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9054927331804017861, guid: 49384f57359b72a4a93d70114bbf4a7a, type: 3}
       propertyPath: staButton
@@ -1733,14 +1733,6 @@ PrefabInstance:
     - target: {fileID: 3755610338484007292, guid: ec47edb70546de7468447ddd1a1d081f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3755610338484007293, guid: ec47edb70546de7468447ddd1a1d081f, type: 3}
-      propertyPath: m_SortingLayerID
-      value: -1213178827
-      objectReference: {fileID: 0}
-    - target: {fileID: 3755610338484007294, guid: ec47edb70546de7468447ddd1a1d081f, type: 3}
-      propertyPath: m_PresetInfoIsWorld
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ec47edb70546de7468447ddd1a1d081f, type: 3}
