@@ -264,6 +264,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 5660886376084048379}
     - target: {fileID: 2076108095126952184, guid: ee39c750dbaadb947af1d1b5a95a9e91, type: 3}
+      propertyPath: isPossibleCut
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2076108095126952184, guid: ee39c750dbaadb947af1d1b5a95a9e91, type: 3}
       propertyPath: constraintLoop
       value: 30
       objectReference: {fileID: 0}

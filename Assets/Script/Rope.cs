@@ -59,37 +59,37 @@ public class Rope : MonoBehaviour
 
     private void Update()
     {
-        if ((isPossibleCut) && (isCut == false))
+        if ((isPossibleCut == false) || (isCut))
+            return;
+
+        if ((Input.GetMouseButtonDown(0) == false) && (Input.GetMouseButtonDown(1) == false))
+            return;
+
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
+
+        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        float cutRange = 2.0f;  //밧줄 자를 수 있는 반경 범위
+        float distanceToStart = Vector2.Distance(startTransform.position, mousePos);
+
+        if (cutRange < distanceToStart)
+            return;
+
+        int closestSegmentIndex = FindClosestSegmentIndex(mousePos);
+
+        endTransform = null;
+        if (closestSegmentIndex != -1)
         {
-            if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
+            for (int i = closestSegmentIndex; i < segments.Count; i++)
             {
-                if (EventSystem.current.IsPointerOverGameObject())
-                    return;
-
-                Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-                float cutRange = 2.0f;  //밧줄 자를 수 있는 반경 범위
-                float distanceToStart = Vector2.Distance(startTransform.position, mousePos);
-
-                if (distanceToStart <= cutRange)
-                {
-                    int closestSegmentIndex = FindClosestSegmentIndex(mousePos);
-
-                    endTransform = null;
-                    if (closestSegmentIndex != -1)
-                    {
-                        for (int i = closestSegmentIndex; i < segments.Count; i++)
-                        {
-                            segments.RemoveAt(i);
-                        }
-                    }
-
-                    prisonerRigidbody.bodyType = RigidbodyType2D.Dynamic;
-
-                    cutRope();
-                }
+                segments.RemoveAt(i);
             }
         }
+
+        prisonerRigidbody.bodyType = RigidbodyType2D.Dynamic;
+
+        cutRope();
     }
 
     private int FindClosestSegmentIndex(Vector2 mousePos)
