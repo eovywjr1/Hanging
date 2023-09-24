@@ -21,8 +21,8 @@ public class Rope : MonoBehaviour
 
     private List<Segment> segments = new List<Segment>();
 
-    public bool isPossibleCut = false;
-    public bool isCut = false;
+    private bool isPossibleCut = false;
+    private bool isCut = false;
 
     private void Reset()
     {

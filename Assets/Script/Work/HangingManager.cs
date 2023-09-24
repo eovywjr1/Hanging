@@ -251,7 +251,7 @@ public class HangingManager : MonoBehaviour, IListener
             Rope rope = attacker.transform.Find("rope").GetComponent<Rope>();
             Debug.Assert(rope, "not find rope");
             if (rope)
-                rope.isPossibleCut = true;
+                rope.SetCutPossible(true);
         }
 
         isTodesstrafe = false;
