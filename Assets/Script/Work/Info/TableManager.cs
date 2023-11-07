@@ -92,12 +92,6 @@ public class TableManager : MonoBehaviour
             Debug.Log("Job : " + data["job"]);
 
 
-            //성희 : 5일차 범죄가중, 신규 데이터
-            if (HangingManager.day == 5)
-            {
-                IncreaseCrimeGrade(data);
-            }
-
             //n일차부터 위증여부 추가, 임시로 8로 지정해둠//
             if(HangingManager.day >= 8) 
                 GetLieORInfoError(data, ref lieORInfoError);
@@ -877,13 +871,4 @@ public class TableManager : MonoBehaviour
         return -1;
     }
 
-    public void IncreaseCrimeGrade(Dictionary<string, string> data)
-    {
-        if(int.Parse(data["positionGrade"])>=2 
-            && 1<=int.Parse(data["crimeRecord"])
-            && int.Parse(data["crimeRecord"]) <= 2)
-        {
-            data["crimeRecord"] = (int.Parse(data["crimeRecord"])-1).ToString();
-        }
-    }
 }
