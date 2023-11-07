@@ -114,6 +114,7 @@ public class RecordData
                     Debug.Log("ishanging:"+isHanging);
 
 
+                    //범죄 가중 시스템//
                     //범죄등급 +1 증가 후 다시 판단//
                     if (isHanging == 2)
                     {
